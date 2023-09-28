@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+#Change Directory with just Filename
+setopt auto_cd extendedglob
+
+#stop beep on error
+unsetopt beep
+
+#use emacs keymappings
+bindkey -e
+
+#Set default editor and pager
+export EDITOR="/usr/bin/nvim"
+export PAGER=less
+export GIT_PAGER='diff-so-fancy | less'
+
+#Set GREP to color results
+export GREP_OPTIONS='--color=auto'
+
+#ZSH History Settings
+HISTSIZE=10000
+SAVEHIST=1000
+setopt SHARE_HISTORY; # Share History covers append history, extended history and is not compatible with incremental history
+HISTFILE=$ZDIR/histfile
+
+#Get Rid of less' history file and adds mouse scrolling to LESS and commands that use LESS
+export LESSHISTFILE=-
+export LESS='--mouse --wheel-lines=3'
+
+#Set Bat Highlighter Theme
+export BAT_THEME='Monokai Extended'
+
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'

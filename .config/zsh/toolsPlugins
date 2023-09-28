@@ -1,0 +1,59 @@
+#!/bin/zsh
+
+# Command Prompt UI
+eval "$(starship init zsh)"
+
+# z jump around command -> replacement for cd using 'frecency'
+# man-page is in $HOME/.local/share/man/man1/ --> automatically in manpath
+source "$ZDIR/zcmd.sh"
+export _Z_DATA="$ZDIR/zcmd.db"
+
+# Check if the fzf auto-complete tool exists, then run it --> includes autocomplete module (see below) and some default key bindings
+[ -f $ZDIR/fzf.zsh ] && source "$ZDIR/fzf.zsh"
+# Advanced customization of fzf options via _fzf_comprun function
+# - The first argument to the function is the name of the command.
+# - You should make sure to pass the rest of the arguments to fzf.
+_fzf_comprun() {
+  local command=$1
+  shift
+
+  case "$command" in
+    cd)           fzf --preview 'tree -C {} | head -200'   "$@" ;;
+    export|unset) fzf --preview "eval 'echo \$'{}"         "$@" ;;
+    ssh)          fzf --preview 'dig {}'                   "$@" ;;
+    *)            fzf --preview 'bat -n --color=always --line-range=:250  {}' "$@" ;;
+  esac
+}
+export FZF_DEFAULT_OPTS="--height 75% --layout=reverse --border --ansi --inline-info"
+# CTRL - T --> Paste selected files/directories onto command line
+# CTRL - R --> Paste selected command from history onto command line
+# ALT - C --> cd into selected directory (alt is left option if left option was rebinded to Esc+ in iterm2)
+export FZF_CTRL_T_COMMAND="fd --type file --color=always --follow --hidden --exclude .git"
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+# use the ** + <TAB> trigger sequence to activate fuzzy finding for auto-complete --> similar to using <command> | fzf
+# can prepend directory and? name --> e.g. bat ../fzf**<tab> --> will search in the parent directory for files with 'fzf'
+# or don't --> cd **<tab> --> list all directories and interactively fuzzy find
+export FZF_COMPLETION_TRIGGER='**'
+# Use fd (https://github.com/sharkdp/fd) instead of the default find command for listing path candidates.
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude ".git" . "$1"
+}
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type d --hidden --follow --exclude ".git" . "$1"
+}
+
+# PLUGINS ==============================================
+
+if [ -d "$ZDIR/zsh-autosuggestions" ] ; then
+	# Use the ZSH-autosuggestions plugin --> to uninstall simply remove this line and the corresponding directory
+	source "$ZDIR/zsh-autosuggestions/zsh-autosuggestions.zsh"
+
+	#Add keybind to complete autocomplete for autosuggestions plugin --> control key + space
+	bindkey '^ ' autosuggest-accept
+fi
+
+if [ -d "$ZDIR/zsh-syntax-highlighting" ] ; then
+	# Use the ZSH-syntax-highlighting plugin --> to uninstall simply remove this line and the corresponding directory
+	source "$ZDIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi

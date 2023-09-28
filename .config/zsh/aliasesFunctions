@@ -1,0 +1,63 @@
+#!/bin/zsh
+
+# ALIASES =================================
+
+# Alias for manipulating the dotfiles repository ($HOME/.cfg) easily
+alias dot='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias dotlist='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME ls-files' 
+
+# Display all occurances and symlinks by default in which command
+alias which='which -as'
+
+# Faster nvim
+if [ -x "/usr/bin/nvim" ] ; then
+	alias nv='nvim'
+fi
+
+# Use colors by default
+alias ls='ls --color=auto'
+
+if [ -x "/usr/bin/exa" ] ; then
+	# Faster list
+	alias l='exa --long --classify --all --group-directories-first --grid --color=auto'
+	# Faster Long List
+	alias ll='exa --long --classify --all --group-directories-first --grid --group --header --links --color=auto'
+fi
+
+# Faster mkdir
+alias md='mkdir -p'
+
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+
+# FUNCTIONS ================================
+
+# List all functhions and aliases
+cmdls () {
+	echo "=================== Commands ======================"
+	print -raC3 $(compgen -A function | grep '^[^\_].*$'); #the grep gets rid of any functions starting with _ (zsh completion functions)
+	echo "=================== Aliases  ======================"
+	print -raC3 -- ${(k)aliases}
+	echo "=================== Tips     ======================"
+	echo "Run 'functions' to see all function definitions -> this will show everything (_ prefixes), see below"
+	echo "Run 'alias' to see all shell alias definitions"
+	echo "This displays all shell functions and aliases to see just handmade functions see the .zsh/ directory"
+	echo "Run 'which -as' or 'which' (if alias shortcut is defined) to see all occurances of a command, binary or function,"
+	echo "	Additionally symlinks are shown, so it is extremely useful"
+}
+
+if [ -f "/usr/bin/exa" ] ; then
+	# Faster Tree List
+	lst () {
+		if [[ "$1" =~ ^[0-9]+$ ]]; then
+			exa --long --classify --all --group-directories-first --tree --level="$1" --color=auto
+		else
+			echo "#####################################################"
+			echo "##  Tree Depth Not Given -> Displaying Everything  ##"
+			echo "#####################################################"
+			exa --long --classify --all --group-directories-first --tree --color=auto
+		fi
+	}
+fi
