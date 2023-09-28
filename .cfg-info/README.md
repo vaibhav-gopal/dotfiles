@@ -32,3 +32,7 @@ starship --> zsh/bash prompt
 You can check what was installed via curl or wget via (given that the bash_history file is long enough)-->
 cat .bash_history | grep wget
 cat .bash_history | grep curl
+
+
+NOTE IMPORTANT: Git should be pre-installed on WSL / linux distros, but for the credetial manager you must install git for windows on the host system
+and add a line on the .gitconfig in the linux home directory linking to it --> See setting up wsl for git tutorial on microsoft docs
