@@ -19,6 +19,8 @@
 
 !.config
 !.config/nvim
+!.config/nvim/init.lua
+!.config/nvim/vimrc.vim
 !.config/nvim/init.vim
 
 !.config/zsh
