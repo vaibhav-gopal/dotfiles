@@ -13,6 +13,7 @@ bindkey -e
 export EDITOR="/usr/bin/nvim"
 export PAGER=less
 export GIT_PAGER='diff-so-fancy | less'
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 #Set GREP to color results
 export GREP_OPTIONS='--color=auto'
