@@ -23,6 +23,7 @@ in
     {
       HM_MODE_NAME = modeConfig.modeName;
       HM_MODE_PATH = modeConfig.modePath;
+      HM_MODE_CONFIGS_PATH = modeConfig.modeConfigsPath;
     }
 
     # Optionally set default EDITOR, PATH, etc.

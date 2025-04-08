@@ -4,10 +4,11 @@
   (let
     username = "vaibhav";
     mode = "wsl2";
-  in {
-    inherit username mode;
-    modeName = "${username}@${mode}";
     modePath = "${hmPaths.homeDir}/${username}_${mode}";
+  in {
+    inherit username mode modePath;
+    modeName = "${username}@${mode}";
+    modeConfigsPath = modePath + "/localconfigs";
     system = "x86_64-linux";
     version = "24.11";
     features = [
@@ -18,10 +19,11 @@
   (let
     username = "vaibhav";
     mode = "macbook";
-  in {
-    inherit username mode;
-    modeName = "${username}@${mode}";
     modePath = "${hmPaths.homeDir}/${username}_${mode}";
+  in {
+    inherit username mode modePath;
+    modeName = "${username}@${mode}";
+    modeConfigsPath = modePath + "/localconfigs";
     system = "x86_64-darwin";
     version = "24.11";
     features = [
