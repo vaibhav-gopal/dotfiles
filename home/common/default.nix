@@ -38,7 +38,6 @@ in
   # ─── Home Manager Self Management ─────────────────────────────────────────
   programs.home-manager = {
     enable = true;
-    path = modeConfig.modePath;
   };
 
   # ─── Optional Common Imports ──────────────────────────────────────────────
