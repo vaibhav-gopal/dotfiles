@@ -49,18 +49,7 @@ in {
   home.file."${config.home.homeDirectory}/.config/starship.toml".source =
     hmPaths.homeCommonConfigsDir + "/shell.d/starship.toml";
 
-  home.shellAliases = {
-    ll = "ls -la";
-    lt = "eza -laT --level ";
-    gs = "git status";
-    gl = "git log --oneline --graph --decorate";
-    hm = "home-manager";
-    hms = "home-manager switch --flake $DOTFILES_DIR#$HM_MODE_NAME";
-    hml = "home-manager generations";
-    hmpkgs = "home-manager packages";
-  };
-
-  # Optional: shell integration if needed
+  # Optional: shell integration if not already enabled
   # home.shell.enableShellIntegration = true;
 
   home.activation.setZshAsLoginShell = lib.hm.dag.entryAfter [ "linkGeneration" ] ''

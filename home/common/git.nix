@@ -39,4 +39,10 @@
       git_protocol = "https";  # or "ssh" if you prefer
     };
   };
+
+  # Git / Github Shell Aliases
+  home.shellAliases = {
+    gs = "git status";
+    gl = "git log --oneline --graph --decorate";
+  };
 }

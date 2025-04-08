@@ -7,10 +7,20 @@ let
     ./git.nix
     ./term.nix
     ./vim.nix
+    ./ssh.nix
+    ./compression.nix
+    ./fonts.nix
   ];
 
   # Define shared packages for all modes
   commonPackages = [
+    pkgs.wget
+    pkgs.curl
+    (pkgs.coreutils.override { withPrefix = false; }) # instead of system coreutils
+    (pkgs.findutils.override { withPrefix = false; }) # instead of system findutils
+    (pkgs.gnused.override { withPrefix = false; })    # instead of sed
+    (pkgs.gawk.override { withPrefix = false; })      # instead of awk
+    (pkgs.gnugrep.override { withPrefix = false; })   # instead of grep
   ];
 in
 {
@@ -18,7 +28,7 @@ in
   home.username = modeConfig.username;
   home.homeDirectory = "/home/${modeConfig.username}";
   home.stateVersion = modeConfig.version;
- 
+
   # ─── Common Environment Variables ─────────────────────────────────────────
   # mkMerge allows other modules to safely extend this
   home.sessionVariables = lib.mkMerge [
@@ -39,6 +49,16 @@ in
       LESS = lib.mkDefault "--mouse --wheel-lines=3";
     }
   ];
+
+  # ─── Common Shell Aliases ─────────────────────────────────────────────────
+  home.shellAliases = {
+    ll = "eza -la";
+    lt = "eza -laT --level ";
+    hm = "home-manager";
+    hms = "home-manager switch --flake $DOTFILES_DIR#$HM_MODE_NAME";
+    hml = "home-manager generations";
+    hmpkgs = "home-manager packages";
+  };
 
   # ─── Common Package Set ───────────────────────────────────────────────────
   home.packages = commonPackages;
