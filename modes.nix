@@ -17,6 +17,7 @@
       "cargo"
       "micromamba"
       "nvm"
+      "sdkman"
     ];
   })
 
@@ -36,6 +37,7 @@
       "cargo"
       "micromamba"
       "nvm"
+      "sdkman"
     ];
   }) 
 ]
