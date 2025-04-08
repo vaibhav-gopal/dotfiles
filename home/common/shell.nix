@@ -7,16 +7,17 @@ let
   );
 
   # Abstract fragment loader for shell stages (e.g. .zshrc, .zprofile)
-  loadShellFragments = stageExt: dir: ''
-    for f in "${dir}/*.${stageExt}"(N); do
-      [ -r "$f" ] && source "$f"
-    done
-  '';
+  loadShellFragments = stageExt: dir: "" +
+    "if [ -d ${dir} ]; then\n" +
+    "  for f in \"${dir}/*.${stageExt}\"; do\n" +
+    "    [ -r \"$f\" ] && source \"$f\"\n" +
+    "  done\n" +
+    "fi\n";
 
   # Common + mode-specific + feature fragment loaders combined
   shellStageFragments = stageExt: (
-    loadShellFragments stageExt hmPaths.homeCommonConfigsDir + "/shell.d" +
-    loadShellFragments stageExt modeConfig.modeConfigsPath + "/shell.d" +
+    loadShellFragments stageExt (hmPaths.homeCommonConfigsDir + "/shell.d") +
+    loadShellFragments stageExt (modeConfig.modeConfigsPath + "/shell.d") +
     (lib.concatStrings (map (dir: loadShellFragments stageExt dir) featureShellDirs))
   );
 
@@ -46,7 +47,7 @@ in {
   };
 
   home.file.".config/starship.toml".source =
-    hmPaths.homeCommonConfigsDir + "/starship.d/starship.toml";
+    hmPaths.homeCommonConfigsDir + "/shell.d/starship.toml";
 
   home.shellAliases = {
     ll = "ls -la";
@@ -59,7 +60,7 @@ in {
     hmpkgs = "home-manager packages";
   };
 
-  # Optional: shell integration if not already enabled by default
+  # Optional: shell integration if needed
   # home.shell.enableShellIntegration = true;
 
   home.activation.setZshAsLoginShell = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
