@@ -1,0 +1,39 @@
+theme "default-dark"
+default_layout "compact"
+pane_frames true
+simplified_ui true
+scrollback_lines_to_save 10000
+
+default_mode "locked"
+
+keybinds normal {
+  unbind "Ctrl g"
+  unbind "Tab"
+
+  bind "Alt l" { action "MoveFocusRight" }
+  bind "Alt h" { action "MoveFocusLeft" }
+  bind "Alt k" { action "MoveFocusUp" }
+  bind "Alt j" { action "MoveFocusDown" }
+
+  bind "Alt Shift l" { action "Resize" direction "Right" }
+  bind "Alt Shift h" { action "Resize" direction "Left" }
+  bind "Alt Shift k" { action "Resize" direction "Up" }
+  bind "Alt Shift j" { action "Resize" direction "Down" }
+
+  bind "Alt t" { action "NewPane" }
+  bind "Alt Shift s" { action "NewPane" direction "Down" }
+  bind "Alt Shift d" { action "NewPane" direction "Right" }
+  bind "Alt Shift a" { action "NewPane" direction "Left" }
+  bind "Alt Shift w" { action "NewPane" direction "Up" }
+
+  bind "Alt w" { action "CloseFocus" }
+  bind "Alt c" { action "Copy" }
+  bind "Alt v" { action "Paste" }
+  bind "Alt f" { action "Search" }
+  bind "Alt enter" { action "ToggleFullscreen" }
+
+  bind "Alt up" { action "ScrollUp" }
+  bind "Alt down" { action "ScrollDown" }
+  bind "Alt home" { action "ScrollToTop" }
+  bind "Alt end" { action "ScrollToBottom" }
+}

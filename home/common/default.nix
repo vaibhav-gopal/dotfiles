@@ -5,6 +5,8 @@ let
   additionalCommonModules = [
     ./shell.nix
     ./git.nix
+    ./term.nix
+    ./vim.nix
   ];
 
   # Define shared packages for all modes
@@ -57,8 +59,6 @@ in
   programs.ripgrep.enable = true;
 
   programs.htop.enable = true;
-
-  programs.vim.enable = true;
 
   # ─── Home Manager Self Management ─────────────────────────────────────────
   programs.home-manager = {

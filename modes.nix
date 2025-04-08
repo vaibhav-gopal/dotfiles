@@ -18,6 +18,9 @@
       "micromamba"
       "nvm"
       "sdkman"
+      "cpp"
+      "glow"
+      "neovim"
     ];
   })
 
@@ -38,6 +41,9 @@
       "micromamba"
       "nvm"
       "sdkman"
+      "cpp"
+      "glow"
+      "neovim"
     ];
   }) 
 ]
