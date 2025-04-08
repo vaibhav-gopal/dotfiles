@@ -13,6 +13,10 @@
     version = "24.11";
     features = [
       "helix"
+      "bun"
+      "cargo"
+      "micromamba"
+      "nvm"
     ];
   })
 
@@ -28,6 +32,10 @@
     version = "24.11";
     features = [
       "helix"
+      "bun"
+      "cargo"
+      "micromamba"
+      "nvm"
     ];
   }) 
 ]

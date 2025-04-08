@@ -46,7 +46,7 @@ in {
     enable = true;
   };
 
-  home.file.".config/starship.toml".source =
+  home.file."${config.home.homeDirectory}/.config/starship.toml".source =
     hmPaths.homeCommonConfigsDir + "/shell.d/starship.toml";
 
   home.shellAliases = {

@@ -1,13 +1,11 @@
 { config, pkgs, lib, modeConfig, hmPaths, ... }:
 
 {
-  # Install Helix editor
-  home.packages = [
-    pkgs.helix
-  ];
+  programs.helix = {
+    enable = true;
 
-  # Optionally configure environment variables or aliases here
-  # home.sessionVariables.EDITOR = "hx";
-  # programs.helix.enable = true; # only if using community modules
+    # Optional: override default config directory if you want full control
+    # settings = { theme = "gruvbox"; };
+    # languages = { language-server = ... };
+  };
 }
-
