@@ -8,7 +8,7 @@
 let
   # Dynamically map the feature names to their module paths
   featureModules = map
-    (name: hmPaths.homeFeaturesDir + "/${name}/default.nix")
+    (name: hmPaths.homeFeaturesDir + "/${name}")
     modeConfig.features;
 in
 {

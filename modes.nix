@@ -1,21 +1,31 @@
+{ hmPaths }:
+
 [
   (let
     username = "vaibhav";
     mode = "wsl2";
-    modeName = "${username}@${mode}";
-    modePath = "./home/${username}_${mode}/home.nix";
   in {
-    inherit username mode modeName modePath;
+    inherit username mode;
+    modeName = "${username}@${mode}";
+    modePath = "${hmPaths.homeDir}/${username}_${mode}/home.nix";
     system = "x86_64-linux";
+    version = "24.11";
+    features = [
+      "helix"
+    ];
   })
-  
+
   (let
     username = "vaibhav";
     mode = "macbook";
-    modeName = "${username}@${mode}";
-    modePath = "./home/${username}_${mode}/home.nix";
   in {
-    inherit username mode modeName modePath;
+    inherit username mode;
+    modeName = "${username}@${mode}";
+    modePath = "${hmPaths.homeDir}/${username}_${mode}/home.nix";
     system = "x86_64-darwin";
-  })
+    version = "24.11";
+    features = [
+      "helix"
+    ];
+  }) 
 ]

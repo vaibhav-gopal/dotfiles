@@ -16,8 +16,17 @@
 
   outputs = { nixpkgs, home-manager, ... }:
     let
+      # Important paths to define
+      hmPaths = {
+        dotfilesDir = ./.;
+        homeDir = ./home;
+        homeCommonDir = ./home/common;
+        homeFeaturesDir = ./home/features;
+        modesNix = ./modes.nix;
+      };
+      
       # Import a list of configurations (e.g. different users or modes).
-      modeConfigs = import ./modes.nix;
+      modeConfigs = import hmPaths.modesNix { inherit hmPaths; };
 
       # Extract a unique list of all systems mentioned in the configs.
       systems = builtins.attrNames (builtins.listToAttrs (
@@ -36,24 +45,59 @@
 
       # Generate Home Manager configurations for each mode config.
       homeConfigurations = builtins.listToAttrs (map (cfg: {
-        # The name of the configuration (e.g. "vaibhav@laptop").
         name = cfg.modeName;
-
         value = home-manager.lib.homeManagerConfiguration {
-          # Pick the correct pkgs set based on system architecture.
           pkgs = pkgsFor.${cfg.system};
-
-          # Home Manager module to use (typically a path to a .nix file).
           modules = [ cfg.modePath ];
-
-          # Pass the full config (like username, system, mode, etc.) to the module.
           extraSpecialArgs = {
-            modeConfig = cfg; 
-          }; 
+            inherit hmPaths;
+            modeConfig = cfg;
+          };
         };
       }) modeConfigs);
     in {
       # Expose the generated homeConfigurations.
       inherit homeConfigurations;
+
+      # Provide a devShell for `nix develop`, usable with: HM_MODE_NAME=... nix develop
+      devShells = nixpkgs.lib.genAttrs systems (system:
+        let
+          pkgs = pkgsFor.${system};
+        in {
+          default = pkgs.mkShell {
+            name = "home-manager-dev-shell";
+
+            buildInputs = [
+              pkgs.nix       # ensures nix CLI is available
+              pkgs.jq        # for parsing modes.nix output
+              pkgs.gnused    # GNU sed (more consistent)
+              pkgs.coreutils # dirname, readlink, etc.
+              pkgs.bash      # bash is used in the script
+            ];
+
+            shellHook = ''
+              echo "🛠️  Home Manager development shell"
+
+              if [ -z "$HM_MODE_NAME" ]; then
+                echo "❌ HM_MODE_NAME is not set."
+                echo "👉 Use: HM_MODE_NAME=vaibhav@wsl2 nix develop"
+    
+                # Attempt to show available configurations
+                if [ -f "${hmPaths.modesNix}" ]; then
+                  echo "📋 Available configurations:"
+                  nix eval --impure --expr "map (x: x.modeName) (import \"${hmPaths.modesNix}\" { hmPaths = import ./flake.nix.hmPaths; })" --json | jq -r '.[]' 2>/dev/null || true
+                fi
+
+                # Exit from the shell
+                exit 1
+              fi
+
+              echo "🔁 Bootstrapping: ./bootstrap.sh \"$HM_MODE_NAME\""
+              ./bootstrap.sh "$HM_MODE_NAME"
+            '';   
+          };
+        }
+      );
     };
 }
+
