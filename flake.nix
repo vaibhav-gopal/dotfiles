@@ -23,6 +23,7 @@
         homeCommonDir = ./home/common;
         homeFeaturesDir = ./home/features;
         modesNix = ./modes.nix;
+        bootstrapScript = ./bootstrap.sh;
       };
       
       # Import a list of configurations (e.g. different users or modes).
@@ -76,25 +77,9 @@
             ];
 
             shellHook = ''
-              echo "🛠️  Home Manager development shell"
-
-              if [ -z "$HM_MODE_NAME" ]; then
-                echo "❌ HM_MODE_NAME is not set."
-                echo "👉 Use: HM_MODE_NAME=vaibhav@wsl2 nix develop"
-    
-                # Attempt to show available configurations
-                if [ -f "${hmPaths.modesNix}" ]; then
-                  echo "📋 Available configurations:"
-                  nix eval --impure --expr "map (x: x.modeName) (import \"${hmPaths.modesNix}\" { hmPaths = import ./flake.nix.hmPaths; })" --json | jq -r '.[]' 2>/dev/null || true
-                fi
-
-                # Exit from the shell
-                exit 1
-              fi
-
-              echo "🔁 Bootstrapping: ./bootstrap.sh \"$HM_MODE_NAME\""
-              ./bootstrap.sh "$HM_MODE_NAME"
-            '';   
+              ${hmPaths.bootstrapScript} "$HM_MODE_NAME" || exit 1
+              exit 0
+            '';  
           };
         }
       );

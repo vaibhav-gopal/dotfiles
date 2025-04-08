@@ -13,18 +13,18 @@ FLAKE="$DOTFILES_DIR#homeConfigurations"
 # ─── Helper: Show valid mode names ──────────────────────────────────────────
 print_available_modes() {
   GREEN='\033[1;32m'
+  BOLD='\033[1m'
   RESET='\033[0m'
 
-  echo -e "\n📋 Available cNIGGAonfigurations:\n"
+  echo -e "\n📋 ${BOLD}Available configurations (name and usage):${RESET}\n"
 
-  # Capture raw mode names into a variable (ensures no bypass of piping)
-  modes=$(nix eval --impure --raw --expr \
-    "concatStringsSep \"\n\" (map (x: x.modeName) (import \"$MODES_NIX\" { hmPaths = import \"$DOTFILES_DIR/flake.nix\".hmPaths; }))")
-
-  # Now loop over each line
-  while IFS= read -r mode; do
-    echo -e "    ${GREEN}\$ HM_MODE_NAME=$mode${RESET}"
-  done <<< "$modes"
+  nix eval --impure --json --expr \
+    "map (x: x.modeName) (import \"$MODES_NIX\" { hmPaths = import \"$DOTFILES_DIR/flake.nix\".hmPaths; })" \
+    | jq -r '.[]' \
+    | while IFS= read -r mode; do
+        # Pad and align into columns
+        printf "    %-18s  ${GREEN}\$ HM_MODE_NAME=%s nix develop${RESET}\n" "$mode" "$mode"
+      done
 }
 # ----------------------------------------------------------------------------
 

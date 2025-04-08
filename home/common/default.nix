@@ -3,8 +3,8 @@
 let
   # Optional additional common modules in this directory
   additionalCommonModules = [
-    # ./shell.nix
-    # ./git.nix
+    ./shell.nix
+    ./git.nix
   ];
 
   # Define shared packages for all modes
@@ -34,6 +34,17 @@ in
 
   # ─── Common Package Set ───────────────────────────────────────────────────
   home.packages = commonPackages;
+
+  # --- Common Program Set (managed Packages) --------------------------------
+  programs.bat.enable = true;
+  programs.bat.config = {
+    pager = "less -FR";
+  };
+
+  programs.eza.enable = true;
+  programs.eza.colors = "always";
+  programs.eza.git = true;
+  programs.eza.icons = true;
 
   # ─── Home Manager Self Management ─────────────────────────────────────────
   programs.home-manager = {
