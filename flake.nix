@@ -21,6 +21,7 @@
         dotfilesDir = ./.;
         homeDir = ./home;
         homeCommonDir = ./home/common;
+        homeCommonConfigsDir = ./home/common/configs;
         homeFeaturesDir = ./home/features;
         modesNix = ./modes.nix;
         bootstrapScript = ./bootstrap.sh;

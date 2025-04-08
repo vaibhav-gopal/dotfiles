@@ -11,21 +11,21 @@
 
     # Main interactive shell (.zshrc)
     initExtra = ''
-      for f in "${hmPaths.homeCommonDir}/config/zsh.d"/*.zshrc; do
+      for f in "${hmPaths.homeCommonConfigsDir}/zsh.d"/*.zshrc; do
         [ -r "$f" ] && source "$f"
       done
     '';
 
     # Login shell (.zprofile)
     profileExtra = ''
-      for f in "${hmPaths.homeCommonDir}/config/zsh.d"/*.zprofile; do
+      for f in "${hmPaths.homeCommonConfigsDir}/zsh.d"/*.zprofile; do
         [ -r "$f" ] && source "$f"
       done
     '';
 
     # Always-loaded shell (.zshenv)
     envExtra = ''
-      for f in "${hmPaths.homeCommonDir}/config/zsh.d"/*.zshenv; do
+      for f in "${hmPaths.homeCommonConfigsDir}/zsh.d"/*.zshenv; do
         [ -r "$f" ] && source "$f"
       done
     '';
@@ -36,13 +36,13 @@
     enableCompletion = true;
 
     initExtra = ''
-      for f in "${hmPaths.homeCommonDir}/config/bash.d"/*.bashrc; do
+      for f in "${hmPaths.homeCommonConfigsDir}/bash.d"/*.bashrc; do
         [ -r "$f" ] && source "$f"
       done
     '';
 
     profileExtra = ''
-      for f in "${hmPaths.homeCommonDir}/config/bash.d"/*.profile; do
+      for f in "${hmPaths.homeCommonConfigsDir}/bash.d"/*.profile; do
         [ -r "$f" ] && source "$f"
       done
     '';     
@@ -55,7 +55,7 @@
   programs.starship = {
     enable = true;
   };
-  home.file.".config/starship.toml".source = hmPaths.homeCommonDir + "/config/starship.d/starship.toml";
+  home.file.".config/starship.toml".source = hmPaths.homeCommonConfigsDir + "/starship.d/starship.toml";
 
   # Shared aliases across all shells
   home.shellAliases = {
