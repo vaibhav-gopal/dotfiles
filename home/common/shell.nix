@@ -9,19 +9,42 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     dotDir = ".config/zsh";
+
+    initExtra = ''
+    '';
+
+    profileExtra = ''
+    '';
+
+    envExtra = ''
+    '';
   };
 
   programs.bash = {
     enable = true;
     enableCompletion = true;
+    
+    initExtra = ''
+    '';
+    
+    profileExtra = ''
+    '';
   };
-
+  
   # Enable Home Manager to manage environment variables in shells
-  home.shell.enableShellIntegration = true;
+  # home.shell.enableShellIntegration = true;
+
+  # Enable starship shell prompt
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = true;
+  };
 
   # Shared aliases across all shells
   home.shellAliases = {
     ll = "ls -la";
+    lt = "eza -laT";
     gs = "git status";
     gl = "git log --oneline --graph --decorate";
     hm = "home-manager";

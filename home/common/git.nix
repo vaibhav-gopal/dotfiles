@@ -9,9 +9,8 @@
     userEmail = "vaibhav@gmail.com";
 
     extraConfig = {
-      # Default pager and editor
+      # Default editor
       core = {
-        pager = "delta";
         editor = "hx";
       };
 

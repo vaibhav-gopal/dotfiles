@@ -9,9 +9,6 @@ let
 
   # Define shared packages for all modes
   commonPackages = [
-    pkgs.htop
-    pkgs.fd
-    pkgs.ripgrep
   ];
 in
 {
@@ -19,7 +16,7 @@ in
   home.username = modeConfig.username;
   home.homeDirectory = "/home/${modeConfig.username}";
   home.stateVersion = modeConfig.version;
-
+ 
   # ─── Common Environment Variables ─────────────────────────────────────────
   # mkMerge allows other modules to safely extend this
   home.sessionVariables = lib.mkMerge [
@@ -42,9 +39,14 @@ in
   };
 
   programs.eza.enable = true;
-  programs.eza.colors = "always";
+  programs.eza.colors = "auto";
   programs.eza.git = true;
-  programs.eza.icons = true;
+
+  programs.fd.enable = true;
+
+  programs.ripgrep.enable = true;
+
+  programs.htop.enable = true;
 
   # ─── Home Manager Self Management ─────────────────────────────────────────
   programs.home-manager = {
