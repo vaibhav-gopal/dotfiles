@@ -26,7 +26,15 @@ in
     }
 
     # Optionally set default EDITOR, PATH, etc.
-    # { EDITOR = lib.mkDefault "hx"; }
+    {
+      EDITOR = lib.mkDefault "vim";
+      PAGER = lib.mkDefault "less -FR";
+    }
+
+    # Sane defaults
+    {
+      LESS = lib.mkDefault "--mouse --wheel-lines=3";
+    }
   ];
 
   # ─── Common Package Set ───────────────────────────────────────────────────
@@ -36,6 +44,7 @@ in
   programs.bat.enable = true;
   programs.bat.config = {
     pager = "less -FR";
+    theme = "Monokai Extended";
   };
 
   programs.eza.enable = true;
@@ -47,6 +56,8 @@ in
   programs.ripgrep.enable = true;
 
   programs.htop.enable = true;
+
+  programs.vim.enable = true;
 
   # ─── Home Manager Self Management ─────────────────────────────────────────
   programs.home-manager = {
