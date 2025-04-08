@@ -1,7 +1,26 @@
 { config, pkgs, lib, hmPaths, modeConfig, ... }:
 
-{
-  # Enable both Zsh and Bash declaratively
+let
+  # List all valid shell fragment directories from enabled features
+  featureShellDirs = builtins.filter builtins.pathExists (
+    map (feature: "${hmPaths.homeFeaturesDir}/${feature}/shell.d") modeConfig.features
+  );
+
+  # Abstract fragment loader for shell stages (e.g. .zshrc, .zprofile)
+  loadShellFragments = stageExt: dir: ''
+    for f in "${dir}/*.${stageExt}"(N); do
+      [ -r "$f" ] && source "$f"
+    done
+  '';
+
+  # Common + mode-specific + feature fragment loaders combined
+  shellStageFragments = stageExt: (
+    loadShellFragments stageExt hmPaths.homeCommonConfigsDir + "/shell.d" +
+    loadShellFragments stageExt modeConfig.modeConfigsPath + "/shell.d" +
+    (lib.concatStrings (map (dir: loadShellFragments stageExt dir) featureShellDirs))
+  );
+
+in {
   programs.zsh = {
     enable = true;
     autocd = true;
@@ -9,77 +28,26 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
-    # Main interactive shell (.zshrc)
-    initExtra = ''
-      # Load shared/common Zsh rc snippets
-      for f in "${hmPaths.homeCommonConfigsDir}/zsh.d/*.zshrc"(N); do
-        [ -r "$f" ] && source "$f"
-      done
-
-      # Load mode-specific local Zsh rc snippets
-      for f in "${modeConfig.modeConfigsPath}/zsh.d/*.zshrc"(N); do
-        [ -r "$f" ] && source "$f"
-      done
-    '';
-
-    # Login shell (.zprofile)
-    profileExtra = ''
-      for f in "${hmPaths.homeCommonConfigsDir}/zsh.d/*.zprofile"(N); do
-        [ -r "$f" ] && source "$f"
-      done
-
-      for f in "${modeConfig.modeConfigsPath}/zsh.d/*.zprofile"(N); do
-        [ -r "$f" ] && source "$f"
-      done
-    '';
-
-    # Always-loaded shell (.zshenv)
-    envExtra = ''
-      for f in "${hmPaths.homeCommonConfigsDir}/zsh.d/*.zshenv"(N); do
-        [ -r "$f" ] && source "$f"
-      done
-
-      for f in "${modeConfig.modeConfigsPath}/zsh.d/*.zshenv"(N); do
-        [ -r "$f" ] && source "$f"
-      done
-    '';
+    initExtra = shellStageFragments "zshrc";
+    profileExtra = shellStageFragments "zprofile";
+    envExtra = shellStageFragments "zshenv";
   };
 
   programs.bash = {
     enable = true;
     enableCompletion = true;
 
-    # Interactive shell (.bashrc)
-    initExtra = ''
-      for f in "${hmPaths.homeCommonConfigsDir}/bash.d/*.bashrc"; do
-        [ -r "$f" ] && source "$f"
-      done
-
-      for f in "${modeConfig.modeConfigsPath}/bash.d/*.bashrc"; do
-        [ -r "$f" ] && source "$f"
-      done
-    '';
-
-    # Login shell (.bash_profile)
-    profileExtra = ''
-      for f in "${hmPaths.homeCommonConfigsDir}/bash.d/*.profile"; do
-        [ -r "$f" ] && source "$f"
-      done
-
-      for f in "${modeConfig.modeConfigsPath}/bash.d/*.profile"; do
-        [ -r "$f" ] && source "$f"
-      done
-    '';
+    initExtra = shellStageFragments "bashrc";
+    profileExtra = shellStageFragments "profile";
   };
 
-  # Enable Starship shell prompt
   programs.starship = {
     enable = true;
   };
 
-  home.file.".config/starship.toml".source = hmPaths.homeCommonConfigsDir + "/starship.d/starship.toml";
+  home.file.".config/starship.toml".source =
+    hmPaths.homeCommonConfigsDir + "/starship.d/starship.toml";
 
-  # Shared shell aliases (applied to all enabled shells)
   home.shellAliases = {
     ll = "ls -la";
     lt = "eza -laT --level ";
@@ -91,10 +59,9 @@
     hmpkgs = "home-manager packages";
   };
 
-  # # Enable integration of session variables in shells
+  # Optional: shell integration if not already enabled by default
   # home.shell.enableShellIntegration = true;
 
-  # Set login shell to zsh if it isn't already
   home.activation.setZshAsLoginShell = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
     target_shell="${pkgs.zsh}/bin/zsh"
     current_shell=$(grep "^$USER:" /etc/passwd | cut -d: -f7 || echo "")
