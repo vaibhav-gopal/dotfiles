@@ -3,17 +3,17 @@
 {
   # zellij : terminal multiplexer
   programs.zellij.enable = true;
-
-  # ghostty : terminal emulator of choice
-  programs.ghostty.enable = true;
-  # see https://ghostty.org/docs/config/reference for more info
-  programs.ghostty.settings = {
-    background-opacity = 0.75;
-    background-blur = 20;
-  };
-
   # Symlink external Zellij config
   home.file."${config.home.homeDirectory}/.config/zellij/config.kdl".source = hmPaths.homeCommonConfigsDir + "/term.d/zellij.kdl";
+
+  # yazi : terminal file manager and viewer (enables lots of features, batch rename, archiving, trash bin, etc...)
+  programs.yazi.enable = true;
+  programs.yazi.settings = {
+    manager = {
+      show_hidden = true;
+      sort_dir_first = true;
+    };
+  };
 
   home.shellAliases = {
     zj = "zellij";

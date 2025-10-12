@@ -1,0 +1,32 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  SCRIPT_DIR: '{{.TASKFILE_DIR}}/scripts'
+
+tasks:
+  default:
+    aliases: [list]
+    desc: List all commands available in taskfile
+    cmds:
+      - task --list
+    silent: true
+  init:
+    desc: Initialize setup
+    deps: [nix/up, nix/link]
+  nix/up:
+    desc: Update all flake inputs
+    cmds:
+      - nix flake update
+    silent: true
+  nix/fmt:
+    desc: Format nix files in the repo
+    cmds:
+      - nix fmt
+    silent: true
+  nix/link:
+    desc: Symlink the nix.conf to the official if it exists
+    cmds:
+      - source {{.SCRIPT_DIR}}/link.sh
+    silent: true

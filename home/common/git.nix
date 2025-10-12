@@ -1,4 +1,4 @@
-{ config, pkgs, lib, hmPaths, modeConfig, ... }:
+{ config, pkgs, lib, hmPaths, configs, ... }:
 
 {
   # Enable Git with a default identity
@@ -11,7 +11,7 @@
     extraConfig = {
       # Default editor
       core = {
-        editor = "vim";
+        editor = "nvim";
       };
 
       # Per git command overrides for pager

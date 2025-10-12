@@ -1,0 +1,23 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  default:
+    aliases: [list]
+    desc: List all commands available in taskfile
+    cmds:
+      - task --list
+    silent: true
+  init:
+    desc: Initialize setup
+  nix/up:
+    desc: Update all flake inputs
+    cmds:
+      - nix flake update
+    silent: true
+  nix/fmt:
+    desc: Format nix files in the repo
+    cmds:
+      - nix fmt
+    silent: true

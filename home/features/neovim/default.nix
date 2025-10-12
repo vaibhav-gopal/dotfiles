@@ -5,8 +5,8 @@
     enable = true;
   };
 
-  home.file."${config.home.homeDirectory}/.config/nvim/init.lua".source = hmPaths.homeCommonConfigsDir + "/vim.d/init.lua";
-  home.file."${config.home.homeDirectory}/.config/nvim/init.vim".source =hmPaths.homeCommonConfigsDir + "/vim.d/init.vim";
+  home.file."${config.home.homeDirectory}/.config/nvim/init.lua".source = hmPaths.homeFeaturesDir + "/neovim/nvim.d/init.lua";
+  home.file."${config.home.homeDirectory}/.config/nvim/init.vim".source = hmPaths.homeFeaturesDir + "/neovim/nvim.d/init.vim";
 
 }
 

@@ -1,40 +1,50 @@
-{ config, pkgs, lib, modeConfig, hmPaths, ... }:
+{ config, pkgs, lib, username, hostname, version, useremail, homedirectory, configs, hmPaths, ... }:
 
 let
   # Optional additional common modules in this directory
   additionalCommonModules = [
-    ./shell.nix
     ./git.nix
+    ./shell.nix
+    ./ssh.nix
     ./term.nix
     ./vim.nix
-    ./ssh.nix
-    ./compression.nix
-    ./fonts.nix
   ];
 
-  # Define shared packages for all modes
+  # Define shared packages
   commonPackages = [
+    # networking utils
     pkgs.wget
     pkgs.curl
+    pkgs.socat # netcat alternative
+    pkgs.nmap
+    pkgs.openssh  # provides ssh, scp, sftp, ssh-keygen, etc.
+    pkgs.rsync    # for remote and local sync
+
+    # file utils
     pkgs.coreutils
     pkgs.gnused
     pkgs.gawk
     pkgs.gnugrep
+
+    # compression / archiving utils
+    pkgs.zip
+    pkgs.unzip
+    pkgs.gzip
+    pkgs.xz
+    pkgs.gnutar
   ];
 in
 {
   # ─── Core User Configuration ──────────────────────────────────────────────
-  home.username = modeConfig.username;
-  home.homeDirectory = "/home/${modeConfig.username}";
-  home.stateVersion = modeConfig.version;
+  home.username = username;
+  home.homeDirectory = homedirectory;
+  home.stateVersion = version;
 
   # ─── Common Environment Variables ─────────────────────────────────────────
   # mkMerge allows other modules to safely extend this
   home.sessionVariables = lib.mkMerge [
     {
-      HM_MODE_NAME = modeConfig.modeName;
-      HM_MODE_PATH = modeConfig.modePath;
-      HM_MODE_CONFIGS_PATH = modeConfig.modeConfigsPath;
+      HM_CONFIG_NAME = configs.configName;
     }
 
     # Optionally set default EDITOR, PATH, etc.

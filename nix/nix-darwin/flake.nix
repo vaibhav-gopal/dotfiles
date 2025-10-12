@@ -1,0 +1,50 @@
+{
+  description = "Darwin configuration for Vaibhav Gopal";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    darwin = {
+      url = "github:nix-darwin/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs = inputs@{ nixpkgs, home-manager, darwin, ...  }:
+    let 
+      username = "vaibhav";
+      system = "aarch64-darwin";
+      hostname = "vgmacbook";
+      useremail = "vabsgop@gmail.com";
+      version = "25.05";
+      homedirectory = "/Users/vaibhav";
+
+      specialArgs =
+        inputs
+        // {
+          inherit username useremail hostname version homedirectory;
+        };
+    in {
+      darwinConfigurations."${hostname}" = darwin.lib.darwinSystem {
+        inherit system specialArgs;
+        modules = [
+          # general : .nix files to be evaluated
+          ./modules/system.nix
+          ../common/core.nix
+          ../common/env.nix
+
+          # home manager : import and configure
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = specialArgs;
+            home-manager.users.${username} = import ../../home/home.nix;
+          }
+        ];
+      }; 
+    };
+}

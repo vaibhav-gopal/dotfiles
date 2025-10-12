@@ -3,14 +3,18 @@
 {
   programs.ssh = {
     enable = true;
-    extraConfig = ''
-      ServerAliveInterval 30
-      ServerAliveCountMax 3
-    '';
+    enableDefaultConfig = false;
+    matchBlocks."*" = {
+      forwardAgent = false;
+      addKeysToAgent = "no";
+      compression = false;
+      serverAliveInterval = 30; 
+      serverAliveCountMax = 3;
+      hashKnownHosts = false;
+      userKnownHostsFile = "~/.ssh/known_hosts";
+      controlMaster = "no";
+      controlPath = "~/.ssh/master-%r@%n:%p";
+      controlPersist = "no";
+    };
   };
-
-  home.packages = with pkgs; [
-    openssh  # provides ssh, scp, sftp, ssh-keygen, etc.
-    rsync    # for remote and local sync
-  ];
 }

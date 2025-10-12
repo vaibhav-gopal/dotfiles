@@ -1,9 +1,9 @@
-{ config, pkgs, lib, hmPaths, modeConfig, ... }:
+{ config, pkgs, lib, hmPaths, configs, ... }:
 
 let
   # List all valid shell fragment directories from enabled features
   featureShellDirs = builtins.filter builtins.pathExists (
-    map (feature: "${hmPaths.homeFeaturesDir}/${feature}/shell.d") modeConfig.features
+    map (feature: "${hmPaths.homeFeaturesDir}/${feature}/shell.d") configs.features
   );
 
   # Abstract fragment loader for shell stages (e.g. .zshrc, .zprofile)
@@ -17,7 +17,7 @@ let
   # Common + mode-specific + feature fragment loaders combined
   shellStageFragments = stageExt: (
     loadShellFragments stageExt (hmPaths.homeCommonConfigsDir + "/shell.d") +
-    loadShellFragments stageExt (modeConfig.modeConfigsPath + "/shell.d") +
+    loadShellFragments stageExt (configs.systemPath + "/shell.d") +
     (lib.concatStrings (map (dir: loadShellFragments stageExt dir) featureShellDirs))
   );
 
