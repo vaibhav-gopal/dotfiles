@@ -16,11 +16,10 @@ let
   commonPackages = [
     pkgs.wget
     pkgs.curl
-    (pkgs.coreutils.override { withPrefix = false; }) # instead of system coreutils
-    (pkgs.findutils.override { withPrefix = false; }) # instead of system findutils
-    (pkgs.gnused.override { withPrefix = false; })    # instead of sed
-    (pkgs.gawk.override { withPrefix = false; })      # instead of awk
-    (pkgs.gnugrep.override { withPrefix = false; })   # instead of grep
+    pkgs.coreutils
+    pkgs.gnused
+    pkgs.gawk
+    pkgs.gnugrep
   ];
 in
 {
@@ -46,14 +45,16 @@ in
 
     # Sane defaults
     {
-      LESS = lib.mkDefault "--mouse --wheel-lines=3";
+      LESS = lib.mkDefault "-FR --mouse";
     }
   ];
 
   # ─── Common Shell Aliases ─────────────────────────────────────────────────
   home.shellAliases = {
-    ll = "eza -la";
-    lt = "eza -laT --level ";
+    ll = "eza --all --long";
+    lt = "eza --all --long --tree";
+    llg = "eza --all --long --git";
+    ltg = "eza --all --long --tree --git";
     hm = "home-manager";
     hms = "home-manager switch --flake $DOTFILES_DIR#$HM_MODE_NAME";
     hml = "home-manager generations";
@@ -64,21 +65,41 @@ in
   home.packages = commonPackages;
 
   # --- Common Program Set (managed Packages) --------------------------------
+  # bat : cat alternative
   programs.bat.enable = true;
   programs.bat.config = {
-    pager = "less -FR";
+    pager = "less -FR --mouse";
     theme = "Monokai Extended";
   };
 
+  # eza : ls alternative
   programs.eza.enable = true;
   programs.eza.colors = "auto";
   programs.eza.git = true;
 
+  # fd : find alternative
   programs.fd.enable = true;
 
+  # ripgrep : recursive grep
   programs.ripgrep.enable = true;
 
-  programs.htop.enable = true;
+  # jq : command line json parser
+  programs.jq.enable = true;
+
+  # bottom : top/htop alternative (process monitor)
+  programs.bottom.enable = true;
+
+  # fzf : fuzzy finder (just a front-end ; need fd or ripgrep to power it)
+  programs.fzf.enable = true;
+  programs.fzf.defaultCommand = "fd --type f";
+  programs.fzf.defaultOptions = ["--height 40%" "--border"];
+  programs.fzf.fileWidgetCommand = "fd --type f";
+  programs.fzf.fileWidgetOptions = ["--preview 'head {}'"];
+  programs.fzf.changeDirWidgetCommand = "fd --type d";
+  programs.fzf.changeDirWidgetOptions = ["--preview 'tree -C {} | head -200'"];
+
+  # fastfetch : the cool display system / arch terminal thing
+  programs.fastfetch.enable = true;
 
   # ─── Home Manager Self Management ─────────────────────────────────────────
   programs.home-manager = {

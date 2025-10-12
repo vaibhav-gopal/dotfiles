@@ -11,7 +11,7 @@
     extraConfig = {
       # Default editor
       core = {
-        editor = "hx";
+        editor = "vim";
       };
 
       # Per git command overrides for pager

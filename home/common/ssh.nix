@@ -13,10 +13,4 @@
     openssh  # provides ssh, scp, sftp, ssh-keygen, etc.
     rsync    # for remote and local sync
   ];
-
-  home.shellAliases = {
-    sshsync = "rsync -avz --progress";
-    sshex = "ssh -A";
-    scpsync = "rsync -e ssh -avz --progress";
-  };
 }

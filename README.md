@@ -7,6 +7,10 @@ It supports:
 - Reusable feature modules (like `cargo`, `nvm`, `shell`, etc.)
 - Organized `.d` fragments for shell hooks and modular configuration
 
+## Getting Started
+
+Install nix/nixpkgs (prefer the multi-user installation)
+
 ## Structure Overview
 
 ```

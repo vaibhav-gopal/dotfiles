@@ -3,47 +3,41 @@
 [
   (let
     username = "vaibhav";
-    mode = "wsl2";
+    mode = "ubuntu";
     modePath = "${hmPaths.homeDir}/${username}_${mode}";
   in {
     inherit username mode modePath;
     modeName = "${username}@${mode}";
     modeConfigsPath = modePath + "/localconfigs";
     system = "x86_64-linux";
-    version = "24.11";
+    version = "25.11";
     features = [
-      "helix"
       "bun"
-      "cargo"
-      "micromamba"
-      "nvm"
-      "sdkman"
+      "rustup"
       "cpp"
       "glow"
       "neovim"
+      "uv"
     ];
   })
 
   (let
     username = "vaibhav";
-    mode = "macbook";
+    mode = "Vaibhavs-MacBook-Pro";
     modePath = "${hmPaths.homeDir}/${username}_${mode}";
   in {
     inherit username mode modePath;
     modeName = "${username}@${mode}";
     modeConfigsPath = modePath + "/localconfigs";
-    system = "x86_64-darwin";
-    version = "24.11";
+    system = "aarch64-darwin";
+    version = "25.11";
     features = [
-      "helix"
       "bun"
-      "cargo"
-      "micromamba"
-      "nvm"
-      "sdkman"
+      "rustup"
       "cpp"
       "glow"
       "neovim"
+      "uv"
     ];
   }) 
 ]
