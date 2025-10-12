@@ -1,0 +1,2 @@
+# ignoring any 2nd or more sub directories named common (due to symlinked nature) (keeping the 1st level common directory)
+*/**/common
