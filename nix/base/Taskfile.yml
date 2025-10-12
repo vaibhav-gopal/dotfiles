@@ -1,0 +1,41 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  USER_NIX_DIR: "$HOME/.config/nix"
+  USER_NIX_CONF: "$HOME/.config/nix/nix.conf"
+  DOTFILES_NIX_CONF: "{{.TASKFILE_DIR}}/nix.conf"
+
+tasks:
+  default:
+    aliases: [init]
+    desc: Initialize setup for base nix + home-manager setup
+    prompt: Do you want to initialize setup for base nix + home-manager setup?
+    deps: [up]
+    cmds:
+      - task: link
+  up:
+    desc: Update all flake inputs
+    cmds:
+      - nix flake update
+  link:
+    desc: Symlink the nix.conf to the official if it exists
+    run: when-changed
+    preconditions: # requirements : check if nix.conf exists
+      - sh: test -f {{.DOTFILES_NIX_CONF}}
+        msg: '{{.DOTFILES_NIX_CONF}} must exist before linking step'
+    status: # status: programatically check if user nix conf dir and file are created and exist : o/w run
+      - test -d {{.USER_NIX_DIR}}
+      - test -fL {{.USER_NIX_CONF}}
+    cmds:
+      - mkdir -p {{.USER_NIX_DIR}}
+      - ln -s {{.DOTFILES_NIX_CONF}} {{.USER_NIX_CONF}}
+  cleanlink:
+    desc: Clean the symlink created to nix.conf if created
+    run: when-changed
+    preconditions: # requirements : the nix.conf at user home must be a symlink
+      - sh: test -fL {{.USER_NIX_CONF}}
+        msg: '{{.USER_NIX_CONF}} is NOT a symlink. Not removing'
+    cmds:
+      - rm {{.USER_NIX_CONF}}

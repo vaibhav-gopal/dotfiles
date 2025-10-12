@@ -2,6 +2,14 @@
 
 version: '3'
 
+includes:
+  home:
+    taskfile: ./home/Taskfile.yml # the task file to include
+    dir: ./home # which directory by default to run tasks
+  nix:
+    taskfile: ./nix/Taskfile.yml
+    dir: ./nix
+
 tasks:
   default:
     aliases: [list]
@@ -9,17 +17,17 @@ tasks:
     cmds:
       - task --list
     silent: true
-  nix/fmt:
+  fmt:
     desc: Format nix files in the repo
     cmds:
       - nix fmt
     silent: true
-  nix/gc:
+  gc:
     desc: garbage collect unsused store entries
     cmds:
       - sudo nix-collect-garbage --delete-older-than 7d
     silent: true
-  nix/gcd:
+  gcgen:
     desc: garbage collect old generations
     cmds:
       - sudo nix-collect-garbage -d --delete-older-than 7d

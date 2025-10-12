@@ -2,22 +2,49 @@
 
 version: '3'
 
+vars:
+  COMMON_DIR: '{{.TASKFILE_DIR}}/../common'
+  COMMON_MODULES_DIR: '{{.TASKFILE_DIR}}/modules/common'
+  MODULES_DIR: '{{.TASKFILE_DIR}}/modules'
+  NIXDARWIN_DIR: '/etc/nix-darwin'
+
 tasks:
   default:
-    aliases: [list]
-    desc: List all commands available in taskfile
+    aliases: [init]
+    desc: Initialize setup for nix-darwin
+    prompt: Do you want to intiialize setup for nix-darwin?
+    deps: [up]
     cmds:
-      - task --list
-    silent: true
-  init:
-    desc: Initialize setup
-  nix/up:
+      - task: link_common
+  up:
     desc: Update all flake inputs
     cmds:
       - nix flake update
-    silent: true
-  nix/fmt:
-    desc: Format nix files in the repo
+  linkcommon:
+    desc: Symlink the common nix modules into this directory
+    run: when-changed
+    preconditions: # requirements: need the common directory to exist to symlink
+      - sh: test -d {{.COMMON_DIR}}
+        msg: '{{.COMMON_DIR}} must exist before linking'
+      - sh: test -d {{.MODULES_DIR}}
+        msg: '{{.MODULES_DIR}} must exist before linking'
+    status: # programmatically check if common directory symlink was made
+      - test -dL {{.COMMON_MODULES_DIR}}
     cmds:
-      - nix fmt
-    silent: true
+      - ln -s {{.COMMON_DIR}} {{.COMMON_MODULES_DIR}}
+  linknixdarwin:
+    desc: Symlink the nix-darwin config to /etc/nix-darwin
+    run: when-changed
+    deps: [linkcommon]
+    status: # programtically check if nix-darwin directory is a symlinked directory : o/w run
+      - test -dL {{.NIXDARWIN_DIR}}
+    cmds:
+      - sudo ln -s {{.TASKFILE_DIR}} {{.NIXDARWIN_DIR}}
+  cleancommon:
+    desc: Cleanup common nix modules directory symlink
+    run: when-changed
+    preconditions:
+      - sh: test -dL {{.COMMON_MODULES_DIR}}
+        msg: '{{.COMMON_MODULES_DIR}} needs to exist and be a symlink before removing'
+  cleannixdarwin:
+
