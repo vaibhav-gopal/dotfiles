@@ -21,21 +21,23 @@ tasks:
       - nix flake update
   link:
     desc: Symlink the nix.conf to the official if it exists
-    run: when-changed
-    preconditions: # requirements : check if nix.conf exists
+    run: when_Changed
+    preconditions: # requirements
       - sh: test -f {{.DOTFILES_NIX_CONF}}
         msg: '{{.DOTFILES_NIX_CONF}} must exist before linking step'
-    status: # status: programatically check if user nix conf dir and file are created and exist : o/w run
+      - sh: ! test -fL {{.USER_NIX_CONF}}
+        msg: '{{.USER_NIX_CONF}} already exists!'
+    status: # status
       - test -d {{.USER_NIX_DIR}}
       - test -fL {{.USER_NIX_CONF}}
     cmds:
       - mkdir -p {{.USER_NIX_DIR}}
-      - ln -s {{.DOTFILES_NIX_CONF}} {{.USER_NIX_CONF}}
+      - ln -hs {{.DOTFILES_NIX_CONF}} {{.USER_NIX_CONF}}
   cleanlink:
     desc: Clean the symlink created to nix.conf if created
-    run: when-changed
-    preconditions: # requirements : the nix.conf at user home must be a symlink
+    run: when_changed
+    preconditions: # requirements
       - sh: test -fL {{.USER_NIX_CONF}}
-        msg: '{{.USER_NIX_CONF}} is NOT a symlink. Not removing'
+        msg: '{{.USER_NIX_CONF}} is NOT a symlink to remove.'
     cmds:
       - rm {{.USER_NIX_CONF}}
