@@ -11,9 +11,15 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # user made home directory config
+    home-config = {
+      url = "file:///Users/vaibhav/dotfiles/home/home.nix";
+      flake = false;
+    };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, nix-darwin, ...  }:
+  outputs = inputs@{ nixpkgs, home-manager, nix-darwin, home-config, ...  }:
     let 
       username = "vaibhav";
       system = "aarch64-darwin";
@@ -42,7 +48,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = specialArgs;
-            home-manager.users.${username} = import homedirectory + "/dotfiles/home/home.nix";
+            home-manager.users.${username} = import home-config;
           }
         ];
       }; 
