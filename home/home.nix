@@ -2,7 +2,7 @@ args@{ username, useremail, hostname, version, homedirectory, ...}:
 let
   # Important paths to define
   hmPaths = {
-    homeDir = "./.";
+    homeDir = ".";
     homeCommonDir = ./common;
     homeCommonConfigsDir = ./common/configs;
     homeFeaturesDir = ./features;
@@ -20,6 +20,6 @@ in {
   # Expose the per-system nix files and common nix files
   imports = featureModules ++ [
     (import hmPaths.homeCommonDir (args // {inherit hmPaths configs;}))
-    (import configs.systemPath (args // {inherit hmPaths configs;}))
+    # (import configs.systemPath (args // {inherit hmPaths configs;}))
   ];
 }
