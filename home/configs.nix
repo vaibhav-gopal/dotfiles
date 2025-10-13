@@ -6,19 +6,27 @@ let
   featuresSet = {
     "vaibhav@vgmacbook" = [
       "bun"
-      "rustup"
       "cpp"
       "glow"
       "neovim"
+      "rustup"
+      "uv"
+    ];
+    "vaibhav@vgwsl2" = [
+      "bun"
+      "cpp"
+      "glow"
+      "neovim"
+      "rustup"
       "uv"
     ];
   };
   featuresDefault = [
       "bun"
-      "rustup"
       "cpp"
       "glow"
       "neovim"
+      "rustup"
       "uv"
   ];
 in {
