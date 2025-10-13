@@ -43,10 +43,6 @@ in
   # ─── Common Environment Variables ─────────────────────────────────────────
   # mkMerge allows other modules to safely extend this
   home.sessionVariables = lib.mkMerge [
-    {
-      HM_CONFIG_NAME = configs.configName;
-    }
-
     # Optionally set default EDITOR, PATH, etc.
     {
       EDITOR = lib.mkDefault "vim";
