@@ -1,7 +1,7 @@
-{ hmPaths, username, hostname, ... }:
+{ username, hostname, ... }:
 
 let 
-  systemPath = "${hmPaths.homeDir}/${username}_${hostname}";
+  systemPath = ./${username}_${hostname};
   configName = "${username}@${hostname}";
   featuresSet = {
     "vaibhav@vgmacbook" = [

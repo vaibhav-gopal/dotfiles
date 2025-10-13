@@ -1,4 +1,4 @@
-{ config, pkgs, lib, hmPaths, configs, ... }:
+{ config, lib, hmPaths, configs, ... }:
 
 let
   # List all valid shell fragment directories from enabled features

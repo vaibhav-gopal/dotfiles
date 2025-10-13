@@ -1,4 +1,4 @@
-{ config, pkgs, lib, hmPaths, configs, ... }:
+{ ... }:
 
 {
   # Enable Git with a default identity

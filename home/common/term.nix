@@ -1,4 +1,4 @@
-{ config, pkgs, hmPaths, ... }:
+{ config, hmPaths, ... }:
 
 {
   # zellij : terminal multiplexer

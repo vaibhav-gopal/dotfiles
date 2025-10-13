@@ -1,13 +1,13 @@
-{ config, nixpkgs, lib, username, hostname, version, useremail, homedirectory, configs, hmPaths, ... }:
+args@{ nixpkgs, lib, username, version, homedirectory, ... }:
 
 let
   # Optional additional common modules in this directory
   additionalCommonModules = [
-    ./git.nix
-    ./shell.nix
-    ./ssh.nix
-    ./term.nix
-    ./vim.nix
+    (import ./git.nix args)
+    (import ./shell.nix args)
+    (import ./ssh.nix args)
+    (import ./term.nix args)
+    (import ./vim.nix args)
   ];
 
   # Define shared packages
