@@ -18,13 +18,9 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    common-configs = {
-      url = "path:../common/default.nix";
-      flake = false;
-    };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, nix-darwin, common-configs, ...  }:
+  outputs = inputs@{ nixpkgs, home-manager, nix-darwin, ...  }:
     let 
       username = "vaibhav";
       system = "aarch64-darwin";
