@@ -19,25 +19,26 @@ tasks:
     desc: Update all flake inputs
     cmds:
       - nix flake update
+  
+  # LINKING AND SETUP THE IMPORTANT FILES
   link:
     desc: Symlink the nix.conf to the official if it exists
-    run: when_Changed
+    run: when_changed
     preconditions: # requirements
       - sh: test -f {{.DOTFILES_NIX_CONF}}
         msg: '{{.DOTFILES_NIX_CONF}} must exist before linking step'
-      - sh: ! test -fL {{.USER_NIX_CONF}}
-        msg: '{{.USER_NIX_CONF}} already exists!'
     status: # status
       - test -d {{.USER_NIX_DIR}}
-      - test -fL {{.USER_NIX_CONF}}
+      - test -L {{.USER_NIX_CONF}}
     cmds:
       - mkdir -p {{.USER_NIX_DIR}}
       - ln -hs {{.DOTFILES_NIX_CONF}} {{.USER_NIX_CONF}}
-  cleanlink:
+  clean:
     desc: Clean the symlink created to nix.conf if created
     run: when_changed
     preconditions: # requirements
-      - sh: test -fL {{.USER_NIX_CONF}}
+      - sh: test -L {{.USER_NIX_CONF}}
         msg: '{{.USER_NIX_CONF}} is NOT a symlink to remove.'
     cmds:
       - rm {{.USER_NIX_CONF}}
+      - rmdir {{.USER_NIX_DIR}}
