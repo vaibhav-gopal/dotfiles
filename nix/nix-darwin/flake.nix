@@ -13,7 +13,7 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, nix-darwin, home-config, ...  }:
+  outputs = inputs@{ nixpkgs, home-manager, nix-darwin, ...  }:
     let 
       username = "vaibhav";
       system = "aarch64-darwin";
