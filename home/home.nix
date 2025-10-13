@@ -19,7 +19,7 @@ let
 in {
   # Expose the per-system nix files and common nix files
   imports = featureModules ++ [
-    (import hmPaths.homeCommonDir (args // {inherit hmPaths configs;}))
+    (import hmPaths.homeCommonDir (args // {inherit hmPaths; inherit configs;}))
     # (import configs.systemPath (args // {inherit hmPaths configs;}))
   ];
 }
