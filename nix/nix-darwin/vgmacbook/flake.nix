@@ -40,8 +40,8 @@
         modules = [
           # general : .nix files to be evaluated
           ./modules/system.nix
-          ./modules/common/core.nix
-          ./modules/common/env.nix
+          ./modules/core.nix
+          ./modules/env.nix
 
           # home manager : import and configure
           home-manager.darwinModules.home-manager
