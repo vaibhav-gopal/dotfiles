@@ -18,9 +18,12 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    common-configs = {
+      url = "path:../common";
+    };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, nix-darwin, ...  }:
+  outputs = inputs@{ nixpkgs, home-manager, nix-darwin, common-configs, ...  }:
     let 
       username = "vaibhav";
       system = "aarch64-darwin";
@@ -40,7 +43,7 @@
         modules = [
           # general : .nix files to be evaluated
           ./modules/system.nix
-          import ../common
+          (common-configs + "/default.nix")
 
           # home manager : import and configure
           home-manager.darwinModules.home-manager
