@@ -1,0 +1,23 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  VERSION: "25.05"
+
+
+tasks:
+  default:
+    desc: Switch / rebuild nixos configuration
+    deps: [up]
+    cmds:
+
+  init:
+    desc: First time nixos switch/build
+    deps: [up]
+    cmds:
+
+  up:
+    desc: Update all flake inputs
+    cmds:
+      - nix flake update

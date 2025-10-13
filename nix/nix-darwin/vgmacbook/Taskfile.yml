@@ -1,0 +1,24 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  VERSION: "25.05"
+
+tasks:
+  default:
+    desc: Switch / rebuild nix-darwin configuration
+    deps: [up]
+    cmds:
+      - sudo -H darwin-rebuild switch --flake {{.TASKFILE_DIR}}#vgmacbook
+  
+  init:
+    desc: First time init nix-darwin
+    deps: [up]
+    cmds:
+      - sudo -H nix run nix-darwin/nix-darwin-{{.VERSION}}#darwin-rebuild -- switch --flake {{.TASKFILE_DIR}}#vgmacbook
+
+  up:
+    desc: Update all flake inputs
+    cmds:
+      - nix flake update

@@ -1,6 +1,5 @@
 # https://taskfile.dev
 
-
 # sudo: you need the -H flag to use the local user environment for $HOME, otherwise it will default to root home `/var/root` : small bug fix
 
 version: '3'
@@ -8,20 +7,28 @@ version: '3'
 vars:
   VERSION: "25.05"
 
+includes:
+  vgmacbook:
+    taskfile: ./vgmacbook/Taskfile.yml
+    dir: ./vgmacbook
+
 tasks:
   default:
-    desc: Switch / rebuild nix-darwin configuration
-    deps: [up]
-    cmds:
-      - sudo -H darwin-rebuild switch --flake {{.TASKFILE_DIR}}#vgmacbook
-  
-  init:
-    desc: First time init nix-darwin
-    deps: [up]
-    cmds:
-      - sudo -H nix run nix-darwin/nix-darwin-{{.VERSION}}#darwin-rebuild -- switch --flake {{.TASKFILE_DIR}}#vgmacbook
+    desc: Initialize nix-channels and profiles for nix on darwin
+    deps: [channel-setup]
 
-  up:
-    desc: Update all flake inputs
+  channel-setup:
+    desc: Update the nix channels with the nix-darwin version.
+    prompt: Warning! This will remove the `nixpkgs` channel and replace it with the nixpkgs-XX-darwin version
+    status:
+      - sudo -H nix-channel --list | (grep nixpkgs-{{.VERSION}}-darwin && exit 0)
     cmds:
-      - nix flake update
+      - sudo -H nix-channel --remove nixpkgs
+      - sudo -H nix-channel --add https://nixos.org/channels/nixpkgs-{{.VERSION}}-darwin nixpkgs
+      - sudo -H nix-channel --update
+      - task: profile-upgrade
+
+  profile-upgrade:
+    desc: Upgrade all nix profiles after changing nixpkgs channel.
+    cmds:
+      - sudo -H nix profile upgrade --all

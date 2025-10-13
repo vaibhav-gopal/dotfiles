@@ -42,8 +42,8 @@
         modules = [
           # general : .nix files to be evaluated
           ./modules/system.nix
-          ./modules/core.nix
-          ./modules/env.nix
+          ../common/core.nix
+          ../common/env.nix
 
           # home manager : import and configure
           home-manager.darwinModules.home-manager
@@ -51,7 +51,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = specialArgs;
-            home-manager.users.${username} = import ../../home/home.nix;
+            home-manager.users.${username} = import ../../../home/home.nix;
           }
         ];
       }; 
