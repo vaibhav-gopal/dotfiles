@@ -1,4 +1,4 @@
-args@{ ... }:
+args@{ pkgs, config, lib, ... }:
 let
   # Important paths to define and load immediately!
   hmPaths = {
@@ -10,11 +10,16 @@ let
   
   # Import a list of configurations based on username and hostname. Ensure it is a list
   configs = import hmPaths.configsNix (args // {inherit hmPaths;});
+  
+  # Only include features that actually exist
+  features = (configs.features or []);
+  featureDirs = builtins.filter builtins.pathExists
+    (map (name: hmPaths.homeFeaturesDir + "/${name}") features);
 
-  # Dynamically map the feature names to their module paths
+  # Import each feature module WITH the extra args
   featureModules = map
-    (name: hmPaths.homeFeaturesDir + "/${name}")
-    configs.features;
+    (dir: import dir (args // { inherit hmPaths configs; }))
+    featureDirs;
 in {
   # Expose the per-system nix files and common nix files
   imports = featureModules ++ [

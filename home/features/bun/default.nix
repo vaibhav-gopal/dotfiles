@@ -1,4 +1,4 @@
-{ configs, pkgs, hmPaths, ... }:
+{ configs, pkgs, ... }:
 
 {
   # Enable Bun support (available via Home Manager module)

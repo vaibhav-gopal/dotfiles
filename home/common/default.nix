@@ -1,4 +1,4 @@
-args@{ nixpkgs, lib, username, version, homedirectory, ... }:
+args@{ pkgs, lib, username, version, homedirectory, ... }:
 
 let
   # Optional additional common modules in this directory
@@ -13,25 +13,25 @@ let
   # Define shared packages
   commonPackages = [
     # networking utils
-    nixpkgs.wget
-    nixpkgs.curl
-    nixpkgs.socat # netcat alternative
-    nixpkgs.nmap
-    nixpkgs.openssh  # provides ssh, scp, sftp, ssh-keygen, etc.
-    nixpkgs.rsync    # for remote and local sync
+    pkgs.wget
+    pkgs.curl
+    pkgs.socat # netcat alternative
+    pkgs.nmap
+    pkgs.openssh  # provides ssh, scp, sftp, ssh-keygen, etc.
+    pkgs.rsync    # for remote and local sync
 
     # file utils
-    nixpkgs.coreutils
-    nixpkgs.gnused
-    nixpkgs.gawk
-    nixpkgs.gnugrep
+    pkgs.coreutils
+    pkgs.gnused
+    pkgs.gawk
+    pkgs.gnugrep
 
     # compression / archiving utils
-    nixpkgs.zip
-    nixpkgs.unzip
-    nixpkgs.gzip
-    nixpkgs.xz
-    nixpkgs.gnutar
+    pkgs.zip
+    pkgs.unzip
+    pkgs.gzip
+    pkgs.xz
+    pkgs.gnutar
   ];
 in
 {
