@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    darwin = {
+    nix-darwin = {
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -13,7 +13,7 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, darwin, ...  }:
+  outputs = inputs@{ nixpkgs, home-manager, nix-darwin, ...  }:
     let 
       username = "vaibhav";
       system = "aarch64-darwin";
@@ -28,7 +28,7 @@
           inherit username useremail hostname version homedirectory;
         };
     in {
-      darwinConfigurations."${hostname}" = darwin.lib.darwinSystem {
+      darwinConfigurations."${hostname}" = nix-darwin.lib.darwinSystem {
         inherit system specialArgs;
         modules = [
           # general : .nix files to be evaluated
