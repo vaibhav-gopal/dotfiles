@@ -12,7 +12,6 @@ includes:
 
 tasks:
   default:
-    aliases: [list]
     desc: List all commands available in taskfile
     cmds:
       - task --list

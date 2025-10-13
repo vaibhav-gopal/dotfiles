@@ -10,7 +10,6 @@ vars:
 
 tasks:
   default:
-    aliases: [init]
     desc: Initialize setup for nix-darwin
     prompt: Do you want to intiialize setup for nix-darwin?
     deps: [up]

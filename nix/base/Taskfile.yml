@@ -9,7 +9,6 @@ vars:
 
 tasks:
   default:
-    aliases: [init]
     desc: Initialize setup for base nix + home-manager setup
     prompt: Do you want to initialize setup for base nix + home-manager setup?
     deps: [up]
