@@ -1,6 +1,6 @@
 args@{ ... }:
 let
-  # Important paths to define
+  # Important paths to define and load immediately!
   hmPaths = {
     homeCommonDir = ./common;
     homeCommonConfigsDir = ./common/configs;

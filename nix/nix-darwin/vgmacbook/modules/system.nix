@@ -1,6 +1,7 @@
 { pkgs, username, homedirectory, ... }:
 {
-  # Set home directory
+  # Set home directory and primary user
+  system.primaryUser = username;
   users.users.${username}.home = homedirectory;
 
   # TouchID for sudo
