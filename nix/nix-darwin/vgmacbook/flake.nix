@@ -19,7 +19,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     common-configs = {
-      url = "path:../common";
+      url = "path:../common/default.nix";
+      flake = false;
     };
   };
 
@@ -43,7 +44,8 @@
         modules = [
           # general : .nix files to be evaluated
           ./modules/system.nix
-          (common-configs + "/default.nix")
+          ./modules/core.nix
+          ./modules/env.nix
 
           # home manager : import and configure
           home-manager.darwinModules.home-manager
