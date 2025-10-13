@@ -57,14 +57,11 @@ in
 
   # ─── Common Shell Aliases ─────────────────────────────────────────────────
   home.shellAliases = {
+    l = "eza --all";
     ll = "eza --all --long";
     lt = "eza --all --long --tree";
     llg = "eza --all --long --git";
     ltg = "eza --all --long --tree --git";
-    hm = "home-manager";
-    hms = "home-manager switch --flake $DOTFILES_DIR#$HM_MODE_NAME";
-    hml = "home-manager generations";
-    hmpkgs = "home-manager packages";
   };
 
   # ─── Common Package Set ───────────────────────────────────────────────────

@@ -18,3 +18,22 @@ Tips:
 - Flakes only evaluates files tracked by git
 - Clean up the nix store via nix-collect-garbage, with options to delete old generations among others
 - Use nix profile to imperatively install packages instead through home-manager config
+
+
+## IMPORTANT LINKS
+
+[NIX LANG BUILTINS](https://nix.dev/manual/nix/2.25/language/builtins)
+
+[NIX LANG BASICS](https://nix.dev/tutorials/nix-language)
+
+[HOME-MANAGER BASICS](https://nix-community.github.io/home-manager/index.xhtml#sec-flakes-nix-darwin-module)
+
+[HOME-MANAGER OPTIONS](https://nix-community.github.io/home-manager/options.xhtml)
+
+[HOME-MANAGER NIXOS MODULE OPTIONS](https://nix-community.github.io/home-manager/nixos-options.xhtml)
+
+[HOME-MANAGER NIX-DARWIN MODULE OPTIONS](https://nix-community.github.io/home-manager/nix-darwin-options.xhtml)
+
+[NIX-DARWIN STARTER](https://github.com/nix-darwin/nix-darwin)
+
+[NIX-DARWIN OPTIONS](https://nix-darwin.github.io/nix-darwin/manual/index.html)
