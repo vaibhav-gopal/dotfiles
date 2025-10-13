@@ -6,11 +6,11 @@ let
     homeCommonDir = ./common;
     homeCommonConfigsDir = ./common/configs;
     homeFeaturesDir = ./features;
-    modesNix = ./modes.nix;
+    configsNix = ./configs.nix;
   };
   
   # Import a list of configurations based on username and hostname. Ensure it is a list
-  configs = import hmPaths.modesNix (args // {inherit hmPaths;});
+  configs = import hmPaths.configsNix (args // {inherit hmPaths;});
 
   # Dynamically map the feature names to their module paths
   featureModules = map
