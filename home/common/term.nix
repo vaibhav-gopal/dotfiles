@@ -18,4 +18,9 @@
   home.shellAliases = {
     zj = "zellij";
   };
+
+
+  # setting up terminal themes/settings for different terminal emulators via home.file
+  # ghostty
+  home.file."${config.home.homeDirectory}/.config/ghostty/config".source = hmPaths.homeCommonConfigsDir + "/term.d/ghostty.config";
 }

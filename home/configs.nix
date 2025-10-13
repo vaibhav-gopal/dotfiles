@@ -8,7 +8,6 @@ let
       "bun"
       "cpp"
       "glow"
-      "neovim"
       "rustup"
       "uv"
     ];
@@ -16,7 +15,6 @@ let
       "bun"
       "cpp"
       "glow"
-      "neovim"
       "rustup"
       "uv"
     ];
@@ -25,7 +23,6 @@ let
       "bun"
       "cpp"
       "glow"
-      "neovim"
       "rustup"
       "uv"
   ];
