@@ -6,20 +6,18 @@
 version: '3'
 
 vars:
-  MODULES_DIR: '{{.TASKFILE_DIR}}/modules'
-  NIXDARWIN_DIR: '/etc/nix-darwin'
   VERSION: "25.05"
 
 tasks:
   default:
     desc: Switch / rebuild nix-darwin configuration
-    deps: [up, link_add]
+    deps: [up]
     cmds:
       - sudo -H darwin-rebuild switch
   
   init:
     desc: First time init nix-darwin
-    deps: [up, link_add]
+    deps: [up]
     cmds:
       - sudo -H nix run nix-darwin/nix-darwin-{{.VERSION}}#darwin-rebuild -- switch
 
@@ -27,21 +25,3 @@ tasks:
     desc: Update all flake inputs
     cmds:
       - nix flake update
-
-  # LINKING AND SETUP THE IMPORTANT FILES
-  link_add:
-    desc: Symlink the nix-darwin config to /etc/nix-darwin
-    run: when_changed
-    status: # status checks
-      - test -L {{.NIXDARWIN_DIR}}
-    cmds:
-      - sudo ln -hs {{.TASKFILE_DIR}} {{.NIXDARWIN_DIR}}
-
-  link_remove:
-    desc: Cleanup nix-darwin symlink at /etc/nix-darwin
-    run: when_changed
-    preconditions:
-      - sh: test -L {{.NIXDARWIN_DIR}}
-        msg: '{{.NIXDARWIN_DIR}} needs to exist and be a symlink before removing'
-    cmds:
-      - sudo rm {{.NIXDARWIN_DIR}}
