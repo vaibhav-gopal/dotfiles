@@ -3,8 +3,6 @@
 version: '3'
 
 vars:
-  COMMON_DIR: '{{.TASKFILE_DIR}}/../common'
-  COMMON_MODULES_DIR: '{{.TASKFILE_DIR}}/modules/common'
   MODULES_DIR: '{{.TASKFILE_DIR}}/modules'
   NIXDARWIN_DIR: '/etc/nix-darwin'
 
@@ -14,45 +12,22 @@ tasks:
     prompt: Do you want to intiialize setup for nix-darwin?
     deps: [up]
     cmds:
-      - task: linkcommon
-      - task: linknixdarwin
-  clean:
-    desc: Clean up the setup for nix-darwin
-    prompt: Do you want to remove the setup for nix-darwin?
-    cmds:
-      - task: cleannixdarwin
-      - task: cleancommon
+      - task: link
   up:
     desc: Update all flake inputs
     cmds:
       - nix flake update
 
   # LINKING AND SETUP THE IMPORTANT FILES
-  linkcommon:
-    desc: Symlink the common nix modules into this directory
-    run: when_changed
-    preconditions: # requirements
-      - sh: test -d {{.COMMON_DIR}}
-        msg: '{{.COMMON_DIR}} must exist before linking'
-      - sh: test -d {{.MODULES_DIR}}
-        msg: '{{.MODULES_DIR}} must exist before linking'
-    status: # status checks
-      - test -L {{.COMMON_MODULES_DIR}}
-    cmds:
-      - ln -hs {{.COMMON_DIR}} {{.COMMON_MODULES_DIR}}
-
-  linknixdarwin:
+  link:
     desc: Symlink the nix-darwin config to /etc/nix-darwin
     run: when_changed
-    preconditions: # requirements
-      - sh: test -L {{.COMMON_MODULES_DIR}}
-        msg: '{{.COMMON_MODULES_DIR}} symlink must exist before linking'
     status: # status checks
       - test -L {{.NIXDARWIN_DIR}}
     cmds:
       - sudo ln -hs {{.TASKFILE_DIR}} {{.NIXDARWIN_DIR}}
 
-  cleannixdarwin:
+  clean:
     desc: Cleanup nix-darwin symlink at /etc/nix-darwin
     run: when_changed
     preconditions:
@@ -60,14 +35,3 @@ tasks:
         msg: '{{.NIXDARWIN_DIR}} needs to exist and be a symlink before removing'
     cmds:
       - sudo rm {{.NIXDARWIN_DIR}}
-
-  cleancommon:
-    desc: Cleanup common nix modules directory symlink
-    run: when_changed
-    preconditions:
-      - sh: test -L {{.COMMON_MODULES_DIR}}
-        msg: '{{.COMMON_MODULES_DIR}} needs to exist and be a symlink before removing'
-      - sh: (! test -L {{.NIXDARWIN_DIR}})
-        msg: 'Cannot remove {{.COMMON_MODULES_DIR}} if {{.NIXDARWIN_DIR}} exists and is a symlink'
-    cmds:
-      - rm {{.COMMON_MODULES_DIR}}

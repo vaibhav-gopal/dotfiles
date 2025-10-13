@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nix-darwin = {
-      url = "github:nix-darwin/nix-darwin";
+      url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
@@ -33,8 +33,8 @@
         modules = [
           # general : .nix files to be evaluated
           ./modules/system.nix
-          ./modules/common/core.nix
-          ./modules/common/env.nix
+          ./modules/core.nix
+          ./modules/env.nix
 
           # home manager : import and configure
           home-manager.darwinModules.home-manager
@@ -42,7 +42,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = specialArgs;
-            home-manager.users.${username} = import ../../home/home.nix;
+            home-manager.users.${username} = import homedirectory + "/dotfiles/home/home.nix";
           }
         ];
       }; 

@@ -1,2 +1,3 @@
 *.lock
 result
+.DS_Store
