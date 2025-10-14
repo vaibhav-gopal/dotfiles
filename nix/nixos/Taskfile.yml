@@ -8,7 +8,7 @@ vars:
   VERSION: "25.05"
 
 includes:
-  vgmacbook:
+  vgwsl2:
     taskfile: ./vgwsl2/Taskfile.yml
     dir: ./vgwsl2
 

@@ -2,21 +2,27 @@
 
 version: '3'
 
+# unfortunately must use absolute paths here (in only this root taskfile) for the global taskfile via `link` task to work
 includes:
   nix-base:
-    taskfile: ./nix/nix-base/Taskfile.yml
+    taskfile: ~/dotfiles/nix/nix-base/Taskfile.yml
     dir: ./nix/nix-base
   nix-darwin:
-    taskfile: ./nix/nix-darwin/Taskfile.yml
+    taskfile: ~/dotfiles/nix/nix-darwin/Taskfile.yml
     dir: ./nix/nix-darwin
   nixos:
-    taskfile: ./nix/nixos/Taskfile.yml
+    taskfile: ~/dotfiles/nix/nixos/Taskfile.yml
     dir: ./nix/nixos
 
 tasks:
   default:
     desc: List all commands available in taskfile
+    vars:
+      PWD:
+        sh: cd {{.USER_WORKING_DIR}} && pwd
     cmds:
+      - echo -e "\033[1;34mListing all tasks for ~/dotfiles\033[0m"
+      - echo -e "{{if ne .PWD .TASKFILE_DIR}}\033[1;34mNote you are running this taskfile from another directory\033[0m{{end}}"
       - task --list
     silent: true
   fmt:
@@ -34,3 +40,16 @@ tasks:
     cmds:
       - sudo -H nix-collect-garbage -d --delete-older-than 7d
     silent: true
+  link:
+    desc: Link this taskfile to the home directory (enables access via `task -g` or `task --global`)
+    status:
+      - test -L ~/Taskfile.yml
+    cmds:
+      - ln -s {{.TASKFILE}} ~/Taskfile.yml
+  unlink:
+    desc: Unlink this taskfile from home directory
+    preconditions:
+      - sh: test -L ~/Taskfile.yml
+        msg: 'The ~/Taskfile.yml file must be a symlink in order to remove!'
+    cmds:
+      - rm ~/Taskfile.yml
