@@ -9,12 +9,10 @@ vars:
 tasks:
   default:
     desc: Switch / rebuild nixos configuration
-    deps: [up]
     cmds:
 
   init:
     desc: First time nixos switch/build
-    deps: [up]
     cmds:
 
   up:

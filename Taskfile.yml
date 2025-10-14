@@ -25,21 +25,11 @@ tasks:
       - echo -e "{{if ne .PWD .TASKFILE_DIR}}\033[1;34mNote you are running this taskfile from another directory\033[0m{{end}}"
       - task --list
     silent: true
-  fmt:
-    desc: Format nix files in the repo
-    cmds:
-      - nix fmt
-    silent: true
   gc:
-    desc: garbage collect unsused store entries
+    aliases: [gcgen]
+    desc: 'garbage collect old (7 days) nix store entries [gcgen: clean generations, --force (flag): not just old but all]'
     cmds:
-      - sudo -H nix-collect-garbage --delete-older-than 7d
-    silent: true
-  gcgen:
-    desc: garbage collect old generations
-    cmds:
-      - sudo -H nix-collect-garbage -d --delete-older-than 7d
-    silent: true
+      - sudo -H nix-collect-garbage {{if eq .ALIAS "gcgen"}}-d{{end}} {{if not .CLI_FORCE}}--delete-older-than 7d{{end}}
   link:
     desc: Link this taskfile to the home directory (enables access via `task -g` or `task --global`)
     status:

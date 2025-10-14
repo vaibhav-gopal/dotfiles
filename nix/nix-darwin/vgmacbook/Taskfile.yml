@@ -8,13 +8,11 @@ vars:
 tasks:
   default:
     desc: Switch / rebuild nix-darwin configuration
-    deps: [up]
     cmds:
       - sudo -H darwin-rebuild switch --flake {{.TASKFILE_DIR}}#vgmacbook
   
   init:
     desc: First time init nix-darwin
-    deps: [up]
     cmds:
       - sudo -H nix --extra-experimental-features "nix-command flakes" run nix-darwin/nix-darwin-{{.VERSION}}#darwin-rebuild -- switch --flake {{.TASKFILE_DIR}}#vgmacbook
 
