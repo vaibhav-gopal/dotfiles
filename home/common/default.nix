@@ -59,10 +59,10 @@ in
   home.shellAliases = {
     l = "eza --all";
     ll = "eza --all --long";
-    lt = "eza --all --long --tree";
-    llg = "eza --all --long --git";
-    ltg = "eza --all --long --tree --git";
+    lt = "eza --all --long --tree --level";
+    cdp = "cd ../";
     cdd = "cd ~/dotfiles";
+    gs = "git status";
   };
 
   # ─── Common Package Set ───────────────────────────────────────────────────
