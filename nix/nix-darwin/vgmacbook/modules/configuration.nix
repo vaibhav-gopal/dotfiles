@@ -31,4 +31,13 @@
       options = lib.mkDefault "--delete-older-than 7d";
     };
   };
+
+  # install base packages
+  environment.systemPackages = with pkgs; [
+    go-task # like make but simpler : https://taskfile.dev/docs/getting-started
+  ];
+
+  variables.EDITOR = lib.mkDefault "vim";
+  variables.PAGER = lib.mkDefault "less";
+  variables.LESS = lib.mkDefault "-FR --mouse";
 }

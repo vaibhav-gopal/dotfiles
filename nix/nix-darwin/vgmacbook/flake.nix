@@ -25,14 +25,13 @@
       username = "vaibhav";
       system = "aarch64-darwin";
       hostname = "vgmacbook";
-      useremail = "vabsgop@gmail.com";
       version = "25.05";
       homedirectory = "/Users/vaibhav";
 
       specialArgs =
         inputs
         // {
-          inherit username useremail hostname version homedirectory;
+          inherit username hostname version homedirectory;
         };
     in {
       darwinConfigurations."${hostname}" = nix-darwin.lib.darwinSystem {
@@ -40,8 +39,7 @@
         modules = [
           # general : .nix files to be evaluated
           ./modules/system.nix
-          ./modules/core.nix
-          ./modules/env.nix
+          ./modules/configuration.nix
 
           # home manager : import and configure
           home-manager.darwinModules.home-manager

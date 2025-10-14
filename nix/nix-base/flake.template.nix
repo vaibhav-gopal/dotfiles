@@ -25,14 +25,13 @@
       username = "vaibhav";
       system = "__SYSTEM__";
       hostname = "__HOSTNAME__";
-      useremail = "vabsgop@gmail.com";
       version = "25.05";
       homedirectory = "/home/vaibhav";
 
       specialArgs =
         inputs
         // {
-          inherit username useremail hostname version homedirectory;
+          inherit username hostname version homedirectory;
         };
 
     in {

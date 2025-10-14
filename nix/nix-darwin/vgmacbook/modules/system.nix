@@ -35,9 +35,9 @@
 
       # trackpad settings
       trackpad = {
-        Clicking = true;
-        TrackpadRightClick = true;
-        TrackpadThreeFingerDrag = true;
+        Clicking = true; # enable tap to click
+        TrackpadRightClick = true; # enable right click
+        TrackpadThreeFingerDrag = true; # 
       };
 
       # customize settings that not supported by nix-darwin directly
@@ -45,7 +45,7 @@
       #   https://github.com/yannbertrand/macos-defaults
       NSGlobalDomain = {
         AppleInterfaceStyle = "Dark";  # dark mode
-        ApplePressAndHoldEnabled = true;  # enable press and hold
+        ApplePressAndHoldEnabled = false;  # disable press and hold (the accent selector)
         InitialKeyRepeat = 15;  # default is 15
         KeyRepeat = 3;  # default is 2
         NSAutomaticCapitalizationEnabled = false;  # disable auto capitalization
@@ -71,10 +71,10 @@
 
     # keyboard settings
     keyboard = {
-      enableKeyMapping = true;  # enable key mapping so that we can use `option` as `control`
+      enableKeyMapping = true;  # enable key mapping so that we can remap caps lock to escape
 
       # NOTE: do NOT support remap capslock to both control and escape at the same time
-      remapCapsLockToControl = false;  # remap caps lock to control, useful for emac users
+      # remapCapsLockToControl = false;  # remap caps lock to control, useful for emac users
       remapCapsLockToEscape  = true;   # remap caps lock to escape, useful for vim users
     };
   };
