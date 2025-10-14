@@ -60,8 +60,9 @@ in
     l = "eza --all";
     ll = "eza --all --long";
     lt = "eza --all --long --tree --level";
-    cdp = "cd ../";
-    cdd = "cd ~/dotfiles";
+    cdp = "cd ../"; # to parent directory
+    cdb = "cd -"; # to previous directory
+    cdd = "cd ~/dotfiles"; # cd to dotfiles directory
     gs = "git status";
   };
 
