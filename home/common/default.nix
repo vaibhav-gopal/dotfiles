@@ -62,6 +62,7 @@ in
     lt = "eza --all --long --tree";
     llg = "eza --all --long --git";
     ltg = "eza --all --long --tree --git";
+    cdd = "cd ~/dotfiles";
   };
 
   # ─── Common Package Set ───────────────────────────────────────────────────
