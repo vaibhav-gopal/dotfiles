@@ -38,8 +38,8 @@
       go-task # like make but simpler : https://taskfile.dev/docs/getting-started
     ];
 
-    variables.EDITOR = lib.mkDefault "vim";
-    variables.PAGER = lib.mkDefault "less";
-    variables.LESS = lib.mkDefault "-FR --mouse";
+    variables.EDITOR = lib.mkForce "vim";
+    variables.PAGER = lib.mkForce "less";
+    variables.LESS = lib.mkForce "-FR --mouse";
   };
 }
