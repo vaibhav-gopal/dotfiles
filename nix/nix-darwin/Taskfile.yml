@@ -4,10 +4,6 @@
 
 version: '3'
 
-vars:
-  NIXCONFIG: vgmacbook
-  NIXPKGSVERSION: 25.05
-
 tasks:
   default:
     desc: Switch / rebuild nix-darwin configuration

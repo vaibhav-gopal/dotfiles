@@ -4,10 +4,6 @@
 
 version: '3'
 
-vars:
-  NIXCONFIG: vgnixos
-  NIXPKGSVERSION: 25.05
-
 tasks:
   default:
     desc: Switch / rebuild nixos configuration

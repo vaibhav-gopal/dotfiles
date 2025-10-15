@@ -7,19 +7,33 @@ includes:
   nix-base:
     taskfile: ~/dotfiles/nix/nix-base/Taskfile.yml
     dir: ./nix/nix-base
+    optional: true
   nix-darwin:
     taskfile: ~/dotfiles/nix/nix-darwin/Taskfile.yml
     dir: ./nix/nix-darwin
+    optional: true
+    vars:
+      NIXCONFIG: vgmacbook
+      NIXPKGSVERSION: 25.05
   nixos:
     taskfile: ~/dotfiles/nix/nixos/Taskfile.yml
     dir: ./nix/nixos
+    optional: true
+    vars:
+      NIXCONFIG: vgnixos
+      NIXPKGSVERSION: 25.05
   nixos-wsl:
     taskfile: ~/dotfiles/nix/nixos-wsl/Taskfile.yml
     dir: ./nix/nixos-wsl
+    optional: true
+    vars:
+      NIXCONFIG: vgwsl2
+      NIXPKGSVERSION: 25.05
 
 tasks:
   default:
     desc: List all commands available in taskfile
+    dir: '{{.TASKFILE_DIR}}'
     vars:
       PWD:
         sh: cd {{.USER_WORKING_DIR}} && pwd
@@ -33,6 +47,31 @@ tasks:
     desc: 'garbage collect old (7 days) nix store entries [gcgen: clean generations, --force (flag): not just old but all]'
     cmds:
       - sudo -H nix-collect-garbage {{if eq .ALIAS "gcgen"}}-d{{end}} {{if not .CLI_FORCE}}--delete-older-than 7d{{end}}
+  activate:*:
+    desc: Activate a nix archetypes main flake and taskfile ; prevents accidental builds ; cleans task output
+    vars:
+      NIXCONFIG: '{{index .MATCH 0}}'
+    preconditions:
+      - test -d {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}
+      - (test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.nix || test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix)
+      - (test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml || test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml)
+    status:
+      - test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.nix
+      - test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml
+    cmds:
+      - mv {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.nix {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix
+      - mv {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml
+  deactivate:*:
+    desc: Deactivates a nix archetype main flake and taskfile
+    vars:
+      NIXCONFIG: '{{index .MATCH 0}}'
+    preconditions:
+      - test -d {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}
+      - (test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.nix || test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix)
+      - (test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml || test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml)
+    status:
+    cmds:
+
   link:
     desc: Link this taskfile to the home directory (enables access via `task -g` or `task --global`)
     status:
