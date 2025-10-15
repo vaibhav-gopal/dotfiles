@@ -22,6 +22,8 @@ Tips:
 
 ## IMPORTANT LINKS
 
+[NIX FLAKE GUIDE (nix doesn't provide an official one, cringe)](https://nixos-and-flakes.thiscute.world)
+
 [NIX LANG BUILTINS](https://nix.dev/manual/nix/2.25/language/builtins)
 
 [NIX LANG BASICS](https://nix.dev/tutorials/nix-language)
