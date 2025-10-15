@@ -53,8 +53,8 @@ tasks:
       NIXCONFIG: '{{index .MATCH 0}}'
     preconditions:
       - test -d {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}
-      - (test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.nix || test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix)
-      - (test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml || test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml)
+      - test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix
+      - test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml
     status:
       - test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.nix
       - test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml
@@ -67,10 +67,14 @@ tasks:
       NIXCONFIG: '{{index .MATCH 0}}'
     preconditions:
       - test -d {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}
-      - (test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.nix || test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix)
-      - (test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml || test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml)
+      - test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.nix 
+      - test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml 
     status:
+      - test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix
+      - test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml
     cmds:
+      - mv {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.nix
+      - mv {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml
 
   link:
     desc: Link this taskfile to the home directory (enables access via `task -g` or `task --global`)
