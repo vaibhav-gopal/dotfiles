@@ -14,5 +14,4 @@
 ## NEED TO DO
 - zellij keyboard shortcut setup
 - vim setup + nvim setup
-- create a `pkgs.buildEnv` flake (for reproducible `nix profile add` for home) (like a requirements.txt for imperatively installed packages for the current user)
 - create a `pkgs.mkShell` flake template for future projects (usable with `nix develop`)

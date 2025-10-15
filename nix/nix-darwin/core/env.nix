@@ -4,6 +4,7 @@
     # install base packages
     systemPackages = with pkgs; [
       go-task # like make but simpler : https://taskfile.dev/docs/getting-started
+      nil # nix LSP
     ];
 
     variables.EDITOR = lib.mkForce "vim";
