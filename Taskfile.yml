@@ -59,8 +59,8 @@ tasks:
       - test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.nix
       - test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml
     cmds:
-      - mv {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.nix {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix
-      - mv {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml
+      - mv {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.nix
+      - mv {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml
   deactivate:*:
     desc: Deactivates a nix archetype main flake and taskfile
     vars:
@@ -73,8 +73,8 @@ tasks:
       - test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix
       - test -f {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml
     cmds:
-      - mv {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.nix
-      - mv {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml
+      - mv {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.nix {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix
+      - mv {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml {{.TASKFILE_DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml
 
   link:
     desc: Link this taskfile to the home directory (enables access via `task -g` or `task --global`)
