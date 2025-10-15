@@ -13,6 +13,9 @@ includes:
   nixos:
     taskfile: ~/dotfiles/nix/nixos/Taskfile.yml
     dir: ./nix/nixos
+  nixos-wsl:
+    taskfile: ~/dotfiles/nix/nixos-wsl/Taskfile.yml
+    dir: ./nix/nixos-wsl
 
 tasks:
   default:

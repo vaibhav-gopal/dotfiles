@@ -32,8 +32,8 @@ tasks:
     cmds:
       - mkdir -p {{.USER_NIX_DIR}}
       - ln -hs {{.DOTFILES_NIX_CONF}} {{.USER_NIX_CONF}}
-  clean:
-    desc: Clean the symlink created to nix.conf if created
+  unlink:
+    desc: Unlink the symlink created to nix.conf if created
     run: when_changed
     preconditions: # requirements
       - sh: test -L {{.USER_NIX_CONF}}
