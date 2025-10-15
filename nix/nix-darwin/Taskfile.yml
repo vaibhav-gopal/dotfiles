@@ -4,27 +4,37 @@
 
 version: '3'
 
-vars:
-  VERSION: "25.05"
-
-includes:
-  vgmacbook:
-    taskfile: ./vgmacbook/Taskfile.yml
-    dir: ./vgmacbook
+dotenv: ["config.toml"]
 
 tasks:
   default:
-    desc: Initialize nix-channels and profiles for nix on darwin
-    deps: [channel-setup]
+    desc: Switch / rebuild nix-darwin configuration
+    cmds:
+      - sudo -H darwin-rebuild switch --flake {{.TASKFILE_DIR}}#{{.NIXCONFIG}}
 
-  channel-setup:
+  init:
+    desc: First time init nix-darwin
+    cmds:
+      - sudo -H nix --extra-experimental-features "nix-command flakes" run nix-darwin/nix-darwin-{{.NIXPKGSVERSION}}#darwin-rebuild -- switch --flake {{.TASKFILE_DIR}}#{{.NIXCONFIG}}
+
+  status:
+    desc: Current nix config and version
+    cmds:
+      - echo -e "\033[1;34mCurrently on nix-darwin '{{.NIXCONFIG}}' configuration at version {{.NIXPKGSVERSION}}\033[0m"
+  
+  up:
+    desc: Update all flake inputs
+    cmds:
+      - nix flake update
+
+  init-channel-setup:
     desc: Update the nix channels with the nix-darwin version.
     prompt: Warning! This will remove the `nixpkgs` channel and replace it with the nixpkgs-XX-darwin version
     status:
-      - sudo -H nix-channel --list | (grep nixpkgs-{{.VERSION}}-darwin && exit 0)
+      - sudo -H nix-channel --list | (grep nixpkgs-{{.NIXPKGSVERSION}}-darwin && exit 0)
     cmds:
       - sudo -H nix-channel --remove nixpkgs
-      - sudo -H nix-channel --add https://nixos.org/channels/nixpkgs-{{.VERSION}}-darwin nixpkgs
+      - sudo -H nix-channel --add https://nixos.org/channels/nixpkgs-{{.NIXPKGSVERSION}}-darwin nixpkgs
       - sudo -H nix-channel --update
       - task: profile-upgrade
 

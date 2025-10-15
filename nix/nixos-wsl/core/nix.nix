@@ -1,4 +1,4 @@
-{ pkgs, lib, ...  }:
+{ pkgs, lib, ... }:
 {
   nix = {
     enable = true;
@@ -19,10 +19,8 @@
       ];
       builders-use-substitutes = true;
 
-      # Disable auto-optimise-store on MacOS because of this issue:
-      #   https://github.com/NixOS/nix/issues/7273
-      # "error: cannot link '/nix/store/.tmp-link-xxxxx-xxxxx' to '/nix/store/.links/xxxx': File exists"
-      auto-optimise-store = false;
+      auto-optimise-store = true;
+      download-buffer-size = 262144000; # 250 MB (250 * 1024 * 1024)
     };
 
     # do garbage collection weekly to keep disk usage low
@@ -30,16 +28,5 @@
       automatic = lib.mkDefault true;
       options = lib.mkDefault "--delete-older-than 7d";
     };
-  };
-
-  environment = {
-    # install base packages
-    systemPackages = with pkgs; [
-      go-task # like make but simpler : https://taskfile.dev/docs/getting-started
-    ];
-
-    variables.EDITOR = lib.mkForce "vim";
-    variables.PAGER = lib.mkForce "less";
-    variables.LESS = lib.mkForce "-FR --mouse";
   };
 }

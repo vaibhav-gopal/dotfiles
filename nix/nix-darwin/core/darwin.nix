@@ -1,4 +1,4 @@
-{ pkgs, username, homedirectory, ... }:
+{ username, homedirectory, ... }:
 {
   # Set home directory and primary user
   system.primaryUser = username;
@@ -77,28 +77,5 @@
       # remapCapsLockToControl = false;  # remap caps lock to control, useful for emac users
       remapCapsLockToEscape  = true;   # remap caps lock to escape, useful for vim users
     };
-  };
-
-  # Create /etc/zshrc that loads the nix-darwin environment.
-  # this is required if you want to use darwin's default shell - zsh
-  programs.zsh.enable = true;
-  environment.shells = [
-    pkgs.zsh
-  ];
-
-  # Fonts
-  fonts = {
-    packages = with pkgs; [
-      # icon fonts
-      material-design-icons
-      font-awesome
-
-      # nerdfonts
-      nerd-fonts.symbols-only
-      nerd-fonts.fira-code
-      nerd-fonts.jetbrains-mono
-      nerd-fonts.hack
-      nerd-fonts.space-mono
-    ];
   };
 }

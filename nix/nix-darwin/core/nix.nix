@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   nix = {
     enable = true;
@@ -23,6 +23,7 @@
       #   https://github.com/NixOS/nix/issues/7273
       # "error: cannot link '/nix/store/.tmp-link-xxxxx-xxxxx' to '/nix/store/.links/xxxx': File exists"
       auto-optimise-store = false;
+      download-buffer-size = 262144000; # 250 MB (250 * 1024 * 1024)
     };
 
     # do garbage collection weekly to keep disk usage low
@@ -31,21 +32,4 @@
       options = lib.mkDefault "--delete-older-than 7d";
     };
   };
-
-  environment = {
-    # install base packages
-    systemPackages = with pkgs; [
-      wget
-      vim
-      git
-      go-task # like make but simpler : https://taskfile.dev/docs/getting-started
-    ];
-
-    variables.EDITOR = lib.mkForce "vim";
-    variables.PAGER = lib.mkForce "less";
-    variables.LESS = lib.mkForce "-FR --mouse";
-  };
-
-  # enable running foreign binaries on NixOS (allows vscode server)
-  programs.nix-ld.enable = true;
 }

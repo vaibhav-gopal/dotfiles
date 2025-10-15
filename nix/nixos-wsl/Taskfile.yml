@@ -15,7 +15,7 @@ tasks:
   status:
     desc: Current nix config and version
     cmds:
-      - echo -e "\033[1;34mCurrently on nixos '{{.NIXCONFIG}}' configuration at nixpkgs version {{.NIXPKGSVERSION}}\033[0m"
+      - echo -e "\033[1;34mCurrently on nixos-wsl '{{.NIXCONFIG}}' configuration at version {{.NIXPKGSVERSION}}\033[0m"
 
   up:
     desc: Update all flake inputs
