@@ -17,3 +17,4 @@
 - vim setup + nvim setup
 - nixos setup w/ hyprland
 - upgrade the nix templates init to also replace the system and nixpkgs-version/url dynamically from a predefined list via `arch` command or from the current nix generation (need to figure out how to do this)
+- setup nix-direnv and direnv
