@@ -1,0 +1,33 @@
+# https://taskfile.dev
+
+version: "3"
+
+vars:
+  COMMANDS:
+    sh: "ls -d1 {{.TASKFILE_DIR}}/*/"
+
+tasks:
+  list:
+    desc: List all templates available to copy and their description
+    cmds:
+      - echo -e "\033[1;34mListing all nix templates at {{.TASKFILE_DIR}} \033[0m"
+      - for: { var: COMMANDS, as: ITEM }
+        cmd: basename {{.ITEM}}
+    silent: true
+  init:*:
+    desc: Copies the selected template to the users working directory
+    prompt: Do you want to initialize the template in the current directory?
+    vars:
+      TEMPLATE: '{{index .MATCH 0}}'
+    preconditions:
+      - sh: test -d {{.TASKFILE_DIR}}/{{.TEMPLATE}}
+        msg: 'Provide a valid nix template name (must have associated directory in dotfiles/templates). Provided: {{.TEMPLATE}}'
+      - sh: test -f {{.TASKFILE_DIR}}/{{.TEMPLATE}}/flake.nix
+        msg: 'Provide a valid nix template name (must have associated flake.nix in dotfiles/templates/{{.TEMPLATE}}).'
+      - sh: (! test -f {{.USER_WORKING_DIR}}/flake.{{.TEMPLATE}}.nix)
+        msg: 'Already a flake.{{.TEMPLATE}}.nix in the users working directory! ({{.USER_WORKING_DIR}})'
+    cmds:
+      - echo -e "\033[1;34mAttempting to create template '{{.TEMPLATE}}' at {{.USER_WORKING_DIR}}/flake.{{.TEMPLATE}}.nix \033[0m"
+      - cp {{.TASKFILE_DIR}}/{{.TEMPLATE}}/flake.nix {{.USER_WORKING_DIR}}/flake.{{.TEMPLATE}}.nix
+      - echo -e "\033[1;34mCreated nix template '{{.TEMPLATE}}'! Rename flake.{{.TEMPLATE}}.nix to flake.nix for nix commands to work! \033[0m"
+    silent: true

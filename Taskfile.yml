@@ -7,27 +7,30 @@ vars:
 
 # unfortunately must use absolute paths here (in only this root taskfile) for the global taskfile via `link` task to work
 includes:
+  templates:
+    taskfile: ~/dotfiles/templates/Taskfile.yml
+    dir: ~/dotfiles/templates
   nix-base:
     taskfile: ~/dotfiles/nix/nix-base/Taskfile.yml
-    dir: ./nix/nix-base
+    dir: ~/dotfiles/nix/nix-base
     optional: true
   nix-darwin:
     taskfile: ~/dotfiles/nix/nix-darwin/Taskfile.yml
-    dir: ./nix/nix-darwin
+    dir: ~dotfiles/nix/nix-darwin
     optional: true
     vars:
       NIXCONFIG: vgmacbook
       NIXPKGSVERSION: 25.05
   nixos:
     taskfile: ~/dotfiles/nix/nixos/Taskfile.yml
-    dir: ./nix/nixos
+    dir: ~/dotifles/nix/nixos
     optional: true
     vars:
       NIXCONFIG: vgnixos
       NIXPKGSVERSION: 25.05
   nixos-wsl:
     taskfile: ~/dotfiles/nix/nixos-wsl/Taskfile.yml
-    dir: ./nix/nixos-wsl
+    dir: ~/dotfiles/nix/nixos-wsl
     optional: true
     vars:
       NIXCONFIG: vgwsl2
@@ -35,7 +38,7 @@ includes:
 
 tasks:
   default:
-    desc: List all commands available in taskfile
+    desc: List all commands available in taskfile across all archetypes
     cmds:
       - echo -e "\033[1;34mListing all tasks for {{.DIR}}\033[0m"
       - task --list {{.DIR}}
@@ -47,14 +50,28 @@ tasks:
     cmds:
       - sudo -H nix-collect-garbage {{if eq .ALIAS "gcgen"}}-d{{end}} {{if not .CLI_FORCE}}--delete-older-than 7d{{end}}
 
+  list:
+    desc: List all arcetypes currently available
+    vars:
+      ARCHETYPES:
+        sh: "ls -d1 {{.DIR}}/nix/*/"
+    cmds:
+      - echo -e "\033[1;34mListing all nix archetypes at {{.DIR}}/nix \033[0m"
+      - for: { var: ARCHETYPES, as: ITEM }
+        cmd: basename {{.ITEM}}
+    silent: true
+
   activate:*:
     desc: Activate a nix archetypes main flake and taskfile ; prevents accidental builds ; cleans task output
     vars:
       NIXCONFIG: '{{index .MATCH 0}}'
     preconditions:
-      - test -d {{.DIR}}/nix/{{.NIXCONFIG}}
-      - test -f {{.DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix
-      - test -f {{.DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml
+      - sh: test -d {{.DIR}}/nix/{{.NIXCONFIG}}
+        msg: 'Provide a valid nix archetype name. Provided: {{.NIXCONFIG}}'
+      - sh: test -f {{.DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix
+        msg: 'The flake.nix at {{.NIXCONFIG}} is not inactive! (must be flake.inactive.nix)'
+      - sh: test -f {{.DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml
+        msg: 'The Taskfile.yml at {{.NIXCONFIG}} is not inactive! (must be Taskfile.inactive.yml)'
     status:
       - test -f {{.DIR}}/nix/{{.NIXCONFIG}}/flake.nix
       - test -f {{.DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml
@@ -67,9 +84,12 @@ tasks:
     vars:
       NIXCONFIG: '{{index .MATCH 0}}'
     preconditions:
-      - test -d {{.DIR}}/nix/{{.NIXCONFIG}}
-      - test -f {{.DIR}}/nix/{{.NIXCONFIG}}/flake.nix 
-      - test -f {{.DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml 
+      - sh: test -d {{.DIR}}/nix/{{.NIXCONFIG}}
+        msg: 'Provide a valid nix archetype name. Provided: {{.NIXCONFIG}}'
+      - sh: test -f {{.DIR}}/nix/{{.NIXCONFIG}}/flake.nix
+        msg: 'The flake.nix at {{.NIXCONFIG}} is not active! (must be flake.nix not flake.inactive.nix)'
+      - sh: test -f {{.DIR}}/nix/{{.NIXCONFIG}}/Taskfile.yml
+        msg: 'The Taskfile.yml at {{.NIXCONFIG}} is not active! (must be Taskfile.yml not Taskfile.inactive.yml)'
     status:
       - test -f {{.DIR}}/nix/{{.NIXCONFIG}}/flake.inactive.nix
       - test -f {{.DIR}}/nix/{{.NIXCONFIG}}/Taskfile.inactive.yml
@@ -83,6 +103,7 @@ tasks:
       - test -L ~/Taskfile.yml
     cmds:
       - ln -s {{.TASKFILE}} ~/Taskfile.yml
+
   unlink:
     desc: Unlink this taskfile from home directory
     preconditions:
