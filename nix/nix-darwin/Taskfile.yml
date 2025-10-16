@@ -25,14 +25,25 @@ tasks:
     cmds:
       - nix flake update
 
-  init-channel-setup:
-    desc: Update the nix channels with the nix-darwin version.
+  match-lts-channel:
+    desc: Match the nix channels with the nix-darwin lts version. (Unable to install the latest packages on a per-package basis if needed)
     prompt: Warning! This will remove the `nixpkgs` channel and replace it with the nixpkgs-XX-darwin version
     status:
       - sudo -H nix-channel --list | (grep nixpkgs-{{.NIXPKGSVERSION}}-darwin && exit 0)
     cmds:
       - sudo -H nix-channel --remove nixpkgs
       - sudo -H nix-channel --add https://nixos.org/channels/nixpkgs-{{.NIXPKGSVERSION}}-darwin nixpkgs
+      - sudo -H nix-channel --update
+      - task: profile-upgrade
+
+  unstable-channel:
+    desc: Update the nix channels with unstable. (Recommended)
+    prompt: Warning! This will remove the `nixpkgs` channel and replace it with the nixpkgs-unstable version
+    status:
+      - sudo -H nix-channel --list | (grep nixpkgs-unstable && exit 0)
+    cmds:
+      - sudo -H nix-channel --remove nixpkgs
+      - sudo -H nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
       - sudo -H nix-channel --update
       - task: profile-upgrade
 

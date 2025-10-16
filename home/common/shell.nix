@@ -30,6 +30,9 @@ let
       (existingBaseDirs ++ featureShellDirs));
 
 in {
+  # shell integration if not already enabled
+  home.shell.enableShellIntegration = true;
+
   programs.zsh = {
     enable = true;
     autocd = true;
@@ -57,6 +60,8 @@ in {
   home.file."${config.home.homeDirectory}/.config/starship.toml".source =
     hmPaths.homeCommonConfigsDir + "/shell.d/starship.toml";
 
-  # shell integration if not already enabled
-  home.shell.enableShellIntegration = true;
+  programs.direnv = {
+    enable = true; # automaticaly load in .envrc files into the current shell
+    nix-direnv.enable = false; # automatically run nix develop and nix shell
+  };
 }

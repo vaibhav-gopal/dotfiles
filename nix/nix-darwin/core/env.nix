@@ -5,7 +5,6 @@
     systemPackages = with pkgs; [
       go-task # like make but simpler : https://taskfile.dev/docs/getting-started
       nil # nix LSP
-      direnv # for dev shells
     ];
 
     variables.EDITOR = lib.mkForce "vim";
