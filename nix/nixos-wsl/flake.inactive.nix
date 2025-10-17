@@ -1,14 +1,9 @@
 {  
   description = "NixOS - WSL2 Configuration for Vaibhav Gopal";
 
-  nixConfig = {
-    substituters = [
-      "https://cache.nixos.org"
-    ];
-  };
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # Uses custom version of nixos specifically for WSL2
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/release-25.05";
@@ -20,7 +15,7 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, nixos-wsl, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, nixos-wsl, home-manager, ... }:
   let
     configurations = {
       vgwsl2 = {
@@ -38,7 +33,13 @@
     # main nixos-wsl configurations
     nixosConfigurations = {
       vgwsl2 = nixpkgs.lib.nixosSystem (let 
-          specialArgs = inputs // configurations.vgwsl2;
+          # nixpkgs is automatically parsed as `pkgs` and passed in, everything else however is still named the same
+          # select the proper nixpkgs-unstable subset with system and pass through as `pkgs-unstable`
+          specialArgs = inputs // configurations.vgwsl2 // {
+            pkgs-unstable = with configurations.vgwsl2; import nixpkgs-unstable {
+              inherit system;
+            };
+          };
         in with configurations.vgwsl2; {
         inherit system specialArgs;
         modules = [

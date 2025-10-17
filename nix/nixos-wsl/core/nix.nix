@@ -2,7 +2,6 @@
 {
   nix = {
     enable = true;
-    package = pkgs.nix;
     settings = {
       # enable flakes globally
       experimental-features = [

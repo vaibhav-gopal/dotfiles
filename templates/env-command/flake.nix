@@ -7,7 +7,7 @@ let
   packages = with pkgs; [
 
   ];
-in pkgs.runCommand "[ENTER EXECUTABLE NAME HERE]" 
+in pkgs.runCommand "[TEMPLATE-NAME]" 
 {
   # Dependencies that should exist in the runtime environment
   buildInputs = packages;
@@ -16,5 +16,5 @@ in pkgs.runCommand "[ENTER EXECUTABLE NAME HERE]"
 }
 # Actual function/script to run
 ''
-  echo "Hello Env Function! [EDIT THE CORRESPONDING INSTALLED NIX COMMAND]"
+  echo "Hello Env Function!"
 ''

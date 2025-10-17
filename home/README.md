@@ -14,4 +14,8 @@
 2. You MUST explicity pass in the extraspecialargs. You can do this via `import <file> (args // {extrastuffgoeshere});`, you must also name the inputs at the top of the file via `args@{ ... }:`
 3. Probably need to do the above for every submodule from this point on as well
 
+- accelerating dotfiles debugging (for config files specifically)
+1. We can use `mkOutOfStoreSymlink` which skips the nix store creation for the config files, using the absolute path of the config in the dotfiles directory
+2. This enables changes to take effect immediately, significantly speeding up dotfiles debugging (for linked files, like configs)
+
 **ADD MORE AS YOU LEARN**

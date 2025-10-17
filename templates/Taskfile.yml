@@ -5,6 +5,12 @@ version: "3"
 vars:
   COMMANDS:
     sh: "ls -d1 {{.TASKFILE_DIR}}/*/"
+  SYSTEM:
+    sh: "nix eval --impure --raw --expr 'builtins.currentSystem'"
+  NIXPKGS:
+    sh: 
+  NAME:
+    sh:
 
 tasks:
   list:
@@ -15,7 +21,7 @@ tasks:
         cmd: basename {{.ITEM}}
     silent: true
   init:*:
-    desc: Copies the selected template to the users working directory
+    desc: Copies the selected template to the users working directory ; applies templating rules (replaces system, nixpkgs version and name)
     prompt: Do you want to initialize the template in the current directory?
     vars:
       TEMPLATE: '{{index .MATCH 0}}'
