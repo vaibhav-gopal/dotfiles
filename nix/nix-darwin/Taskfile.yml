@@ -20,7 +20,7 @@ tasks:
     cmds:
       - echo -e "\033[1;34mCurrently on nix-darwin '{{.NIXCONFIG}}' configuration at version {{.NIXPKGSVERSION}}\033[0m"
   
-  up:
+  update:
     desc: Update all flake inputs
     cmds:
       - nix flake update
@@ -34,7 +34,6 @@ tasks:
       - sudo -H nix-channel --remove nixpkgs
       - sudo -H nix-channel --add https://nixos.org/channels/nixpkgs-{{.NIXPKGSVERSION}}-darwin nixpkgs
       - sudo -H nix-channel --update
-      - task: profile-upgrade
 
   unstable-channel:
     desc: Update the nix channels with unstable. (Recommended)
@@ -45,9 +44,3 @@ tasks:
       - sudo -H nix-channel --remove nixpkgs
       - sudo -H nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
       - sudo -H nix-channel --update
-      - task: profile-upgrade
-
-  profile-upgrade:
-    desc: Upgrade all nix profiles after changing nixpkgs channel.
-    cmds:
-      - sudo -H nix profile upgrade --all

@@ -111,6 +111,9 @@ in
     enable = true;
   };
 
+  # ─── XDG Base Directories ──────────────────────────────────────────────
+  xdg.enable = true;
+
   # ─── Optional Common Imports ──────────────────────────────────────────────
   imports = additionalCommonModules;
 }

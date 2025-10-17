@@ -13,10 +13,11 @@
 - create a `pkgs.mkShell` flake template for future projects (usable with `nix develop`) - DONE
 - setup nix-direnv and direnv - DONE
 - set up a nixpkgs-unstable or nixos-unstable input to the flakes, to allow mix-n-match certain packages to be up-to-date vs LTS (update go-task, its creating phantom directories randomly) - DONE
+- change dotfiles config files to use `mkOutOfStoreSymlink` - DONE
 
 ## NEED TO DO
-- change dotfiles config files to use `mkOutOfStoreSymlink` (HIGH) - IN PROGRESS
 - nixos server setup (not with hyprland or any GUI) (HIGH) - IN PROGRESS
 - zellij keyboard shortcut setup (MEDIUM)
 - vim setup + nvim setup (MEDIUM)
-- upgrade the nix templates init to also replace the system and nixpkgs-version/url dynamically from a predefined list via `arch` command or from the current nix generation (need to figure out how to do this) (LOW) - IN PROGRESS
+- transition to justfiles (much better) (LOW)
+- upgrade the nix templates init to also replace the system and nixpkgs-version/url dynamically from a predefined list via `arch` command or from the current nix generation (need to figure out how to do this) (VERY LOW)

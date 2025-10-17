@@ -53,13 +53,6 @@ in {
     profileExtra = shellStageFragments "profile";
   };
 
-  programs.starship = {
-    enable = true;
-  };
-
-  home.file."${config.home.homeDirectory}/.config/starship.toml".source =
-    hmPaths.homeCommonConfigsDir + "/shell.d/starship.toml";
-
   programs.direnv = {
     enable = true; # automaticaly load in .envrc files into the current shell
     nix-direnv.enable = false; # automatically run nix develop and nix shell

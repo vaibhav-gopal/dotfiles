@@ -1,5 +1,7 @@
 # https://taskfile.dev
 
+# TODO: WIP
+
 version: "3"
 
 vars:
@@ -7,10 +9,11 @@ vars:
     sh: "ls -d1 {{.TASKFILE_DIR}}/*/"
   SYSTEM:
     sh: "nix eval --impure --raw --expr 'builtins.currentSystem'"
-  NIXPKGS:
+  NIXPKGS-CHANNEL:
     sh: 
-  NAME:
-    sh:
+  SYSTEM-TEMPLATE: '[TEMPLATE-ARCH]'
+  NIXPKGS-TEMPLATE: '[TEMPLATE-NIXPKGS]'
+  NAME-TEMPLATE: '[TEMPLATE-NAME]'
 
 tasks:
   list:
@@ -25,6 +28,10 @@ tasks:
     prompt: Do you want to initialize the template in the current directory?
     vars:
       TEMPLATE: '{{index .MATCH 0}}'
+      NIXPKGS:
+        sh: basename {{.NIXPKGS-CHANNEL}
+      NAME:
+        sh: echo ""
     preconditions:
       - sh: test -d {{.TASKFILE_DIR}}/{{.TEMPLATE}}
         msg: 'Provide a valid nix template name (must have associated directory in dotfiles/templates). Provided: {{.TEMPLATE}}'
@@ -35,5 +42,8 @@ tasks:
     cmds:
       - echo -e "\033[1;34mAttempting to create template '{{.TEMPLATE}}' at {{.USER_WORKING_DIR}}/flake.{{.TEMPLATE}}.nix \033[0m"
       - cp {{.TASKFILE_DIR}}/{{.TEMPLATE}}/flake.nix {{.USER_WORKING_DIR}}/flake.{{.TEMPLATE}}.nix
+      - sed -i 's/{{.SYSTEM-TEMPLATE}}/{{.SYSTEM}}/g' {{.USER_WORKING_DIR}}/flake.{{.TEMPLATE}}.nix
+      - sed -i 's/{{.NIXPKGS-TEMPLATE}}/{{.NIXPKGS}}/g' {{.USER_WORKING_DIR}}/flake.{{.TEMPLATE}}.nix
+      - sed -i 's/{{.NAME-TEMPLATE}}/{{.NAME}}/g' {{.USER_WORKING_DIR}}/flake.{{.TEMPLATE}}.nix
       - echo -e "\033[1;34mCreated nix template '{{.TEMPLATE}}'! Rename flake.{{.TEMPLATE}}.nix to flake.nix for nix commands to work! \033[0m"
     silent: true

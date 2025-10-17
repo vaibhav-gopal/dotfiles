@@ -4,7 +4,8 @@
   # zellij : terminal multiplexer
   programs.zellij.enable = true;
   # Symlink external Zellij config
-  home.file."${config.home.homeDirectory}/.config/zellij/config.kdl".source = hmPaths.homeCommonConfigsDir + "/term.d/zellij.kdl";
+  xdg.configFile."zellij/config.kdl".source = 
+    config.lib.file.mkOutOfStoreSymlink (hmPaths.homeCommonConfigsDir + "/term.d/zellij.kdl");
 
   # yazi : terminal file manager and viewer (enables lots of features, batch rename, archiving, trash bin, etc...)
   programs.yazi.enable = true;
@@ -19,8 +20,15 @@
     zj = "zellij";
   };
 
+  programs.starship = {
+    enable = true;
+  };
+  
+  xdg.configFile."starship.toml".source = 
+    config.lib.file.mkOutOfStoreSymlink (hmPaths.homeCommonConfigsDir + "/term.d/starship.toml");
 
   # setting up terminal themes/settings for different terminal emulators via home.file
   # ghostty ; install manually (nix program and package is broken)
-  home.file."${config.home.homeDirectory}/.config/ghostty/config".source = hmPaths.homeCommonConfigsDir + "/term.d/ghostty.config";
+  xdg.configFile."ghostty/config".source = 
+    config.lib.file.mkOutOfStoreSymlink (hmPaths.homeCommonConfigsDir + "/term.d/ghostty.config");
 }
