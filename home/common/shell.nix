@@ -1,14 +1,14 @@
-{ config, lib, hmPaths, configs, ... }:
+{ config, lib, ... }:
 
 let
   # Build candidate dirs as *strings* (not Nix paths), so missing dirs don't
   # explode at eval time. We'll filter by pathExists before using them.
-  commonShellDir = "${hmPaths.homeCommonConfigsDir}/shell.d";
-  modeShellDir   = "${configs.systemPath}/shell.d";
+  commonShellDir = "${config.paths.commonConfigsDir}/shell.d";
+  modeShellDir   = "${config.paths.systemModule}/shell.d";
 
   # List all valid shell fragment directories from enabled features
   featureShellDirs = builtins.filter builtins.pathExists (
-    map (feature: "${hmPaths.homeFeaturesDir}/${feature}/shell.d") configs.features
+    map (feature: "${config.paths.featuresModule}/${feature}/shell.d") config.features.known-list
   );
 
   # Base dirs that actually exist
@@ -18,9 +18,9 @@ let
   # Abstract fragment loader for shell stages (e.g. .zshrc, .zprofile)
   loadShellFragments = stageExt: dir: ''
     if [ -d "${dir}" ]; then
-      for f in "${dir}"/*.${stageExt}; do
-        [ -r "$f" ] && source "$f"
-      done
+      while IFS= read -r f; do
+        [ -r "$f" ] && . "$f"
+      done < <(find "${dir}" -maxdepth 1 -type f -name "*.${stageExt}" 2>/dev/null)
     fi
   '';
 

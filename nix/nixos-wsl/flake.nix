@@ -43,16 +43,16 @@
         in with configurations.vgwsl2; {
         inherit system specialArgs;
         modules = [
-          #################USER#################
-          ./vgwsl2/configuration.nix
-
           #################CORE#################
-          # include core configs
-          ./core/configuration.nix
           # include nixos-wsl modules by default
           nixos-wsl.nixosModules.default
           # home-manager includes
           home-manager.nixosModules.home-manager
+          # include core configs
+          ./core/configuration.nix
+
+          #################USER#################
+          ./vgwsl2/configuration.nix
         ];
       });
     };

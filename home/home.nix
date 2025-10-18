@@ -1,29 +1,42 @@
-args@{ pkgs, config, lib, ... }:
+args@{ pkgs, pkgs-unstable, config, lib, username, hostname, ... }:
 let
   # Important paths to define and load immediately!
-  hmPaths = {
-    homeCommonDir = ./common;
-    homeCommonConfigsDir = ./common/configs;
-    homeFeaturesDir = ./features;
-    configsNix = ./configs.nix;
-  };
-  
-  # Import a list of configurations based on username and hostname. Ensure it is a list
-  configs = import hmPaths.configsNix (args // {inherit hmPaths;});
-  
-  # Only include features that actually exist
-  features = (configs.features or []);
-  featureDirs = builtins.filter builtins.pathExists
-    (map (name: hmPaths.homeFeaturesDir + "/${name}") features);
+  options.paths = {
+    # SUB MODULES
+    commonModule = lib.mkOption {
+      type = lib.types.path;
+      default = ./common;
+      defaultText = lib.literalExpression "./common";
+      description = "The location of the common home manager configs nix files";
+    };
+    featuresModule = lib.mkOption {
+      type = lib.types.path;
+      default = ./features;
+      defaultText = lib.literalExpression "./features";
+      description = "The location of the parameterized features for home manager";
+    };
+    systemModule = lib.mkOption {
+      type = lib.types.path;
+      default = ./${username}_${hostname};
+      defaultText = lib.literalExpression "./${username}_${hostname}";
+      description = "The location of the system/user specific home manager overrides / setup";
+    };
 
-  # Import each feature module WITH the extra args
-  featureModules = map
-    (dir: import dir (args // { inherit hmPaths configs; }))
-    featureDirs;
+    # PATHS
+    commonConfigsDir = lib.mkOption {
+      type = lib.types.paths;
+      default = ./common/configs;
+      defaultText = lib.literalExpression "./common/configs";
+      description = "The location of the common configs directory";
+    };
+  };
 in {
-  # Expose the per-system nix files and common nix files
-  imports = featureModules ++ [
-    (import hmPaths.homeCommonDir (args // {inherit hmPaths configs;}))
-    (import configs.systemPath (args // {inherit hmPaths configs;}))
+  inherit options;
+
+  # Expose common home manager files, parameterized features and per-system overrides
+  imports = [
+    config.paths.commonModule
+    config.paths.featuresModule
+    config.paths.systemModule
   ];
 }

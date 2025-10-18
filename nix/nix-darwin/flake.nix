@@ -42,14 +42,14 @@
         in with configurations.vgmacbook; {
         inherit system specialArgs;
         modules = [
-          #################USER#################
-          ./vgmacbook/configuration.nix
-
           #################CORE#################
-          # include core configs
-          ./core/configuration.nix
           # home-manager includes
           home-manager.darwinModules.home-manager
+          # include core configs
+          ./core/configuration.nix
+
+          #################USER#################
+          ./vgmacbook/configuration.nix
         ];
       });
     };

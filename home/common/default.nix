@@ -3,11 +3,16 @@ args@{ pkgs, lib, username, version, homedirectory, ... }:
 let
   # Optional additional common modules in this directory
   additionalCommonModules = [
-    (import ./git.nix args)
-    (import ./shell.nix args)
-    (import ./ssh.nix args)
-    (import ./term.nix args)
-    (import ./vim.nix args)
+    ./git.nix
+    ./shell.nix
+    ./ssh.nix
+    ./term.nix
+    ./vim.nix
+    # (import ./git.nix args)
+    # (import ./shell.nix args)
+    # (import ./ssh.nix args)
+    # (import ./term.nix args)
+    # (import ./vim.nix args)
   ];
 
   # Define shared packages
@@ -42,7 +47,7 @@ in
 
   # ─── Common Environment Variables ─────────────────────────────────────────
   # mkMerge allows other modules to safely extend this
-  home.sessionVariables = lib.mkMerge [
+  home.sessionVariables = [
     # Optionally set default EDITOR, PATH, etc.
     {
       EDITOR = lib.mkDefault "vim";

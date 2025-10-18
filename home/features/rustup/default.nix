@@ -1,19 +1,23 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
-{
-  # originally installed cargo and rustc, but only single version available
-  # instead now installed rustup, which can then install its own rust toolchain verions
-  home.packages = [
-    pkgs.rustup
-  ];
+let 
+  cfg = config.features.rustup;
+in {
+  options.features.rustup = {
+    enable = lib.mkEnableOption "Enable rustup : rust toolchain manager";
+    package = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.rustup;
+      defaultText = lib.literalExpression "pkgs.rustup";
+      description = "The rustup package to use";
+    };
+  };
 
-  # other solution is to use a rust overlay (see fenix) (modifies the nixpkgs repo ; adds packages like all rust toolchain versions)
-  # can use with nix-shells for per-project rust toolchain installation, config and reproducibility (sandbox)
-  # NOTE: not really that much easier ; must set up shell.nix flake for every project ; GG disk space ; GG project setup time ; but can easily transfer to other machines (that should have nix installed and setup) ; idk...
-
-  # Optional: Set environment variables used by cargo and rustup
-  home.sessionVariables = {
-    CARGO_HOME = "${config.home.homeDirectory}/.cargo";
-    RUSTUP_HOME = "${config.home.homeDirectory}/.rustup";
+  config = lib.mkIf cfg.enable {
+    home.packages = [ cfg.package ];
+    home.sessionVariables = {
+      CARGO_HOME = "${config.home.homeDirectory}/.cargo";
+      RUSTUP_HOME = "${config.home.homeDirectory}/.rustup";
+    };
   };
 }

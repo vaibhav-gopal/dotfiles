@@ -1,9 +1,23 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
-{
-  home.packages = [ pkgs.glow ];
+let 
+  cfg = config.features.glow;
+in {
+  options.features.glow = {
+    enable = lib.mkEnableOption "Enable glow markdown CLI viewer";
+    package = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.glow;
+      defaultText = lib.literalExpression "pkgs.glow";
+      description = "The glow package to use";
+    };
+  };
 
-  home.shellAliases = {
-    mdp = "glow";
+  config = lib.mkIf cfg.enable {
+    home.packages = [ cfg.package ];
+
+    home.shellAliases = {
+      mdp = "glow";
+    };
   };
 }
