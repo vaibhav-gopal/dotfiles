@@ -62,7 +62,7 @@ in {
     # Symlink external Zellij config
     xdg.configFile."zellij/config.kdl".source = 
       lib.mkIf cfg.zellij.enable
-      lib.file.mkOutOfStoreSymlink ./term.d/zellij.kdl;
+      (config.lib.file.mkOutOfStoreSymlink ./term.d/zellij.kdl);
 
     # yazi : terminal file manager and viewer (enables lots of features, batch rename, archiving, trash bin, etc...)
     programs.yazi = lib.mkIf cfg.yazi.enable {
@@ -82,13 +82,13 @@ in {
     };
     # symlink external config file
     xdg.configFile."starship.toml".source = 
-      lib.mkif cfg.starship.enable
-      lib.file.mkOutOfStoreSymlink ./term.d/starship.toml;
+      lib.mkIf cfg.starship.enable
+      (config.lib.file.mkOutOfStoreSymlink ./term.d/starship.toml);
 
     # ghostty : terminal emulator (install manually ;nix program and package is broken)
     xdg.configFile."ghostty/config".source = 
       lib.mkIf cfg.ghostty.enable
-      lib.file.mkOutOfStoreSymlink ./term.d/ghostty.config;
+      (config.lib.file.mkOutOfStoreSymlink ./term.d/ghostty.config);
     
     # Home shell aliases
     home.shellAliases = {

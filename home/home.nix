@@ -19,7 +19,7 @@ in {
     };
   };
 
-  # Expose common home manager files, parameterized features and per-system overrides
+  # Expose parameterized features set and per-system overrides
   imports = [
     featuresPath
     systemPath

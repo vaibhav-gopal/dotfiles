@@ -8,7 +8,7 @@ let
   systemShellDirs = builtins.filter builtins.pathExists ["${config.paths.systemDir}/shell.d"];
   # List all valid shell fragment directories from enabled features
   featureShellDirs = builtins.filter builtins.pathExists (
-    map (feature: "${config.paths.featuresDir}/${feature}/shell.d") config.features.known-list
+    map (feature: "${config.paths.featuresDir}/${feature}/shell.d") config.features.feature-list
   );
   # Abstract fragment loader for shell stages (e.g. .zshrc, .zprofile)
   loadShellFragments = stageExt: dir: ''

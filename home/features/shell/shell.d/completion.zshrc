@@ -31,3 +31,6 @@ compinit
 #enable using the compgen and complete functions, which are written for bash
 autoload -Uz bashcompinit
 bashcompinit
+
+bindkey '^I'   complete-word       # tab          | complete
+bindkey '^[[Z' autosuggest-accept  # shift + tab  | autosuggest
