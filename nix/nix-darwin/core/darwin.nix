@@ -37,7 +37,7 @@
       trackpad = {
         Clicking = true; # enable tap to click
         TrackpadRightClick = true; # enable right click
-        TrackpadThreeFingerDrag = true; # 
+        TrackpadThreeFingerDrag = false; # enables selecting text with three finger drag
       };
 
       # customize settings that not supported by nix-darwin directly

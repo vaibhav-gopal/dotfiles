@@ -1,4 +1,4 @@
-args@{ pkgs, pkgs-unstable, config, lib, username, hostname, ... }:
+{ lib, username, hostname, ... }:
 let
   featuresPath = ./features;
   systemPath = ./${username}_${hostname};
