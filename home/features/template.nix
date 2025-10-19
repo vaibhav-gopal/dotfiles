@@ -1,4 +1,4 @@
-{ config, lib, pkgs, pkgs-unstable, ... }:
+{ config, lib, pkgs, ... }:
 
 # How to configure a module
 # See https://nixos-and-flakes.thiscute.world/other-usage-of-flakes/module-system
@@ -13,6 +13,7 @@
 let 
   cfg = config.foo.bar;
 in {
+  # MODULE OPTIONS DECLARATION
   options.foo.bar = {
     enable = lib.mkEnableOption "The bar feature of foo";
     package = lib.mkOption {
@@ -33,6 +34,7 @@ in {
     };
   };
 
+  # MODULE BODY
   config = lib.mkIf cfg.enable {
     home.packages = [cfg.package];
     xdg.configFile."foo/bar.config" = lib.mkIf (cfg.extraConfig != "") {

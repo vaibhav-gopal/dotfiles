@@ -14,6 +14,7 @@
 - setup nix-direnv and direnv - DONE
 - set up a nixpkgs-unstable or nixos-unstable input to the flakes, to allow mix-n-match certain packages to be up-to-date vs LTS (update go-task, its creating phantom directories randomly) - DONE
 - change dotfiles config files to use `mkOutOfStoreSymlink` - DONE
+- modularize/parameterize home-manager setup (not just file selectors) - DONE
 
 ## NEED TO DO
 - nixos server setup (not with hyprland or any GUI) (HIGH) - IN PROGRESS
