@@ -13,11 +13,12 @@ Pre-Setup:
 - Install nixos/nixos-wsl
 - OR Install nix with the multi-user installation
 
-1. If on nixos/nixos-wsl will need to first setup `/etc/nixos/configuration.nix` with enabling experimental features
-2. Using `nix profile install` or `nix profile add`, add `just` (task runner), `nil` (nix LSP), `git` (obvious), `gh` (for github CLI, easier to clone repo, if private)
-3. You will need to setup the `.env` file in `dotfiles/env/.env` with the approriate environment variables
-4. Then run `just build` (if you are on nix-darwin for the first time, run `just darwin_init` to download nix-darwin and install for the first time)
-5. Enjoy!
+1. If on nixos/nixos-wsl will need to first setup `/etc/nixos/configuration.nix` with enabling experimental features. If on nix-darwin (or standalone nix) go into `/etc/nix/nix.conf` and enable experimental features.
+2. Using `nix develop` in the `dotfiles` root directory, will install `just` (task runner), `git` (version control), `gh` (github CLI, clone private repos easier) and `vim` (editor) into the shell session. (recommended)
+3. OR Using `nix profile install` or `nix profile add`, add `just`, `git`, `gh`, and `vim` into the current user profile (will have to remove later!)
+4. You will need to setup the `.env` file in `dotfiles/env/.env` with the approriate environment variables
+5. Then run `just build` (if you are on nix-darwin for the first time, run `just darwin_init` to download nix-darwin and install for the first time)
+6. Enjoy!
 
 ## TIPS
 

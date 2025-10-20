@@ -8,16 +8,20 @@
   outputs = { self , nixpkgs ,... }: let
     systems = ["x86_64-linux" "aarch64-darwin"];
   in {
-    devShells.default = nixpkgs.lib.genAttrs systems (system:
+    devShells = nixpkgs.lib.genAttrs systems (system:
       let
         pkgs = import nixpkgs {inherit system;};
-      in pkgs.mkShell {
-        packages = with pkgs; [
-          cowsay
-        ];
-        shellHook = ''
-
-        '';
+      in {
+        default = pkgs.mkShell {
+          packages = with pkgs; [
+            vim
+            just
+            git
+            gh
+          ];
+          shellHook = ''
+          '';
+        };
       }
     );
   };

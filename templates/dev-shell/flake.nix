@@ -2,23 +2,25 @@
 {
   description = "A general dev shell template (for use with `nix develop`) ";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/[TEMPLATE-NIXPKGS]"; # change nixpkgs version if needed
+    nixpkgs.url = "github:nixos/nixpkgs/25.05"; # change nixpkgs version if needed
   };
 
   outputs = { self , nixpkgs ,... }: let
-    system = "[TEMPLATE-ARCH]";
+    systems = ["x86_64-linux" "aarch64-darwin"];
   in {
-    devShells."${system}".default = let
-      pkgs = import nixpkgs { inherit system; };
-    in pkgs.mkShell {
-      # List packages below
-      packages = with pkgs; [
-      ];
-
-      # Enter shell commands to execute on startup
-      shellHook = ''
-        echo "Hello dev-shell!"
-      '';
-    };
+    devShells = nixpkgs.lib.genAttrs systems (system:
+      let
+        pkgs = import nixpkgs {inherit system;};
+      in {
+        default = pkgs.mkShell {
+          packages = with pkgs; [
+            cowsay
+          ];
+          shellHook = ''
+            cowsay "Hello dev-shell!"
+          '';
+        };
+      }
+    );
   };
 }
