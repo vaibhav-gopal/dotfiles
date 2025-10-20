@@ -1,0 +1,8 @@
+# Template .env file : put the real .env in the same directory
+# Need the following defaults for building / switching via justfile
+# NIXBUILDRECIPE : the literal justfile recipe name for the systems build command
+# NIXCONFIG : the top-level configuration name in flake.nix to activate
+# NIXCONFIG_VERSION : the lts nixpkgs version in which to use, to get the approriate nixos package or update the channel
+NIXBUILDRECIPE=darwin_build
+NIXCONFIG=vgmacbook
+NIXCONFIG_VERSION=25.05

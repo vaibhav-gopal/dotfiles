@@ -1,4 +1,4 @@
-{ pkgs, lib, username, version, homedirectory, ... }:
+{ pkgs, pkgs-unstable, lib, username, version, homedirectory, ... }:
 
 {
   # ─── Core User Configuration ──────────────────────────────────────────────
@@ -33,6 +33,10 @@
     pkgs.gzip
     pkgs.xz
     pkgs.gnutar
+
+    # dev environment (dotfiles)
+    pkgs-unstable.just # command runner : https://just.systems/man/en
+    pkgs-unstable.nil # nix LSP
   ];
 
   # --- Common Program Set (managed Packages) --------------------------------

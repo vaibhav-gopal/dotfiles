@@ -1,0 +1,39 @@
+darwin_directory := justfile_directory() / 'nix/nix-darwin'
+
+darwin_checker := if nixarch == "nix-darwin" { "Y" } else { "N" }
+
+# Check $NIXARCH is set correctly for nix-darwin
+[group('nix-darwin')]
+darwin_check:
+    @echo "{{BOLD + BLUE}}Is nix-darwin set in \$NIXARCH? {{if darwin_checker == "Y" { "OK!" } else { error("nix-darwin not active") } }}{{NORMAL}}"
+
+# Switch / rebuild nix-darwin configuration (specify config name or load from $NIXCONFIG)
+[group('nix-darwin')]
+darwin_build config=nixconfig: darwin_check
+    sudo -H darwin-rebuild switch --flake {{darwin_directory}}#{{config}}
+
+# First time init nix-darwin (specify config name or load from $NIXCONFIG)
+[group('nix-darwin')]
+darwin_init config=nixconfig: darwin_check
+    sudo -H nix --extra-experimental-features "nix-command flakes" run nix-darwin/nix-darwin-{{nixpkgs}}#darwin-rebuild -- switch --flake {{darwin_directory}}#{{config}}
+
+# Update all flake inputs
+[group('nix-darwin')]
+darwin_update: darwin_check
+    nix flake update
+
+# Match the nix channels with the nix-darwin lts version. (Unable to install the latest packages on a per-package basis if needed)
+[group('nix-darwin')]
+darwin_match-lts-channel: darwin_check
+    @echo -e "{{BOLD + RED}}Warning! This will remove the `nixpkgs` channel and replace it with the nixpkgs-XX-darwin version!{{NORMAL}}"
+    sudo -H nix-channel --remove nixpkgs
+    sudo -H nix-channel --add https://nixos.org/channels/nixpkgs-{{nixpkgs}}-darwin nixpkgs
+    sudo -H nix-channel --update
+
+# Update the nix channels with unstable. (Recommended)
+[group('nix-darwin')]
+darwin_unstable-channel: darwin_check
+    @echo -e "{{BOLD + RED}}Warning! This will remove the `nixpkgs` channel and replace it with the nixpkgs-unstable version!{{NORMAL}}"
+    sudo -H nix-channel --remove nixpkgs
+    sudo -H nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+    sudo -H nix-channel --update

@@ -1,0 +1,34 @@
+wsl_directory := justfile_directory() / 'nix/nixos-wsl'
+
+wsl_checker := if nixarch == "nixos-wsl" { "Y" } else { "N" }
+
+# Check $NIXARCH is set correctly for nixos
+[group('nixos-wsl')]
+wsl_check:
+    @echo "{{BOLD + BLUE}}Is nixos-wsl set in \$NIXARCH? {{if wsl_checker == "Y" { "OK!" } else { error("nixos-wsl not active") } }}{{NORMAL}}"
+
+# Switch / rebuild nixos-wsl configuration (specify config name or load from $NIXCONFIG)
+[group('nixos-wsl')]
+wsl_build config=nixconfig: wsl_check
+    sudo -H nixos-rebuild switch --flake {{wsl_directory}}#{{config}}
+
+# Update all flake inputs
+[group('nixos-wsl')]
+wsl_update: wsl_check
+    nix flake update
+
+# Match the nix channels with the nixos lts version. (Unable to install the latest packages on a per-package basis if needed)
+[group('nixos-wsl')]
+wsl_match-lts-channel: wsl_check
+    @echo -e "{{BOLD + RED}}Warning! This will remove the `nixpkgs` channel and replace it with the nixos-XX version!{{NORMAL}}"
+    sudo -H nix-channel --remove nixpkgs
+    sudo -H nix-channel --add https://nixos.org/channels/nixos-{{nixpkgs}} nixpkgs
+    sudo -H nix-channel --update
+
+# Update the nix channels with unstable. (Recommended)
+[group('nixos-wsl')]
+wsl_unstable-channel: wsl_check
+    @echo -e "{{BOLD + RED}}Warning! This will remove the `nixpkgs` channel and replace it with the nixos-unstable version!{{NORMAL}}"
+    sudo -H nix-channel --remove nixpkgs
+    sudo -H nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
+    sudo -H nix-channel --update
