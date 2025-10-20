@@ -57,3 +57,7 @@ upgrade:
 gc *flags:
     sudo -H nix-collect-garbage \
     {{if flags =~ '(^|[[:space:]])--force($|[[:space:]])' { '-d' } else {'--delete-older-than 7d'} }}
+
+# print out current disk usage for /nix/store
+size:
+    sudo -H du -sh /nix/store

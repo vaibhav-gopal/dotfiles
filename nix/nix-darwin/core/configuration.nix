@@ -2,8 +2,8 @@
 {
   imports = [
     ./darwin.nix
-    ./env.nix
-    ./home.nix
-    ./nix.nix
+    ./features/env.nix
+    ./features/home.nix
+    ./features/nix.nix
   ];
 }

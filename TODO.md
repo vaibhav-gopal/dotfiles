@@ -16,6 +16,7 @@
 - change dotfiles config files to use `mkOutOfStoreSymlink` - DONE
 - modularize/parameterize home-manager setup (not just file selectors) - DONE
 - transition to justfiles (much better) (also removed the complicated taskfiles for templates) - DONE
+- modularize/parameterize nixos/arch nix configs - DONE
 
 ## NEED TO DO
 - nixos server setup (not with hyprland or any GUI) (HIGH) - IN PROGRESS

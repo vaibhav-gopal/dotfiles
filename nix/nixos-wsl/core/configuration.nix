@@ -1,9 +1,9 @@
 { ... }:
 {
   imports = [
-    ./home.nix
     ./nixos.nix
-    ./env.nix
-    ./nix.nix
+    ./features/env.nix
+    ./features/home.nix
+    ./features/nix.nix
   ];
 }
