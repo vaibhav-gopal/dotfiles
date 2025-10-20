@@ -86,7 +86,10 @@
   home.shellAliases = {
     l = "eza --all";
     ll = "eza --all --long";
-    lt = "eza --all --long --tree --level";
+    lt = "eza --all --long --tree --ignore-glob .git --level";
+    lg = "eza --all --git-ignore";
+    llg = "eza --all --long --git-ignore";
+    ltg = "eza --all --long --tree --ignore-glob .git --git-ignore --level";
     cdp = "cd ../"; # to parent directory
     cdb = "cd -"; # to previous directory
     cdd = "cd ~/dotfiles"; # cd to dotfiles directory
