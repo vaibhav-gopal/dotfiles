@@ -21,5 +21,6 @@
 
 ## NEED TO DO
 - nixos server setup (not with hyprland or any GUI) (HIGH) - IN PROGRESS
-- zellij keyboard shortcut setup (MEDIUM)
-- vim setup + nvim setup (MEDIUM)
+- zellij keyboard shortcut setup (LOW)
+- vim setup + nvim setup (LOW)
+- why does `mkOutOfStoreSymlink` not work?? (LOW)
