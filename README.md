@@ -20,6 +20,26 @@ Pre-Setup:
 5. Then run `just build` (if you are on nix-darwin for the first time, run `just darwin_init` to download nix-darwin and install for the first time)
 6. Enjoy!
 
+## Organization
+
+### NixOS
+- `nix` directory contains different nixos archetypes
+- `nix/[arch]` directory contains the base `flake.nix` and `justfile`
+- `nix/[arch]/[hostname]` directory contains the host/system specific overrides
+- `nix/[arch]/core` directory contains base configurations for that nixos archetype, also impors features
+- `nix/[arch]/core/features` directory contains features, modularized with `options.*` which enables the configs in `nix/[arch]/[hostname]` to override/customize them
+
+### Home-manager
+- `home` directory contains the base `home.nix` that imports the system specific override config and features
+- `home/features` directory contains the base `default.nix` and `base.nix`, which imports listed features and enables them and provides universal core home-manager configs.
+- `home/[username]_[hostname]` directory contains the per-user-per-system config overrides
+- `home/features/[feature]` directory contains the features `default.nix` entry point, which includes `options.*` for modular/parameterized configurations, allowing overriding/configuration via `home/[username]_[hostname]`
+- `home/features/[feature]/[fragment].d` directory contains config files, either used by the current feature or by other features
+
+### Templates
+- `templates` directory contains various nix development templates to use / copy
+- `templates/[template]` directory contains the `flake.nix` template
+
 ## TIPS
 
 ### Justfiles and dotfiles
