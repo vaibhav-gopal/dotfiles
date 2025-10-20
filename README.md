@@ -3,16 +3,23 @@
 This repository defines a modular, multi-mode Home Manager setup using Nix flakes.
 It supports:
 - Multiple systems and multiple configurations
-- Reusable feature modules (like `cargo`, `nvm`, `shell`, etc.)
+- Uses `options.*` for modularizing both home-manager features and nixos features
+- Enables per-user overrides for home-manager setups and per-system overrides for nixos archetypes
 - Organized `.d` fragments for shell hooks and modular configuration
 
 ## Getting Started
 
-Install nix/nixpkgs (prefer the multi-user installation)
+Pre-Setup:
+- Install nixos/nixos-wsl
+- OR Install nix with the multi-user installation
 
-Then follow the flake-based home-manager initial command to init home-manager and its first generation
+1. If on nixos/nixos-wsl will need to first setup `/etc/nixos/configuration.nix` with enabling experimental features
+2. Using `nix profile install` or `nix profile add`, add `just` (task runner), `nil` (nix LSP), `git` (obvious), `gh` (for github CLI, easier to clone repo, if private)
+3. You will need to setup the `.env` file in `dotfiles/env/.env` with the approriate environment variables
+4. Then run `just build` (if you are on nix-darwin for the first time, run `just darwin_init` to download nix-darwin and install for the first time)
+5. Enjoy!
 
-Then enjoy!
+## TIPS
 
 Tips:
 - Flakes only evaluates files tracked by git

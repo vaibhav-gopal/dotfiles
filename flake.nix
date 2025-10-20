@@ -6,16 +6,19 @@
   };
 
   outputs = { self , nixpkgs ,... }: let
-    system = "";
+    systems = ["x86_64-linux" "aarch64-darwin"];
   in {
-    devShells."${system}".default = let
-      pkgs = import nixpkgs { inherit system; };
-    in pkgs.mkShell {
-      packages = with pkgs; [
-      ];
+    devShells.default = nixpkgs.lib.genAttrs systems (system:
+      let
+        pkgs = import nixpkgs {inherit system;};
+      in pkgs.mkShell {
+        packages = with pkgs; [
+          cowsay
+        ];
+        shellHook = ''
 
-      shellHook = ''
-      '';
-    };
+        '';
+      }
+    );
   };
 }

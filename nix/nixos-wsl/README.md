@@ -14,4 +14,3 @@ You will also likely have to first:
 - add the experimental features for nix-command and flakes to the configuration.nix file in /etc/nixos (you can leave it there even when the flake is setup)
 - nix profile install: gh, git, vim, go-task
 - download the dotfiles repo and rebuild with the flake instead (ensure config is correct first) (also stop then start wsl instance for hostname changes to take effect w/ `wsl -t NixOS` and `wsl -d NixOS`)
-
