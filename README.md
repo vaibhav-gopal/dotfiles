@@ -22,11 +22,32 @@ Pre-Setup:
 
 ## TIPS
 
-Tips:
-- Flakes only evaluates files tracked by git
-- Clean up the nix store via nix-collect-garbage, with options to delete old generations among others
-- Use nix profile to imperatively install packages instead through home-manager config
+### Justfiles and dotfiles
+1. use `just` in the root `dotfiles` directory to list all possible commands (very useful, go from there, read descriptions)
+2. cannot directly use nested justfiles since they require certain env variables to be set and loaded (unless run from root justfile or with env variables explicity set in shell before running)
 
+### nix treats quoted vs raw paths differently
+1. raw paths get included in the nix store and evaluated immediately
+2. string paths do not get included in the nix store by default and are not evaluated immediately (you might get file/folder not found error with a super long nix store hash)
+
+### accelerating dotfiles debugging (for config files specifically)
+1. We can use `mkOutOfStoreSymlink` which skips the nix store creation for the config files, using the absolute path of the config in the dotfiles directory
+2. This enables changes to take effect immediately, significantly speeding up dotfiles debugging (for linked files, like configs)
+
+### Base 3 output attributes of every module
+1. `options` : defines options that are available to set/get via `config.*`
+2. `config` : allows setting/getting of options defined in `options.*`
+    - This is actually the `output` of the module, and everything is implicitly prepended this accessor, IF the `config` attribute isn't explicity referenced in the body of the module
+3. `imports` : defines other module imports
+
+### Git
+- Flakes only evaluates new files tracked by git
+
+### Disk Space / Garbage collection
+- Clean up the nix store via nix-collect-garbage, with options to delete old generations among others (use `just gc` and check with `just size`)
+
+### Imperative package installs
+- Use nix profile to imperatively install packages instead through home-manager config
 
 ## IMPORTANT LINKS
 

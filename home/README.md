@@ -1,27 +1,4 @@
-## DESIGN PHILOSOPHY
+# DESIGN PHILOSOPHY
 
-### Terminal Themes / Colors (Involves vim/nvim and any other pretty print CLI)
+## Terminal Themes / Colors (Involves vim/nvim and any other pretty print CLI)
 - Just use a terminal emulator and choose a theme from there ; much too much work to setup up a theme for each every single terminal application ; forego it please (see term.nix)
-
-## Some quirks to watch out for
-
-### nix treats quoted vs raw paths differently
-1. raw paths get included in the nix store and evaluated immediately
-2. string paths do not get included in the nix store by default and are not evaluated immediately (you might get file/folder not found error with a super long nix store hash)
-
-### args and extraspecialargs
-1. You MUST explicity pass `lib`, `pkgs`, `config` by naming them in the inputs, this is because `home.nix` exposes new args that should be passed in, this requires the `import` method, which doesn't forward args by default and breaks the extraspecialargs forwarding chain from the `flake.nix` in nixos or nix-darwin
-2. You MUST explicity pass in the extraspecialargs. You can do this via `import <file> (args // {extrastuffgoeshere});`, you must also name the inputs at the top of the file via `args@{ ... }:`
-3. Probably need to do the above for every submodule from this point on as well
-
-### accelerating dotfiles debugging (for config files specifically)
-1. We can use `mkOutOfStoreSymlink` which skips the nix store creation for the config files, using the absolute path of the config in the dotfiles directory
-2. This enables changes to take effect immediately, significantly speeding up dotfiles debugging (for linked files, like configs)
-
-### Base 3 output attributes of every module
-1. `options` : defines options that are available to set/get via `config.*`
-2. `config` : allows setting/getting of options defined in `options.*`
-    - This is actually the `output` of the module, and everything is implicitly prepended this accessor, IF the `config` attribute isn't explicity referenced in the body of the module
-3. `imports` : defines other module imports
-
-**ADD MORE AS YOU LEARN**
