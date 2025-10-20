@@ -34,9 +34,13 @@ default:
     @echo -e "{{BOLD + BLUE}}Listing all recipes for dotfiles{{NORMAL}}"
     @just --list --justfile {{justfile()}} --list-heading '' --unsorted
 
+# Print out .env variables [NIXARCH, NIXBUILDRECIPE, NIXCONFIG, NIXCONFIG_VERSION]
+status:
+    @echo -e "{{BOLD + BLUE}}dotfiles config: NIXARCH={{nixarch}} , NIXBUILDRECIPE={{nixbuildrecipe}} , NIXCONFIG={{nixconfig}} , NIXCONFIG_VERSION={{nixpkgs}}{{NORMAL}}"
+
 # build using .env variables [NIXARCH, NIXBUILDRECIPE, NIXCONFIG, NIXCONFIG_VERSION] (specify config name or load from $NIXCONFIG)
 build config=nixconfig:
-    @echo -e "{{BOLD + BLUE}}Building {{nixarch}} for '{{nixconfig}}' config with version {{nixpkgs}}{{NORMAL}}"
+    @echo -e "{{BOLD + BLUE}}Building {{nixarch}} for config '{{nixconfig}}' @ {{nixpkgs}} with recipe {{nixbuildrecipe}}{{NORMAL}}"
     @just --justfile {{justfile()}} {{nixbuildrecipe}} {{config}}
 
 # Run a recipe (interactive)
