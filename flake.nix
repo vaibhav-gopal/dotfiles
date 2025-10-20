@@ -16,10 +16,11 @@
           packages = with pkgs; [
             vim
             just
-            git
-            gh
+            cowsay
+            glow
           ];
           shellHook = ''
+            cowsay "Use cmd 'glow' to view README.md to get started!"
           '';
         };
       }
