@@ -1,0 +1,6 @@
+[submodule "home/features/term/yazi.d/flavors/flexoki-dark.yazi"]
+	path = home/features/term/yazi.d/flavors/flexoki-dark.yazi
+	url = https://github.com/gosxrgxx/flexoki-dark.yazi.git
+[submodule "home/features/term/yazi.d/flavors/flexoki-light.yazi"]
+	path = home/features/term/yazi.d/flavors/flexoki-light.yazi
+	url = https://github.com/gosxrgxx/flexoki-light.yazi.git

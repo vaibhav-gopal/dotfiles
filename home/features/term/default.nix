@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, pkgs-unstable, ... }:
 
 let 
   cfg = config.features.term;
@@ -13,7 +13,7 @@ in {
       };
       package = lib.mkOption {
         type = lib.types.package;
-        default = pkgs.zellij;
+        default = pkgs-unstable.zellij;
         defaultText = lib.literalExpression "pkgs.zellij";
         description = "Default zellij package to use";
       };
@@ -26,7 +26,7 @@ in {
       };
       package = lib.mkOption {
         type = lib.types.package;
-        default = pkgs.yazi;
+        default = pkgs-unstable.yazi;
         defaultText = lib.literalExpression "pkgs.yazi";
         description = "Default yazi package to use";
       };
@@ -68,13 +68,22 @@ in {
     programs.yazi = lib.mkIf cfg.yazi.enable {
       enable = true;
       package = cfg.yazi.package;
-      settings = {
-        manager = {
-          show_hidden = true;
-          sort_dir_first = true;
-        };
+      shellWrapperName = "yz"; # shell alias
+      flavors = {
+        flexoki-dark = ./yazi.d/flavors/flexoki-dark.yazi;
+        flexoki-light = ./yazi.d/flavors/flexoki-light.yazi;
       };
     };
+    # symlink external config files
+    xdg.configFile."yazi/yazi.toml".source = 
+      lib.mkIf cfg.starship.enable
+      (config.lib.file.mkOutOfStoreSymlink ./yazi.d/yazi.toml);
+    xdg.configFile."yazi/keymap.toml".source = 
+      lib.mkIf cfg.starship.enable
+      (config.lib.file.mkOutOfStoreSymlink ./yazi.d/keymap.toml);
+    xdg.configFile."yazi/theme.toml".source = 
+      lib.mkIf cfg.starship.enable
+      (config.lib.file.mkOutOfStoreSymlink ./yazi.d/theme.toml);
 
     # starship : terminal prompt
     programs.starship = lib.mkIf cfg.starship.enable {
@@ -93,6 +102,7 @@ in {
     # Home shell aliases
     home.shellAliases = {
       zj = lib.mkIf cfg.zellij.enable "zellij";
+      yz = lib.mkIf cfg.yazi.enable "yazi";
     };
   };
 }
