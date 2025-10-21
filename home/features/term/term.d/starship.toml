@@ -1,18 +1,17 @@
 # left prompt
 format = """
+$container\
 $username\
 $hostname\
 $directory\
 $git_branch\
 $git_status\
-$line_break\
-$container\
 $direnv\
 $nix_shell\
-$package\
 $python\
 $rust\
 $bun\
+$package\
 $line_break\
 $cmd_duration\
 $character"""
