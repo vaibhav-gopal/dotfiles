@@ -61,3 +61,12 @@ gc *flags:
 # print out current disk usage for /nix/store
 size:
     sudo -H du -sh /nix/store
+
+# initialize git submodules and fetch / checkout the correct commit for each
+git_update:
+    @git submodule init
+    @git submodule update
+
+# upgrades every git submodule
+git_upgrade:
+    @git submodule update --remote

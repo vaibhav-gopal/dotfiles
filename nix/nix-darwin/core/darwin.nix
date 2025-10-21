@@ -18,9 +18,9 @@
 
         # hot corners
         wvous-tl-corner = 13;  # top-left - Lock Screen
-        wvous-tr-corner = 3;  # top-right - Application Windows
-        wvous-bl-corner = 2;  # bottom-left - Mission Control
-        wvous-br-corner = 4;  # bottom-right - Desktop
+        wvous-tr-corner = 2;  # top-right - Mission Control
+        wvous-bl-corner = 4;  # bottom-left - Desktop
+        wvous-br-corner = 3;  # bottom-right - Application Windows
       };
 
       # finder settings
