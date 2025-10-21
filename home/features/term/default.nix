@@ -68,24 +68,12 @@ in {
     programs.yazi = lib.mkIf cfg.yazi.enable {
       enable = true;
       package = cfg.yazi.package;
-      shellWrapperName = "yy"; # shell alias
+      shellWrapperName = "yy"; # shell alias : DO NOT CHANGE (breaks automatic cd)
     };
     # symlink external config files
     xdg.configFile."yazi".source = 
       lib.mkIf cfg.starship.enable
       (config.lib.file.mkOutOfStoreSymlink ./yazi.d);
-    # xdg.configFile."yazi/yazi.toml".source = 
-    #   lib.mkIf cfg.starship.enable
-    #   (config.lib.file.mkOutOfStoreSymlink ./yazi.d/yazi.toml);
-    # xdg.configFile."yazi/keymap.toml".source = 
-    #   lib.mkIf cfg.starship.enable
-    #   (config.lib.file.mkOutOfStoreSymlink ./yazi.d/keymap.toml);
-    # xdg.configFile."yazi/theme.toml".source = 
-    #   lib.mkIf cfg.starship.enable
-    #   (config.lib.file.mkOutOfStoreSymlink ./yazi.d/theme.toml);
-    # xdg.configFile."yazi/flavors".source = 
-    #   lib.mkIf cfg.starship.enable
-    #   (config.lib.file.mkOutOfStoreSymlink ./yazi.d/flavors);
 
     # starship : terminal prompt
     programs.starship = lib.mkIf cfg.starship.enable {
