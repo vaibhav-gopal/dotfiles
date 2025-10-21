@@ -3,7 +3,7 @@
 </div>
 
 <h3 align="center">
-	Flexoki Light Flavor for <a href="https://github.com/sxyazi/yazi">Yazi</a>
+	Catppuccin Frappe Flavor for <a href="https://github.com/sxyazi/yazi">Yazi</a>
 </h3>
 
 ## 👀 Preview
@@ -13,16 +13,16 @@
 ## 🎨 Installation
 
 ```sh
-ya pkg add gosxrgxx/flexoki-light
+ya pkg add yazi-rs/flavors:catppuccin-frappe
 ```
 
 ## ⚙️ Usage
 
-To set it as your light flavor, change the content of your `theme.toml` to:
+Set the content of your `theme.toml` to enable it as your _dark_ flavor:
 
 ```toml
 [flavor]
-light = "flexoki-light"
+dark = "catppuccin-frappe"
 ```
 
 Make sure your `theme.toml` doesn't contain anything other than `[flavor]`, unless you want to override certain styles of this flavor.

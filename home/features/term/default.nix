@@ -68,22 +68,24 @@ in {
     programs.yazi = lib.mkIf cfg.yazi.enable {
       enable = true;
       package = cfg.yazi.package;
-      shellWrapperName = "yz"; # shell alias
-      flavors = {
-        flexoki-dark = ./yazi.d/flavors/flexoki-dark.yazi;
-        flexoki-light = ./yazi.d/flavors/flexoki-light.yazi;
-      };
+      shellWrapperName = "yy"; # shell alias
     };
     # symlink external config files
-    xdg.configFile."yazi/yazi.toml".source = 
+    xdg.configFile."yazi".source = 
       lib.mkIf cfg.starship.enable
-      (config.lib.file.mkOutOfStoreSymlink ./yazi.d/yazi.toml);
-    xdg.configFile."yazi/keymap.toml".source = 
-      lib.mkIf cfg.starship.enable
-      (config.lib.file.mkOutOfStoreSymlink ./yazi.d/keymap.toml);
-    xdg.configFile."yazi/theme.toml".source = 
-      lib.mkIf cfg.starship.enable
-      (config.lib.file.mkOutOfStoreSymlink ./yazi.d/theme.toml);
+      (config.lib.file.mkOutOfStoreSymlink ./yazi.d);
+    # xdg.configFile."yazi/yazi.toml".source = 
+    #   lib.mkIf cfg.starship.enable
+    #   (config.lib.file.mkOutOfStoreSymlink ./yazi.d/yazi.toml);
+    # xdg.configFile."yazi/keymap.toml".source = 
+    #   lib.mkIf cfg.starship.enable
+    #   (config.lib.file.mkOutOfStoreSymlink ./yazi.d/keymap.toml);
+    # xdg.configFile."yazi/theme.toml".source = 
+    #   lib.mkIf cfg.starship.enable
+    #   (config.lib.file.mkOutOfStoreSymlink ./yazi.d/theme.toml);
+    # xdg.configFile."yazi/flavors".source = 
+    #   lib.mkIf cfg.starship.enable
+    #   (config.lib.file.mkOutOfStoreSymlink ./yazi.d/flavors);
 
     # starship : terminal prompt
     programs.starship = lib.mkIf cfg.starship.enable {

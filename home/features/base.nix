@@ -52,7 +52,7 @@
   # eza : ls alternative
   # available via: `eza`
   programs.eza.enable = true;
-  programs.eza.colors = "auto";
+  programs.eza.colors = "always"; # output color ; even when redirected or piped
   programs.eza.git = true;
 
   # fd : find alternative
