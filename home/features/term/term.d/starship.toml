@@ -5,42 +5,46 @@ $hostname\
 $directory\
 $git_branch\
 $git_status\
-$cmd_duration\
 $line_break\
-$character"""
-
-# right prompt
-right_format = """
-$bun\
 $container\
 $direnv\
 $nix_shell\
 $package\
 $python\
 $rust\
-"""
+$bun\
+$line_break\
+$cmd_duration\
+$character"""
+
+# right prompt
+right_format = """"""
 
 # continuation prompt (for interactive lines)
-continuation_prompt = ''
+continuation_prompt = "[❮](bold green)"
 
 # adds a newline inbetween shell prompts
 add_newline = true
 
 [username]
+format = "[$user]($style) in "
 style_user = 'green bold'
 style_root = 'red bold'
+show_always = false
 
 [hostname]
-ssh_only = false
-ssh_symbol = "🌐 "
-style = 'green dimmed bold'
+format = "[$ssh_symbol$hostname]($style) in "
+ssh_only = true
+ssh_symbol = "SSH@"
+style = 'green bold'
 
 [directory]
+format = "[$path]($style)[[$read_only]]($read_only_style) "
 truncation_length = 3 # max number of parent directories
 truncation_symbol = ''
 truncate_to_repo = true # truncate path to parent git repo
 style = "blue"
-read_only = "🔒" # symbol to show when directory is read only
+read_only = "READ-ONLY" # symbol to show when directory is read only
 read_only_style = "red"
 
 [git_branch]
@@ -49,7 +53,7 @@ style = "bright-black"
 format = "on [$symbol$branch(:$remote_branch)]($style) "
 
 [git_status]
-format = "[[($all_status)](bright-magenta) ($ahead_behind)]($style) "
+format = "[[($all_status)](bright-magenta)($ahead_behind)]($style) "
 style = "cyan"
 # part of $all_status (in order)
 conflicted = "​"
@@ -70,8 +74,14 @@ format = "[$duration]($style) "
 style = "bold yellow"
 
 [character]
-success_symbol = "[❯](purple)"
-error_symbol = "[❯](red)"
+success_symbol = "[❯](bold purple)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold green)"
+
+# what empty space in a multi-line prompt should look like
+[fill]
+style = "bold black"
+symbol = "."
 
 # UNIQUE --------------------------------------------------------------
 [bun]
