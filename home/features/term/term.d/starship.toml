@@ -39,7 +39,7 @@ ssh_symbol = "SSH@"
 style = 'green bold'
 
 [directory]
-format = '[$path]($style)[\[$read_only\]]($read_only_style) '
+format = '[$path]($style)[(\[$read_only\])]($read_only_style) '
 truncation_length = 3 # max number of parent directories
 truncation_symbol = ''
 truncate_to_repo = true # truncate path to parent git repo
