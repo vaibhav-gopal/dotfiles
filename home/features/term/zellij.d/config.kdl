@@ -1,8 +1,9 @@
-theme "default-dark"
+theme "catppuccin-frappe"
 default_layout "compact"
 pane_frames true
 simplified_ui true
 scrollback_lines_to_save 10000
+layout_dir '~/.config/zellij/layouts'
 
 default_mode "locked"
 

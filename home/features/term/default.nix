@@ -60,9 +60,9 @@ in {
       package = cfg.zellij.package;
     };
     # Symlink external Zellij config
-    xdg.configFile."zellij/config.kdl".source = 
+    xdg.configFile."zellij".source = 
       lib.mkIf cfg.zellij.enable
-      (config.lib.file.mkOutOfStoreSymlink ./term.d/zellij.kdl);
+      (config.lib.file.mkOutOfStoreSymlink ./zellij.d);
 
     # yazi : terminal file manager and viewer (enables lots of features, batch rename, archiving, trash bin, etc...)
     programs.yazi = lib.mkIf cfg.yazi.enable {
@@ -74,18 +74,6 @@ in {
     xdg.configFile."yazi".source = 
       lib.mkIf cfg.starship.enable
       (config.lib.file.mkOutOfStoreSymlink ./yazi.d);
-    # xdg.configFile."yazi/yazi.toml".source = 
-    #   lib.mkIf cfg.starship.enable
-    #   (config.lib.file.mkOutOfStoreSymlink ./yazi.d/yazi.toml);
-    # xdg.configFile."yazi/keymap.toml".source = 
-    #   lib.mkIf cfg.starship.enable
-    #   (config.lib.file.mkOutOfStoreSymlink ./yazi.d/keymap.toml);
-    # xdg.configFile."yazi/theme.toml".source = 
-    #   lib.mkIf cfg.starship.enable
-    #   (config.lib.file.mkOutOfStoreSymlink ./yazi.d/theme.toml);
-    # xdg.configFile."yazi/flavors".source = 
-    #   lib.mkIf cfg.starship.enable
-    #   (config.lib.file.mkOutOfStoreSymlink ./yazi.d/flavors);
 
     # starship : terminal prompt
     programs.starship = lib.mkIf cfg.starship.enable {

@@ -1,0 +1,7 @@
+layout {
+    pane
+    pane split_direction="vertical" {
+        pane command="fastfetch"
+        pane command="btm"
+    }
+}
