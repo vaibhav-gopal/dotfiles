@@ -2,7 +2,7 @@
 let
   cfg = config.wsl.nix;
 in {
-  options.darwin.nix = {
+  options.wsl.nix = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;
