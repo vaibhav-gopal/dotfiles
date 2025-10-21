@@ -68,7 +68,7 @@ in {
     programs.yazi = lib.mkIf cfg.yazi.enable {
       enable = true;
       package = cfg.yazi.package;
-      shellWrapperName = "yy"; # shell alias
+      shellWrapperName = "yy"; # shell alias : DO NOT CHANGE (breaks automatic cd)
     };
     # symlink external config files
     xdg.configFile."yazi".source = 
