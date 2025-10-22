@@ -69,13 +69,12 @@
       };
     };
 
-    # keyboard settings
+    # keyboard settings : see features/keyboard.nix for more customizable alternative, leave this disabled!)
     keyboard = {
-      enableKeyMapping = true;  # enable key mapping so that we can remap caps lock to escape
-
+      enableKeyMapping = false;  # enable key mapping so that we can remap caps lock to escape
       # NOTE: do NOT support remap capslock to both control and escape at the same time
-      # remapCapsLockToControl = false;  # remap caps lock to control, useful for emac users
-      remapCapsLockToEscape  = true;   # remap caps lock to escape, useful for vim users
+      # remapCapsLockToControl = true;  # remap caps lock to control, slightly more useful than just esc
+      # remapCapsLockToEscape  = true;   # remap caps lock to escape, useful for vim
     };
   };
 }
