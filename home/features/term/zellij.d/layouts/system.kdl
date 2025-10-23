@@ -1,4 +1,4 @@
-layout {
+layout name="system" {
     pane
     floating_panes {
         pane stacked=true {
