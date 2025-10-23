@@ -13,18 +13,32 @@ in {
     userKeyMapping = lib.mkOption {
       type = lib.types.listOf (lib.types.attrsOf lib.types.int);
       # see https://developer.apple.com/library/archive/technotes/tn2450/_index.html
-      # caps lock : 30064771129
-      # left control : 30064771296
-      # left option : 30064771298
-      # F13 : 3006477117
-      default = [
+      default = let
+        cpslck =  30064771129;
+        lshift =  30064771297;
+        lctrl =   30064771296;
+        lopt =    30064771298;
+        ropt =    30064771302;
+        rctrl =   30064771300;
+        rcmd =    30064771303;
+        f13 =     30064771176;
+        esc =     30064771113;
+      in [
         {
-          HIDKeyboardModifierMappingSrc = 30064771129; # caps lock into
-          HIDKeyboardModifierMappingDst = 30064771298; # left option
+          HIDKeyboardModifierMappingSrc = cpslck; # pretty useful, replacing caps lock to left shift (for both shortcuts and typing)
+          HIDKeyboardModifierMappingDst = lshift;
         }
         {
-          HIDKeyboardModifierMappingSrc = 30064771298; # left option into
-          HIDKeyboardModifierMappingDst = 30064771296; # left control
+          HIDKeyboardModifierMappingSrc = lshift; # map left shift to esc (for vim)
+          HIDKeyboardModifierMappingDst = esc;
+        }
+        {
+          HIDKeyboardModifierMappingSrc = rcmd; # replace right command with right option
+          HIDKeyboardModifierMappingDst = ropt;
+        }
+        {
+          HIDKeyboardModifierMappingSrc = ropt; # replace right option with right control
+          HIDKeyboardModifierMappingDst = rctrl;
         }
       ];
     };

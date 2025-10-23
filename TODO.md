@@ -23,5 +23,5 @@
 ## NEED TO DO
 - nixos server setup (not with hyprland or any GUI) (HIGH) - IN PROGRESS
 - zellij keyboard shortcut setup (LOW)
-- vim setup + nvim setup (LOW)
+- vim setup + nvim setup + vscode vimrc (LOW)
 - why does `mkOutOfStoreSymlink` not work?? (also when running nix-collect-garbage, removes those symlinks, need to fix!!) (LOW)
