@@ -2,8 +2,8 @@
 
 let
   cfg = config.darwin.features.keyboard;
-  bundlePath = ./DarwinKeyboards_Vaibhav.bundle;
-  layoutsPath = "${config.home.homeDirectory}/Library/Keyboard\ Layouts/DarwinKeyboardVaibhav.bundle";
+  bundlePath = ./VaibhavsCustomKeylayout.keylayout;
+  layoutsPath = "${config.home.homeDirectory}/Library/Keyboard\ Layouts/VaibhavsCustomKeylayout.keylayout";
 in {
   options.darwin.features.keyboard = {
     enable = lib.mkEnableOption "Enable darwin keyboard";
@@ -11,8 +11,8 @@ in {
     bundlePath = lib.mkOption {
       type = lib.types.path;
       default = bundlePath;
-      defaultText = lib.literalExpression "./DarwinKeyboards_Vaibhav.bundle";
-      description = "The location for the macos keyboard bundle to install to the system (via symlink to ~/Library/Keyboard\ Layouts)";
+      defaultText = lib.literalExpression "./VaibhavsCustomKeylayout.keylayout";
+      description = "The location for the macos keyboard bundle or keylayout to install to the system (via symlink to ~/Library/Keyboard\ Layouts)";
     };
   };
 
