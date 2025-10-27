@@ -1,6 +1,7 @@
 { config, lib, hostname, nixType, ... }:
 let
   extDotfilesPath = "${config.home.homeDirectory}/dotfiles";
+  extEnvPath = "${config.home.homeDirectory}/dotfiles/env";
   extHomePath = "${config.home.homeDirectory}/dotfiles/home";
   extFeaturesPath = "${config.home.homeDirectory}/dotfiles/home/features";
 
@@ -14,19 +15,25 @@ in {
       type = lib.types.path;
       default = extDotfilesPath;
       defaultText = lib.literalExpression extDotfilesPath;
-      description = "The location of the dotfiles directory, for use with raw symlinking out of nix store";
+      description = "The location of the dotfiles directory, for use with raw symlinking / files out of nix store";
+    };
+    envDir = lib.mkOption {
+      type = lib.types.path;
+      default = extEnvPath;
+      defaultText = lib.literalExpression extEnvPath;
+      description = "The location of the dotfiles env directory, for use with raw symlinking / files out of nix store";
     };
     homeDir = lib.mkOption {
       type = lib.types.path;
       default = extHomePath;
       defaultText = lib.literalExpression extHomePath;
-      description = "The location of the dotfiles home directory, for use with raw symlinking out of nix store";
+      description = "The location of the dotfiles home directory, for use with raw symlinking / files out of nix store";
     };
     featuresDir = lib.mkOption {
       type = lib.types.path;
       default = extFeaturesPath;
       defaultText = lib.literalExpression extFeaturesPath;
-      description = "The location of the dotfiles home features directory, for use with raw symlinking out of nix store";
+      description = "The location of the dotfiles home features directory, for use with raw symlinking / files out of nix store";
     };
   };
   options.paths = {

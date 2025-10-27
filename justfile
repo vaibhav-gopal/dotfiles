@@ -61,3 +61,8 @@ gc *flags:
 # print out current disk usage for /nix/store
 size:
     sudo -H du -sh /nix/store
+
+# list out all enabled features by looking at the feature list outputs (see all **/features/default.nix in dotfiles/home)
+[group("home-manager")]
+features:
+    
