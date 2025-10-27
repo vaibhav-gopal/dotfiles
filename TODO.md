@@ -24,5 +24,6 @@
 
 ## NEED TO DO
 - nixos server setup (not with hyprland or any GUI) (HIGH) - IN PROGRESS
-- vim setup + nvim setup + vscode vimrc (HIGH)
-- why does `mkOutOfStoreSymlink` not work?? (also when running nix-collect-garbage, removes those symlinks, need to fix!!) (HIGH)
+- macos window manager + hotkey + status bar (HIGH) - IN PROGRESS
+- vim setup + nvim setup + vscode vimrc (HIGH) - IN PROGRESS
+- why does `mkOutOfStoreSymlink` not work?? (also when running nix-collect-garbage, removes those symlinks, need to fix!!) (HIGH) - IN PROGRESS
