@@ -4,11 +4,13 @@ let
   cfg = config.darwin.statusbar;
 in {
   options.darwin.statusbar = {
+    # NOTE: please see the setup prereqs here first: https://felixkratz.github.io/SketchyBar/setup
     enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
       description = "enable status bar customization via sketchybar";
     };
+    # config options are here: https://felixkratz.github.io/SketchyBar/config/bar
     config = lib.mkOption {
       type = lib.types.str;
       description = "The sketchybar config, default is bash not lua";

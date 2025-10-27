@@ -1,5 +1,6 @@
 theme "catppuccin-frappe"
-default_layout "compact"
+default_layout "default"
+default_mode "locked"
 pane_frames true
 simplified_ui true
 scrollback_lines_to_save 10000
@@ -12,7 +13,7 @@ keybinds clear-defaults=true {
     bind "Alt q" { Quit; }
     bind "Alt d" { Detach; }
     bind "Alt delete" "Alt backspace" { Clear; }
-    bind "Ctrl space" { SwitchToMode "Locked"; }
+    bind "Alt space" { SwitchToMode "Locked"; }
 
     bind "Alt Tab" { SwitchFocus; }
     bind "Alt s" { ToggleFloatingPanes; }
@@ -94,7 +95,7 @@ keybinds clear-defaults=true {
   }
   // MODE SPECIFIC ==============================================
   locked {
-    bind "Ctrl Space" { SwitchToMode "Normal"; }
+    bind "Alt space" { SwitchToMode "Normal"; }
   }
   normal {
   }

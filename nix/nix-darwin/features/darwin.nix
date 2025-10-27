@@ -56,6 +56,7 @@
         NSAutomaticPeriodSubstitutionEnabled = false;  # disable auto period substitution
         NSAutomaticQuoteSubstitutionEnabled = false;  # disable auto quote substitution
         NSAutomaticSpellingCorrectionEnabled = false;  # disable auto spelling correction
+        NSWindowShouldDragOnGesture = true; # enables moving windows by dragging on them anywhere with command + control held down
       };
 
       # Customize settings that not supported by nix-darwin directly

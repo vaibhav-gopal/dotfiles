@@ -37,24 +37,24 @@ in {
 
         # SHIFT AND CAPS LOCK REASSIGNMENT (RESULT : caps lock and right shift unbound, f13/f14 added (can bind to user shortcuts without worrying about conflicts))
         {
-          HIDKeyboardModifierMappingSrc = cpslck; # caps lock -> left shift
+          HIDKeyboardModifierMappingSrc = cpslck; # caps lock -> left shift (way easier typing and ergonomics)
           HIDKeyboardModifierMappingDst = lshift;
         }
         {
-          HIDKeyboardModifierMappingSrc = lshift; # left shift -> esc
+          HIDKeyboardModifierMappingSrc = lshift; # left shift -> esc (for vim and others)
           HIDKeyboardModifierMappingDst = esc;
         }
         {
-          HIDKeyboardModifierMappingSrc = esc; # esc -> f13
+          HIDKeyboardModifierMappingSrc = esc; # esc -> f13 (custom non-colliding user shortcuts)
           HIDKeyboardModifierMappingDst = f13;
         }
         {
-          HIDKeyboardModifierMappingSrc = rshift; # right shift -> f14
+          HIDKeyboardModifierMappingSrc = rshift; # right shift -> f14 (custom non-colliding user shortcuts)
           HIDKeyboardModifierMappingDst = f14;
         }
         # MODIFIER REASSIGNMENT (RESULT : right command unbound, right click added)
         {
-          HIDKeyboardModifierMappingSrc = rcmd; # right cmd -> control
+          HIDKeyboardModifierMappingSrc = rcmd; # right cmd -> control (for shortcuts, and easy right-click with trackpad)
           HIDKeyboardModifierMappingDst = ctrl;
         }
         {

@@ -53,7 +53,7 @@ Pre-Setup:
 2. string paths do not get included in the nix store by default and are not evaluated immediately (you might get file/folder not found error with a super long nix store hash)
 
 ### accelerating dotfiles debugging (for config files specifically)
-1. We can use `mkOutOfStoreSymlink` which skips the nix store creation for the config files, using the absolute path of the config in the dotfiles directory
+1. We can use `mkOutOfStoreSymlink` which skips the nix store creation for the config files, using the absolute path of the config in the dotfiles directory (NOTE: ENSURE YOU PASS THE PATH AS A STRING)
 2. This enables changes to take effect immediately, significantly speeding up dotfiles debugging (for linked files, like configs)
 
 ### Base 3 output attributes of every module
