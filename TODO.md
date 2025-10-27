@@ -1,6 +1,7 @@
 # TODO LIST
 
 ## DONE
+
 - zsh and bash (rc, env and profile) setup - DONE
 - cargo, conda, nvm (or bun), java (temurin) - DONE
 - c/c++ --> gcc, cmake, make, gdb, etc...- DONE
@@ -22,8 +23,10 @@
 - zellij keyboard shortcut setup - DONE
 - macos base keymap replacement and key remapping - DONE
 - why does `mkOutOfStoreSymlink` not work?? (also when running nix-collect-garbage, removes those symlinks) - DONE
+- list all enabled features of home-manager via justfile - DONE
 
 ## NEED TO DO
+
 - vim setup + nvim setup + vscode vimrc (HIGH) - IN PROGRESS
 - nixos server setup (not with hyprland or any GUI) (MEDIUM) - IN PROGRESS
 - macos window manager + custom menu bar + hotkey (skhd) setup (only if really needed ; already satisfied enough with native menu bar and tiling) (LOW)

@@ -21,10 +21,11 @@ in {
   ];
 
   # Auto: for each name in feature-list, set features.<name>.enable = mkDefault true
-  config = lib.mkMerge (map 
-    (feature: lib.setAttrByPath ["darwin" "features" feature "enable"] (lib.mkDefault true))
-    feature-list);
-
-  home.file."${config.extPaths.envDir}/darwin_feature_list.temp".text = 
-    lib.strings.concatStringsSep "/n" feature-list;
+  config = {
+    darwin.features = lib.mkMerge (map 
+      (feature: lib.setAttrByPath [feature "enable"] (lib.mkDefault true))
+      feature-list);
+    home.file."${config.extPaths.envDir}/darwin_feature_list.temp".text = 
+      lib.strings.concatStringsSep "\n" feature-list;
+  };
 }

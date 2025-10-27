@@ -68,4 +68,4 @@ size:
 [group("home-manager")]
 features:
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager enabled features:{{NORMAL}}"
-    @while IFS= read -r line; do echo "{{BOLD + CYAN}}$line{{NORMAL}}"; done < {{dotenv-dir / "*.temp"}}
+    @for file in {{dotenv-dir / "*.temp"}}; do echo "{{BOLD + CYAN}}[$file]: {{NORMAL}}" && cat "$file" && echo ""; done

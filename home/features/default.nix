@@ -40,6 +40,6 @@ in {
       feature-list);
 
     home.file."${config.extPaths.envDir}/common_feature_list.temp".text = 
-      lib.strings.concatStringsSep "/n" feature-list;
+      lib.strings.concatStringsSep "\n" feature-list;
   };
 }
