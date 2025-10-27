@@ -21,9 +21,9 @@
 - starship theme config and yazi config - DONE
 - zellij keyboard shortcut setup - DONE
 - macos base keymap replacement and key remapping - DONE
+- why does `mkOutOfStoreSymlink` not work?? (also when running nix-collect-garbage, removes those symlinks) - DONE
 
 ## NEED TO DO
-- nixos server setup (not with hyprland or any GUI) (HIGH) - IN PROGRESS
 - vim setup + nvim setup + vscode vimrc (HIGH) - IN PROGRESS
-- why does `mkOutOfStoreSymlink` not work?? (also when running nix-collect-garbage, removes those symlinks, need to fix!!) (HIGH) - IN PROGRESS
-- macos window manager + custom menu bar + hotkey (skhd) setup (LOW, only if really needed ; already satisfied enough with native menu bar and tiling)
+- nixos server setup (not with hyprland or any GUI) (MEDIUM) - IN PROGRESS
+- macos window manager + custom menu bar + hotkey (skhd) setup (only if really needed ; already satisfied enough with native menu bar and tiling) (LOW)
