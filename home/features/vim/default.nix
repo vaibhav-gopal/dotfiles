@@ -18,6 +18,13 @@ in {
         description = "The neovim package to use (Uses unwrapped by default in programs)";
       };
     };
+    vscode = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enable vscode vimrc file setup";
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -26,7 +33,6 @@ in {
       defaultEditor = true;
     };
     xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.extPaths.featuresDir}/vim/nvim.d";
-      
     programs.neovim = {
       enable = cfg.nvim.enable;
       package = cfg.nvim.package;
@@ -34,5 +40,8 @@ in {
     home.file."${config.home.homeDirectory}/.vimrc".source =
       lib.mkIf cfg.nvim.enable
       (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.featuresDir}/vim/vim.d/vimrc");
+    home.file."${config.home.homeDirectory}/.vscodevimrc".source = 
+      lib.mkIf cfg.vscode.enable
+      (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.featuresDir}/vim/vscode.d/vimrc");
   };
 }
