@@ -18,6 +18,7 @@
 # `@` - silent recipe
 # `_` - private recipe
 
+dotenv-dir := 'env'
 set dotenv-filename := 'env/.env'
 set dotenv-required
 nixtype := env('NIXTYPE')
@@ -36,7 +37,8 @@ default:
 
 # Print out .env variables [NIXTYPE, NIXBUILDRECIPE, NIXCONFIG, NIXCONFIG_VERSION]
 status:
-    @echo -e "{{BOLD + BLUE}}dotfiles config: NIXTYPE={{nixtype}} , NIXBUILDRECIPE={{nixbuildrecipe}} , NIXCONFIG={{nixconfig}} , NIXCONFIG_VERSION={{nixpkgs}}{{NORMAL}}"
+    @echo -e "{{BOLD + BLUE}}Dotfiles config:{{NORMAL}}"
+    @while IFS= read -r line; do echo "{{BOLD + CYAN}}$line{{NORMAL}}"; done < {{dotenv-dir / ".env"}}
 
 # build using .env variables [NIXTYPE, NIXBUILDRECIPE, NIXCONFIG, NIXCONFIG_VERSION] (specify config name or load from $NIXCONFIG)
 build config=nixconfig:
@@ -65,4 +67,5 @@ size:
 # list out all enabled features by looking at the feature list outputs (see all **/features/default.nix in dotfiles/home)
 [group("home-manager")]
 features:
-    
+    @echo -e "{{BOLD + BLUE}}Dotfiles home-manager enabled features:{{NORMAL}}"
+    @while IFS= read -r line; do echo "{{BOLD + CYAN}}$line{{NORMAL}}"; done < {{dotenv-dir / "*.temp"}}
