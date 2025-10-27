@@ -19,9 +19,10 @@
 - modularize/parameterize nixos/arch nix configs - DONE
 - made dev shell for starting up dotfiles setup easily - DONE
 - starship theme config and yazi config - DONE
+- zellij keyboard shortcut setup - DONE
+- macos base keymap replacement and key remapping - DONE
 
 ## NEED TO DO
 - nixos server setup (not with hyprland or any GUI) (HIGH) - IN PROGRESS
-- zellij keyboard shortcut setup (LOW)
-- vim setup + nvim setup + vscode vimrc (LOW)
-- why does `mkOutOfStoreSymlink` not work?? (also when running nix-collect-garbage, removes those symlinks, need to fix!!) (LOW)
+- vim setup + nvim setup + vscode vimrc (HIGH)
+- why does `mkOutOfStoreSymlink` not work?? (also when running nix-collect-garbage, removes those symlinks, need to fix!!) (HIGH)

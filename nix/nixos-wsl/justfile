@@ -1,11 +1,11 @@
 wsl_directory := justfile_directory() / 'nix/nixos-wsl'
 
-wsl_checker := if nixarch == "nixos-wsl" { "Y" } else { "N" }
+wsl_checker := if nixtype == "nixos-wsl" { "Y" } else { "N" }
 
-# Check $NIXARCH is set correctly for nixos
+# Check $NIXTYPE is set correctly for nixos
 [group('nixos-wsl')]
 wsl_check:
-    @echo "{{BOLD + BLUE}}Is nixos-wsl set in \$NIXARCH? {{if wsl_checker == "Y" { "OK!" } else { error("nixos-wsl not active") } }}{{NORMAL}}"
+    @echo "{{BOLD + BLUE}}Is nixos-wsl set in \$NIXTYPE? {{if wsl_checker == "Y" { "OK!" } else { error("nixos-wsl not active") } }}{{NORMAL}}"
 
 # Switch / rebuild nixos-wsl configuration (specify config name or load from $NIXCONFIG)
 [group('nixos-wsl')]

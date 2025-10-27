@@ -26,7 +26,10 @@
       # finder settings
       finder = {
         _FXShowPosixPathInTitle = true;  # show full path in finder title
+        _FXSortFoldersFirst = true; # sort folders first
+        FXDefaultSearchScope = null; # default search scope is "This Mac" (null)
         AppleShowAllExtensions = true;  # show all file extensions
+        AppleShowAllFiles = true; # show hidden files
         FXEnableExtensionChangeWarning = false;  # disable warning when changing file extension
         QuitMenuItem = true;  # enable quit menu item
         ShowPathbar = true;  # show path bar
@@ -46,6 +49,7 @@
       NSGlobalDomain = {
         AppleInterfaceStyle = "Dark";  # dark mode
         ApplePressAndHoldEnabled = false;  # disable press and hold (the accent selector)
+        AppleKeyboardUIMode = 0; # Default keyboard UI mode (0 = disabled, 2 = enables minimal keyboard movement)
         InitialKeyRepeat = 15;  # default is 15
         KeyRepeat = 3;  # default is 2
         NSAutomaticCapitalizationEnabled = false;  # disable auto capitalization

@@ -1,8 +1,8 @@
 { config, lib, specialArgs, username, ... }:
 let
-  cfg = config.darwin.home-manager;
+  cfg = config.darwin.home;
 in {
-  options.darwin.home-manager = {
+  options.darwin.home = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;

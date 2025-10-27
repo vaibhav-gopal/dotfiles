@@ -23,6 +23,7 @@
         hostname = "vgmacbook";
         version = "25.05"; # remember this is state version not nixpkgs version!
         homedirectory = "/Users/vaibhav";
+        nixType = "nix-darwin";
       };
     };
   in {
@@ -45,8 +46,9 @@
           #################CORE#################
           # home-manager includes
           home-manager.darwinModules.home-manager
-          # include core configs
-          ./core/configuration.nix
+
+          # include feature configs
+          ./features
 
           #################USER#################
           ./vgmacbook/configuration.nix

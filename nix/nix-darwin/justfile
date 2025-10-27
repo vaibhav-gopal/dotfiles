@@ -1,11 +1,11 @@
 darwin_directory := justfile_directory() / 'nix/nix-darwin'
 
-darwin_checker := if nixarch == "nix-darwin" { "Y" } else { "N" }
+darwin_checker := if nixtype == "nix-darwin" { "Y" } else { "N" }
 
-# Check $NIXARCH is set correctly for nix-darwin
+# Check $NIXTYPE is set correctly for nix-darwin
 [group('nix-darwin')]
 darwin_check:
-    @echo "{{BOLD + BLUE}}Is nix-darwin set in \$NIXARCH? {{if darwin_checker == "Y" { "OK!" } else { error("nix-darwin not active") } }}{{NORMAL}}"
+    @echo "{{BOLD + BLUE}}Is nix-darwin set in \$NIXTYPE? {{if darwin_checker == "Y" { "OK!" } else { error("nix-darwin not active") } }}{{NORMAL}}"
 
 # Switch / rebuild nix-darwin configuration (specify config name or load from $NIXCONFIG)
 [group('nix-darwin')]

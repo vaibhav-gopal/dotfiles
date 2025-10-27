@@ -24,6 +24,7 @@
         system = "x86_64-linux";
         version = "25.05";
         homedirectory = "/home/vaibhav";
+        nixType = "nixos-wsl";
       };
     };
   in {

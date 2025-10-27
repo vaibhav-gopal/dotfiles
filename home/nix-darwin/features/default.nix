@@ -6,35 +6,22 @@ let
   # - Have the same name as the directory enclosing it
   # - Have an option called <feature>.enable
   feature-list = [
-    "bun" "cpp" "git" "glow" "rustup"
-    "shell" "ssh" "term" "uv" "vim"
+    "keyboard"
   ];
 in {
-  options.features.feature-list = lib.mkOption {
+  options.darwin.features.feature-list = lib.mkOption {
     type = lib.types.listOf lib.types.str;
     default = feature-list;
     description = "A list of all features that are known ; can be overriden per user";
   };
-
+  
   imports = [
-    # Base configuration
-    ./base.nix
-
     # Features
-    ./bun
-    ./cpp
-    ./git
-    ./glow
-    ./rustup
-    ./shell
-    ./ssh
-    ./term
-    ./uv
-    ./vim
+    ./keyboard
   ];
 
   # Auto: for each name in feature-list, set features.<name>.enable = mkDefault true
   config = lib.mkMerge (map 
-    (feature: lib.setAttrByPath ["features" feature "enable"] (lib.mkDefault true))
+    (feature: lib.setAttrByPath ["darwin" "features" feature "enable"] (lib.mkDefault true))
     feature-list);
 }

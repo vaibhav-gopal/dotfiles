@@ -1,11 +1,11 @@
 nixos_directory := justfile_directory() / 'nix/nixos'
 
-nixos_checker := if nixarch == "nixos" { "Y" } else { "N" }
+nixos_checker := if nixtype == "nixos" { "Y" } else { "N" }
 
-# Check $NIXARCH is set correctly for nixos
+# Check $NIXTYPE is set correctly for nixos
 [group('nixos')]
 nixos_check:
-    @echo "{{BOLD + BLUE}}Is nixos set in \$NIXARCH? {{if nixos_checker == "Y" { "OK!" } else { error("nixos not active") } }}{{NORMAL}}"
+    @echo "{{BOLD + BLUE}}Is nixos set in \$NIXTYPE? {{if nixos_checker == "Y" { "OK!" } else { error("nixos not active") } }}{{NORMAL}}"
 
 # Switch / rebuild nixos configuration (specify config name or load from $NIXCONFIG)
 [group('nixos')]

@@ -1,5 +1,5 @@
 theme "catppuccin-frappe"
-default_layout "system"
+default_layout "compact"
 pane_frames true
 simplified_ui true
 scrollback_lines_to_save 10000
@@ -12,9 +12,7 @@ keybinds clear-defaults=true {
     bind "Alt q" { Quit; }
     bind "Alt d" { Detach; }
     bind "Alt delete" "Alt backspace" { Clear; }
-    bind "Alt space" { SwitchToMode "Locked"; }
-    // bind "Alt c" { Copy; }
-    // bind "Alt v" { Paste; }
+    bind "Ctrl space" { SwitchToMode "Locked"; }
 
     bind "Alt Tab" { SwitchFocus; }
     bind "Alt s" { ToggleFloatingPanes; }
@@ -44,10 +42,10 @@ keybinds clear-defaults=true {
     bind "Alt Shift j" { Resize "Down"; }
     bind "Alt Shift k" { Resize "Up"; }
     bind "Alt Shift l" { Resize "Right"; }
-    bind "Alt Super h" { MovePane "Left"; }
-    bind "Alt Super j" { MovePane "Down"; }
-    bind "Alt Super k" { MovePane "Up"; }
-    bind "Alt Super l" { MovePane "Right"; }
+    bind "Ctrl Alt h" { MovePane "Left"; }
+    bind "Ctrl Alt j" { MovePane "Down"; }
+    bind "Ctrl Alt k" { MovePane "Up"; }
+    bind "Ctrl Alt l" { MovePane "Right"; }
 
     bind "Alt o" { GoToNextTab; }
     bind "Alt i" { GoToPreviousTab; }
@@ -58,10 +56,10 @@ keybinds clear-defaults=true {
     bind "Alt b" { ScrollDown; }
     bind "Alt Shift u" { HalfPageScrollUp; }
     bind "Alt Shift b" { HalfPageScrollDown; }
-    bind "Alt Super u" "Alt PageUp" { PageScrollUp; }
-    bind "Alt Super b" "Alt PageDown" { PageScrollDown; }
-    bind "Alt Super Shift u" "Alt Home" { ScrollToTop; }
-    bind "Alt Super Shift b" "Alt End" { ScrollToBottom; }
+    bind "Ctrl Alt u" "Alt PageUp" { PageScrollUp; }
+    bind "Ctrl Alt b" "Alt PageDown" { PageScrollDown; }
+    bind "Ctrl Alt Shift u" "Alt Home" { ScrollToTop; }
+    bind "Ctrl Alt Shift b" "Alt End" { ScrollToBottom; }
 
     bind "Alt 1" { GoToTab 1; }
     bind "Alt 2" { GoToTab 2; }
@@ -96,7 +94,7 @@ keybinds clear-defaults=true {
   }
   // MODE SPECIFIC ==============================================
   locked {
-    bind "Alt Space" { SwitchToMode "Normal"; }
+    bind "Ctrl Space" { SwitchToMode "Normal"; }
   }
   normal {
   }
