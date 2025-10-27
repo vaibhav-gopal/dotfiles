@@ -7,6 +7,7 @@
     ./hotkeys
     ./keyboard
     ./nix
-    ./window_manager
+    ./statusbar
+    ./yabai
   ];
 }

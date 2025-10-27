@@ -41,7 +41,7 @@ in {
     };
   };
 
-  config.programs.sketchybar = lib.mkIf cfg.enable {
+  config.services.sketchybar = lib.mkIf cfg.enable {
     enable = true;
     config = cfg.config;
   };
