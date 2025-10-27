@@ -62,7 +62,7 @@ in {
     # Symlink external Zellij config
     xdg.configFile."zellij".source = 
       lib.mkIf cfg.zellij.enable
-      (config.lib.file.mkOutOfStoreSymlink "./zellij.d");
+      (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.featuresDir}/term/zellij.d");
 
     # yazi : terminal file manager and viewer (enables lots of features, batch rename, archiving, trash bin, etc...)
     programs.yazi = lib.mkIf cfg.yazi.enable {
@@ -73,7 +73,7 @@ in {
     # symlink external config files
     xdg.configFile."yazi".source = 
       lib.mkIf cfg.starship.enable
-      (config.lib.file.mkOutOfStoreSymlink "./yazi.d");
+      (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.featuresDir}/term/yazi.d");
 
     # starship : terminal prompt
     programs.starship = lib.mkIf cfg.starship.enable {
@@ -82,17 +82,16 @@ in {
     # symlink external config file
     xdg.configFile."starship.toml".source = 
       lib.mkIf cfg.starship.enable
-      (config.lib.file.mkOutOfStoreSymlink "./term.d/starship.toml");
+      (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.featuresDir}/term/starship.d/starship.toml");
 
     # ghostty : terminal emulator (install manually ;nix program and package is broken)
     xdg.configFile."ghostty/config".source = 
       lib.mkIf cfg.ghostty.enable
-      (config.lib.file.mkOutOfStoreSymlink "./term.d/ghostty.config");
+      (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.featuresDir}/term/ghostty.d/ghostty.config");
     
     # Home shell aliases
     home.shellAliases = {
       zj = lib.mkIf cfg.zellij.enable "zellij";
-      yz = lib.mkIf cfg.yazi.enable "yazi";
     };
   };
 }

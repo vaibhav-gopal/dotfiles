@@ -25,7 +25,7 @@ in {
       enable = true;
       defaultEditor = true;
     };
-    xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "./nvim.d";
+    xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.extPaths.featuresDir}/vim/nvim.d";
       
     programs.neovim = {
       enable = cfg.nvim.enable;
@@ -33,6 +33,6 @@ in {
     };
     home.file."${config.home.homeDirectory}/.vimrc".source =
       lib.mkIf cfg.nvim.enable
-      (config.lib.file.mkOutOfStoreSymlink "./vim.d/vimrc");
+      (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.featuresDir}/vim/vim.d/vimrc");
   };
 }
