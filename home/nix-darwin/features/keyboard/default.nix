@@ -2,7 +2,7 @@
 
 let
   cfg = config.darwin.features.keyboard;
-  bundlePath = ./VaibhavsCustomKeylayout.keylayout;
+  bundlePath = ./VaibhavMacKeyboardLayouts.bundle;
   layoutsPath = "${config.home.homeDirectory}/Library/Keyboard\ Layouts/VaibhavMacKeyboardLayouts.bundle";
 in {
   options.darwin.features.keyboard = {
