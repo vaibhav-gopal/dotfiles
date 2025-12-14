@@ -1,8 +1,11 @@
-{ username, homedirectory, ... }:
+{ username, homedirectory, hostname, ... }:
 {
   # Set home directory and primary user
   system.primaryUser = username;
   users.users.${username}.home = homedirectory;
+  networking.computerName = hostname;
+  networking.hostName = hostname;
+  networking.localHostName = hostname;
 
   # TouchID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;

@@ -48,10 +48,6 @@ in {
           HIDKeyboardModifierMappingSrc = esc; # esc -> f13 (custom non-colliding user shortcuts)
           HIDKeyboardModifierMappingDst = f13;
         }
-        {
-          HIDKeyboardModifierMappingSrc = rshift; # right shift -> f14 (custom non-colliding user shortcuts)
-          HIDKeyboardModifierMappingDst = f14;
-        }
         # MODIFIER REASSIGNMENT (RESULT : right command unbound, right click added)
         {
           HIDKeyboardModifierMappingSrc = rcmd; # right cmd -> control (for shortcuts, and easy right-click with trackpad)
@@ -60,6 +56,10 @@ in {
         {
           HIDKeyboardModifierMappingSrc = ctrl; # control -> right click (menu btn / app btn)
           HIDKeyboardModifierMappingDst = appbtn;
+        }
+        {
+          HIDKeyboardModifierMappingSrc = rshift; # right shift -> right cmd (symmetry)
+          HIDKeyboardModifierMappingDst = rcmd;
         }
       ];
     };
