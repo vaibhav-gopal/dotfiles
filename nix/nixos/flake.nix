@@ -8,10 +8,6 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hardware = {
-      url = "path:./hardware";
-      flake = false;
-    };
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ...  }:
@@ -40,8 +36,7 @@
 
     # main nixos configurations
     nixosConfigurations = {
-      vgkraken = nixpkgs.lib.nixosSystem \
-      let
+      vgkraken = nixpkgs.lib.nixosSystem (let
         # nixpkgs is automatically parsed as `pkgs` and passed in, everything else however is still named the same
         # select the proper nixpkgs-unstable subset with system and pass through as `pkgs-unstable`
         specialArgs = inputs // configurations.vgkraken // {
@@ -62,10 +57,9 @@
           #################USER#################
           ./vgkraken
         ];
-      };
+      });
 
-      vgnixmini = nixpkgs.lib.nixosSystem \
-      let
+      vgnixmini = nixpkgs.lib.nixosSystem (let
         # nixpkgs is automatically parsed as `pkgs` and passed in, everything else however is still named the same
         # select the proper nixpkgs-unstable subset with system and pass through as `pkgs-unstable`
         specialArgs = inputs // configurations.vgnixmini // {
@@ -86,6 +80,7 @@
           #################USER#################
           ./vgnixmini
         ];
-      };
+      });
+    };
   };
 }
