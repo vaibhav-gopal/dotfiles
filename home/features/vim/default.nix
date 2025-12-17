@@ -32,16 +32,16 @@ in {
       enable = true;
       defaultEditor = true;
     };
-    xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.extPaths.featuresDir}/vim/nvim.d";
+    xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/vim/nvim.d";
     programs.neovim = {
       enable = cfg.nvim.enable;
       package = cfg.nvim.package;
     };
     home.file."${config.home.homeDirectory}/.vimrc".source =
       lib.mkIf cfg.nvim.enable
-      (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.featuresDir}/vim/vim.d/vimrc");
+      (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/vim/vim.d/vimrc");
     home.file."${config.home.homeDirectory}/.vscodevimrc".source = 
       lib.mkIf cfg.vscode.enable
-      (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.featuresDir}/vim/vscode.d/vimrc");
+      (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/vim/vscode.d/vimrc");
   };
 }

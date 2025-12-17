@@ -6,7 +6,6 @@
     ./home
     ./hotkeys
     ./keyboard
-    ./nix
     ./statusbar
     ./yabai
   ];

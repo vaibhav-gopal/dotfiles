@@ -1,12 +1,12 @@
 { config, pkgs, lib, pkgs-unstable, ... }:
 let
-  cfg = config.darwin.env;
+  cfg = config.nixos.env;
 in {
-  options.darwin.env = {
+  options.nixos.env = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "enable darwin base environment configurations";
+      description = "enable nixos base environment configurations";
     };
     packages = lib.mkOption {
       type = lib.types.listOf lib.types.package;
@@ -14,7 +14,7 @@ in {
         # install stable packages ; static, small changes between versions, need stability
         pkgs.wget
         pkgs.vim
-        pkgs.git
+        pkgs.lshw
         # install unstable packages ; need the latest version (bug fixes or etc...)
         pkgs-unstable.just
         pkgs-unstable.nixd
@@ -52,11 +52,25 @@ in {
       systemPackages = cfg.packages;
     };
 
-    # Create /etc/zshrc that loads the nix-darwin environment
     programs.zsh.enable = true;
     environment.shells = [
       pkgs.zsh
     ];
+
+    # Some programs need SUID wrappers, can be configured further or are started in user sessions.
+    programs.gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
+
+    # Firefox
+    programs.firefox.enable = true;
+
+    # Git
+    programs.git.enable = true;
+
+    # ping + traceroute (in `top`/`htop` like format)
+    programs.mtr.enable = true;
 
     # Fonts
     fonts = lib.mkIf cfg.fonts.enable {

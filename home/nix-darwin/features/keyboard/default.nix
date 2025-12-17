@@ -2,7 +2,7 @@
 
 let
   cfg = config.darwin.features.keyboard;
-  bundlePath = ./VaibhavMacKeyboardLayouts.bundle;
+  bundlePath = "${config.extPaths.nixFeaturesTypeDir}/keyboard/VaibhavMacKeyboardLayouts";
   layoutsPath = "${config.home.homeDirectory}/Library/Keyboard\ Layouts/";
   layoutsDirPath = "${config.home.homeDirectory}/Library/Keyboard\ Layouts/";
 in {
@@ -12,7 +12,7 @@ in {
     bundlePath = lib.mkOption {
       type = lib.types.path;
       default = bundlePath;
-      defaultText = lib.literalExpression "./VaibhavMacKeyboardLayouts.bundle";
+      defaultText = bundlePath;
       description = "The location for the macos keyboard bundle or keylayout to install to the system (by copying the file, replacing any file with the same name)";
     };
   };

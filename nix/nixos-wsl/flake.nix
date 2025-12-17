@@ -2,15 +2,15 @@
   description = "NixOS - WSL2 Configuration for Vaibhav Gopal";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # Uses custom version of nixos specifically for WSL2
     nixos-wsl = {
-      url = "github:nix-community/NixOS-WSL/release-25.05";
+      url = "github:nix-community/NixOS-WSL/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -22,7 +22,7 @@
         username = "vaibhav";
         hostname = "vgwsl2";
         system = "x86_64-linux";
-        version = "25.05";
+        version = "25.11";
         homedirectory = "/home/vaibhav";
         nixType = "nixos-wsl";
       };
@@ -49,11 +49,12 @@
           nixos-wsl.nixosModules.default
           # home-manager includes
           home-manager.nixosModules.home-manager
+
           # include core configs
-          ./core/configuration.nix
+          ./features
 
           #################USER#################
-          ./vgwsl2/configuration.nix
+          ./vgwsl2
         ];
       });
     };

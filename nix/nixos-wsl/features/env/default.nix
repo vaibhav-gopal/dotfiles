@@ -16,6 +16,9 @@ in {
         pkgs.vim
         pkgs.git
         # install unstable packages ; need the latest version (bug fixes or etc...)
+        pkgs-unstable.just
+        pkgs-unstable.nixd
+        pkgs-unstable.nil
       ];
       description = "List of packages to install as system packages";
     };

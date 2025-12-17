@@ -19,7 +19,7 @@
     pkgs.curl
     pkgs.socat # netcat alternative
     pkgs.nmap
-    pkgs.rsync    # for remote and local sync
+    pkgs.rsync # for remote and local sync
 
     # file utils
     pkgs.coreutils
@@ -34,10 +34,6 @@
     pkgs.gzip
     pkgs.xz
     pkgs.gnutar
-
-    # dev environment (dotfiles)
-    pkgs-unstable.just # command runner : https://just.systems/man/en
-    pkgs-unstable.nil # nix LSP
   ];
 
   # --- Common Program Set (managed Packages) --------------------------------

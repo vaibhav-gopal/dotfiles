@@ -2,14 +2,14 @@
   description = "Darwin configuration for Vaibhav Gopal";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nix-darwin = {
-      url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+      url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -21,7 +21,7 @@
         username = "vaibhav";
         system = "aarch64-darwin";
         hostname = "vgmacbook";
-        version = "25.05"; # remember this is state version not nixpkgs version!
+        version = "25.11"; # remember this is state version not nixpkgs version!
         homedirectory = "/Users/vaibhav";
         nixType = "nix-darwin";
       };
@@ -51,7 +51,7 @@
           ./features
 
           #################USER#################
-          ./vgmacbook/configuration.nix
+          ./vgmacbook
         ];
       });
     };
