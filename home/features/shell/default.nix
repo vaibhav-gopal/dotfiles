@@ -5,7 +5,7 @@ let
 
   # =================== SHELL FRAGMENT LOADER =======================
   # Build candidate dirs as *strings* (not Nix paths), so missing dirs don't explode at eval time. We'll filter by pathExists before using them.
-  systemShellDirs = builtins.filter builtins.pathExists ["${config.extPaths.nixtypeSystemDir}/shell.d"];
+  systemShellDirs = builtins.filter builtins.pathExists [ config.extPaths.nixtypeSystemDir/shell.d ];
   # List all valid shell fragment directories from enabled features
   featureShellDirs = builtins.filter builtins.pathExists (
     map (feature: "${config.extPaths.commonFeaturesDir}/${feature}/shell.d") config.features.feature-list

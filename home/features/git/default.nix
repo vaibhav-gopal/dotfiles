@@ -41,10 +41,7 @@ in {
     programs.git = {
       enable = true;
 
-      userName = cfg.name;
-      userEmail = cfg.email;
-
-      extraConfig = {
+      settings = {
         # Default editor
         core = {
           editor = "nvim";
@@ -56,14 +53,18 @@ in {
           log = "delta";
           show = "delta";
         };
-        
-        init.defaultBranch = "main";
-      };
 
-      # Use delta formatter for diffs
-      delta = {
-        enable = true;
+        init.defaultBranch = "main";
+
+        user.email = cfg.email;
+        user.name = cfg.name;
       };
+    };
+
+    # Use delta formatter for diffs
+    programs.delta = {
+      enable = true;
+      enableGitIntegration = true;
     };
 
     # Enable GitHub CLI (gh)

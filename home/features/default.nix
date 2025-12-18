@@ -39,7 +39,7 @@ in {
       (feature: lib.setAttrByPath [feature "enable"] (lib.mkDefault true))
       feature-list);
 
-    home.file."${config.extPaths.envDir}/common_feature_list.temp".text = 
+    home.file."${config.extPaths.dotfilesEnvDir}/common_feature_list.temp".text =
       lib.strings.concatStringsSep "\n" feature-list;
   };
 }

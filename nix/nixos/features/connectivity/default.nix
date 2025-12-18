@@ -1,6 +1,7 @@
 { config, pkgs, ...}:
 {
-  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # cannot enable this, if networkmanager is enabled
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Enable networking
   networking.networkmanager.enable = true;

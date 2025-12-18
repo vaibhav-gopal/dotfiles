@@ -12,50 +12,49 @@ in {
     # dotfiles global directories
     dotfilesDir = lib.mkOption {
       type = lib.types.path;
-      default = extDotfilesPath;
+      default = "${config.home.homeDirectory}/dotfiles";
       defaultText = lib.literalExpression "${config.home.homeDirectory}/dotfiles";
       description = "The location of the dotfiles directory, for use with raw symlinking / files out of nix store";
     };
     dotfilesEnvDir = lib.mkOption {
       type = lib.types.path;
-      default = extEnvPath;
+      default = "${config.home.homeDirectory}/dotfiles/env";
       defaultText = lib.literalExpression "${config.home.homeDirectory}/dotfiles/env";
       description = "The location of the dotfiles env directory, for use with raw symlinking / files out of nix store";
     };
     dotfilesHomeDir = lib.mkOption {
       type = lib.types.path;
-      default = extHomePath;
+      default = "${config.home.homeDirectory}/dotfiles/home";
       defaultText = lib.literalExpression "${config.home.homeDirectory}/dotfiles/home";
       description = "The location of the dotfiles home-manager directory, for use with raw symlinking / files out of nix store";
     };
 
-    # per-nixtype + per-system overrides
+    # per-nixType + per-system overrides
     nixtypeDir = {
       type = lib.types.path;
-      default = extFeaturesPath;
-      defaultText = lib.literalExpression "${config.home.homeDirectory}/dotfiles/home/${nixtype}";
-  extDotfilesHomeFeaturesPath = "${config.home.homeDirectory}/dotfiles/home/features";;
-      description = "The location of the dotfiles home-manager, per-nixtype overrides directory, for use with raw symlinking / files out of nix store";
+      default = "${config.home.homeDirectory}/dotfiles/home/${nixType}";
+      defaultText = lib.literalExpression "${config.home.homeDirectory}/dotfiles/home/${nixType}";
+      description = "The location of the dotfiles home-manager, per-nixType overrides directory, for use with raw symlinking / files out of nix store";
     };
     nixtypeSystemDir = {
       type = lib.types.path;
-      default = extFeaturesPath;
-      defaultText = lib.literalExpression "${config.home.homeDirectory}/dotfiles/home/${nixtype}/${hostname}";
-      description = "The location of the dotfiles home-manager, per-nixtype, per-system overrides directory, for use with raw symlinking / files out of nix store";
+      default = "${config.home.homeDirectory}/dotfiles/home/${nixType}/${hostname}";
+      defaultText = lib.literalExpression "${config.home.homeDirectory}/dotfiles/home/${nixType}/${hostname}";
+      description = "The location of the dotfiles home-manager, per-nixType, per-system overrides directory, for use with raw symlinking / files out of nix store";
     };
 
     # Feature directories
     commonFeaturesDir = lib.mkOption {
       type = lib.types.path;
-      default = extFeaturesPath;
+      default = "${config.home.homeDirectory}/dotfiles/home/features";
       defaultText = lib.literalExpression "${config.home.homeDirectory}/dotfiles/home/features";
       description = "The location of the dotfiles home-manager common features directory, for use with raw symlinking / files out of nix store";
     };
     nixtypeFeaturesDir = {
       type = lib.types.path;
-      default = extFeaturesPath;
-      defaultText = lib.literalExpression "${config.home.homeDirectory}/dotfiles/home/${nixtype}/features";
-      description = "The location of the dotfiles home-manager, per-nixtype features directory, for use with raw symlinking / files out of nix store";
+      default = "${config.home.homeDirectory}/dotfiles/home/${nixType}/features";
+      defaultText = lib.literalExpression "${config.home.homeDirectory}/dotfiles/home/${nixType}/features";
+      description = "The location of the dotfiles home-manager, per-nixType features directory, for use with raw symlinking / files out of nix store";
     };
   };
 
