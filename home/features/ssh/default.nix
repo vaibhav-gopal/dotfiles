@@ -31,7 +31,18 @@ in {
 
       # Equivalent default config with match blocks (default config will be deprecated in a later release)
       enableDefaultConfig = false;
-      programs.ssh.matchBlocks.“*” = { forwardAgent = false; addKeysToAgent = “no”; compression = false; serverAliveInterval = 0; serverAliveCountMax = 3; hashKnownHosts = false; userKnownHostsFile = “~/.ssh/known_hosts”; controlMaster = “no”; controlPath = “~/.ssh/master-%r@%n:%p”; controlPersist = “no”; };
+      matchBlocks."*" = {
+        forwardAgent = false;
+        addKeysToAgent = "no";
+        compression = false;
+        serverAliveInterval = 0;
+        serverAliveCountMax = 3;
+        hashKnownHosts = false;
+        userKnownHostsFile = "~/.ssh/known_hosts";
+        controlMaster = "no";
+        controlPath = "~/.ssh/master-%r@%n:%p";
+        controlPersist = "no";
+      };
     };
   };
 }

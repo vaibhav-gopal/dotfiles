@@ -52,10 +52,10 @@ in {
       systemPackages = cfg.packages;
     };
 
-    programs.zsh.enable = true;
-    environment.shells = [
-      pkgs.zsh
-    ];
+#     programs.zsh.enable = true;
+#     environment.shells = [
+#       pkgs.zsh
+#     ];
 
     # Some programs need SUID wrappers, can be configured further or are started in user sessions.
     programs.gnupg.agent = {
@@ -66,8 +66,8 @@ in {
     # Firefox
     programs.firefox.enable = true;
 
-    # Git
-    programs.git.enable = true;
+#     # Git
+#     programs.git.enable = true;
 
     # ping + traceroute (in `top`/`htop` like format)
     programs.mtr.enable = true;
