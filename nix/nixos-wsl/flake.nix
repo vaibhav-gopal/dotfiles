@@ -28,25 +28,30 @@
       };
     };
   in {
-    # export configurations as an output
-    inherit configurations;
-
-    # main nixos-wsl configurations
     nixosConfigurations = {
       vgwsl2 = nixpkgs.lib.nixosSystem (let 
-          # nixpkgs is automatically parsed as `pkgs` and passed in, everything else however is still named the same
-          # select the proper nixpkgs-unstable subset with system and pass through as `pkgs-unstable`
-          specialArgs = inputs // configurations.vgwsl2 // {
-            pkgs-unstable = with configurations.vgwsl2; import nixpkgs-unstable {
-              inherit system;
-            };
-          };
-        in with configurations.vgwsl2; {
+        # Common nixpkgs configurations (overlays, unfree packages, etc...) (applies to all except `pkgs` / `nixpkgs` itself)
+        commonPkgsConfig = with configurations.vgwsl2; {
+          inherit system;
+          config.allowUnfree = true;
+        };
+
+        # the base `pkgs` argument is special, it is automatically created / configured and passed in (DO NOT modify, outside of sub modules, many other non-user made modules use this configuration option!)
+        # Need to set any other nixpkgs channel / input other than the main one (used to create system config) explicitly here (options DO NOT get passed into submodules)
+        pkgs-unstable = import nixpkgs-unstable commonPkgsConfig;
+
+        # create set of extra args to pass in to every sub module
+        specialArgs = inputs // configurations.vgwsl2 // {
+          inherit pkgs-unstable;
+        };
+      in with configurations.vgwsl2; {
+        # inherit system > tells which specific `pkgs` / `nixpkgs` version to use | inherit specialArgs > read above
         inherit system specialArgs;
         modules = [
           #################CORE#################
           # include nixos-wsl modules by default
           nixos-wsl.nixosModules.default
+
           # home-manager includes
           home-manager.nixosModules.home-manager
 

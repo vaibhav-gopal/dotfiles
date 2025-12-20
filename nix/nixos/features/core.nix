@@ -50,6 +50,9 @@
     };
   };
 
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
   # Set your time zone.
   time.timeZone = "America/New_York";
 

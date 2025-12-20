@@ -33,17 +33,15 @@
   in {
     nixosConfigurations = {
       vgkraken = nixpkgs.lib.nixosSystem (let
-        # Common nixpkgs configurations (overlays, unfree packages, etc...)
-        commonPkgsConfig = {
-          config.allowUnfree = true;
-        };
-        commonPkgsVersion = with configurations.vgkraken; {
+        # Common nixpkgs configurations (overlays, unfree packages, etc...) (applies to all except `pkgs` / `nixpkgs` itself)
+        commonPkgsConfig = with configurations.vgkraken; {
           inherit system;
+          config.allowUnfree = true;
         };
 
         # the base `pkgs` argument is special, it is automatically created / configured and passed in (DO NOT modify, outside of sub modules, many other non-user made modules use this configuration option!)
         # Need to set any other nixpkgs channel / input other than the main one (used to create system config) explicitly here (options DO NOT get passed into submodules)
-        pkgs-unstable = import nixpkgs-unstable commonPkgsConfig // commonPkgsVersion;
+        pkgs-unstable = import nixpkgs-unstable commonPkgsConfig;
 
         # create set of extra args to pass in to every sub module
         specialArgs = inputs // configurations.vgkraken // {
@@ -54,9 +52,6 @@
         inherit system specialArgs;
         modules = [
           #################CORE#################
-          # Common nixpkgs configurations
-          { nixpkgs = { config = commonPkgsConfig; }; }
-
           # home-manager includes
           home-manager.nixosModules.home-manager
 
@@ -69,13 +64,11 @@
       });
 
       vgnixmini = nixpkgs.lib.nixosSystem (let
-        commonPkgsConfig = {
+        commonPkgsConfig = with configurations.vgnixmini; {
+          inherit system;
           config.allowUnfree = true;
         };
-        commonPkgsVersion = with configurations.vgnixmini; {
-          inherit system;
-        };
-        pkgs-unstable = import nixpkgs-unstable commonPkgsConfig // commonPkgsVersion;
+        pkgs-unstable = import nixpkgs-unstable commonPkgsConfig;
         specialArgs = inputs // configurations.vgnixmini // {
           inherit pkgs-unstable;
         };
@@ -83,9 +76,6 @@
         inherit system specialArgs;
         modules = [
           #################CORE#################
-          # Common nixpkgs configurations
-          { nixpkgs = { config = commonPkgsConfig; }; }
-
           # home-manager includes
           home-manager.nixosModules.home-manager
 
