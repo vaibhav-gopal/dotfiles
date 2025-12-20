@@ -1,9 +1,9 @@
-{ config, lib, ... }:
+{ config, lib, nixType, ... }:
 
 let
-  cfg = config.darwin.hotkeys;
+  cfg = config.${nixType}.hotkeys;
 in {
-  options.darwin.hotkeys = {
+  options.${nixType}.hotkeys = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = false;

@@ -1,9 +1,9 @@
-{ config, lib, ... }:
+{ config, lib, nixType, ... }:
 
 let
-  cfg = config.darwin.keyboard;
+  cfg = config.${nixType}.keyboard;
 in {
-  options.darwin.keyboard = {
+  options.${nixType}.keyboard = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;

@@ -1,8 +1,8 @@
-{ config, lib, specialArgs, username, ... }:
+{ config, lib, specialArgs, username, nixType, ... }:
 let
-  cfg = config.darwin.home;
+  cfg = config.${nixType}.home;
 in {
-  options.darwin.home = {
+  options.${nixType}.home = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;

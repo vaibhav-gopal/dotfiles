@@ -6,6 +6,7 @@ let
   # - Have the same name as the directory enclosing it
   # - Have an option called <feature>.enable
   feature-list = [
+    "discord" "minecraft" "spotify" "vscode"
   ];
 in {
   options.${nixType}.features.feature-list = lib.mkOption {
@@ -16,6 +17,10 @@ in {
 
   imports = [
     # Features
+    ./discord
+    ./minecraft
+    ./spotify
+    ./vscode
   ];
 
   # Auto: for each name in feature-list, set features.<name>.enable = mkDefault true

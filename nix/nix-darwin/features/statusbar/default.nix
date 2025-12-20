@@ -1,9 +1,9 @@
-{ config, lib, ... }:
+{ config, lib, nixType, ... }:
 
 let
-  cfg = config.darwin.statusbar;
+  cfg = config.${nixType}.statusbar;
 in {
-  options.darwin.statusbar = {
+  options.${nixType}.statusbar = {
     # NOTE: please see the setup prereqs here first: https://felixkratz.github.io/SketchyBar/setup
     enable = lib.mkOption {
       type = lib.types.bool;

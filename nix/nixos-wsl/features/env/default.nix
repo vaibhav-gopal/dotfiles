@@ -1,8 +1,8 @@
-{ config, pkgs, lib, pkgs-unstable, ... }:
+{ config, pkgs, lib, pkgs-unstable, nixType, ... }:
 let 
-  cfg = config.wsl.env;
+  cfg = config.${nixType}.env;
 in {
-  options.wsl.env = {
+  options.${nixType}.env = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, hostname, username, version, homedirectory, ... }:
+{ pkgs, lib, hostname, username, version, homedirectory, ... }:
 
 {
   # This value determines the NixOS release from which the default

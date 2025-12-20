@@ -1,8 +1,8 @@
-{ config, lib, specialArgs, username, ... }:
+{ config, lib, specialArgs, username, nixType, ... }:
 let
-  cfg = config.wsl.home-manager;
+  cfg = config.${nixType}.home-manager;
 in {
-  options.wsl.home-manager = {
+  options.${nixType}.home-manager = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;

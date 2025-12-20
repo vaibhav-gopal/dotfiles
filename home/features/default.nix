@@ -8,6 +8,7 @@ let
   feature-list = [
     "bun" "cpp" "git" "glow" "rustup"
     "shell" "ssh" "term" "uv" "vim"
+    "java"
   ];
 in {
   options.features.feature-list = lib.mkOption {
@@ -25,6 +26,7 @@ in {
     ./cpp
     ./git
     ./glow
+    ./java
     ./rustup
     ./shell
     ./ssh

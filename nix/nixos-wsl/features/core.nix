@@ -1,4 +1,4 @@
-{ version, username, hostname, ... }:
+{ lib, version, username, hostname, ... }:
 {
   system.stateVersion = version;
   wsl.enable = true;
@@ -32,5 +32,4 @@
       options = lib.mkDefault "--delete-older-than 7d";
     };
   };
-};
 }

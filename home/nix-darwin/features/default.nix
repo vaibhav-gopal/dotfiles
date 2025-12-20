@@ -1,4 +1,4 @@
-{ config, lib, nixType ... }:
+{ config, lib, nixType, ... }:
 
 let
   # List of enabled features (used both here to enable features and used by features to search the directory for configs)

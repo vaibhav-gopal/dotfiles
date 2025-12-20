@@ -1,9 +1,9 @@
-{ config, lib, ... }:
+{ config, lib, nixType, ... }:
 
 let
-  cfg = config.darwin.yabai;
+  cfg = config.${nixType}.yabai;
 in {
-  options.darwin.yabai = {
+  options.${nixType}.yabai = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = false;

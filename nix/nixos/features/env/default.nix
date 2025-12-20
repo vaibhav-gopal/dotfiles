@@ -1,8 +1,8 @@
-{ config, pkgs, lib, pkgs-unstable, ... }:
+{ config, pkgs, lib, pkgs-unstable, nixType, ... }:
 let
-  cfg = config.nixos.env;
+  cfg = config.${nixType}.env;
 in {
-  options.nixos.env = {
+  options.${nixType}.env = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -52,10 +52,10 @@ in {
       systemPackages = cfg.packages;
     };
 
-#     programs.zsh.enable = true;
-#     environment.shells = [
-#       pkgs.zsh
-#     ];
+    programs.zsh.enable = true;
+    environment.shells = [
+      pkgs.zsh
+    ];
 
     # Some programs need SUID wrappers, can be configured further or are started in user sessions.
     programs.gnupg.agent = {
@@ -63,14 +63,11 @@ in {
       enableSSHSupport = true;
     };
 
-    # Firefox
+    # Firefox (TODO: move this to flatpak, or change package to unstable)
     programs.firefox.enable = true;
 
-#     # Git
-#     programs.git.enable = true;
-
-    # ping + traceroute (in `top`/`htop` like format)
-    programs.mtr.enable = true;
+    # Git
+    programs.git.enable = true;
 
     # Fonts
     fonts = lib.mkIf cfg.fonts.enable {

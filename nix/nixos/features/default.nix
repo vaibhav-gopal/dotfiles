@@ -9,5 +9,6 @@
     ./connectivity
     ./display
     ./graphics
+    ./steam
   ];
 }

@@ -1,4 +1,4 @@
-{ username, homedirectory, hostname, ... }:
+{ lib, username, homedirectory, hostname, ... }:
 {
   nix = {
     enable = true;

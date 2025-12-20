@@ -1,8 +1,8 @@
-{ config, pkgs, lib, pkgs-unstable, ... }:
+{ config, pkgs, lib, pkgs-unstable, nixType, ... }:
 let
-  cfg = config.darwin.env;
+  cfg = config.${nixType}.env;
 in {
-  options.darwin.env = {
+  options.${nixType}.env = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;

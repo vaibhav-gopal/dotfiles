@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 {
   # enable hardware acceleration
   hardware.graphics.enable = true;
