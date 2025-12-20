@@ -3,7 +3,6 @@
 let
   cfg = config.features.java;
 in {
-  # MODULE OPTIONS DECLARATION
   options.features.java = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -18,7 +17,6 @@ in {
     };
   };
 
-  # MODULE BODY
   config = lib.mkIf cfg.enable {
     programs.java.enable = true;
     programs.java.package = cfg.package;

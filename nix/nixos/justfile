@@ -7,28 +7,40 @@ nixos_checker := if nixtype == "nixos" { "Y" } else { "N" }
 nixos_check:
     @echo "{{BOLD + BLUE}}Is nixos set in \$NIXTYPE? {{if nixos_checker == "Y" { "OK!" } else { error("nixos not active") } }}{{NORMAL}}"
 
-# Switch / rebuild nixos configuration (specify config name or load from $NIXCONFIG)
+# Switch / rebuild nixos configuration
 [group('nixos')]
-nixos_build config=nixconfig: nixos_check
-    sudo -H nixos-rebuild switch --flake {{nixos_directory}}#{{config}}
+nixos_build: nixos_check
+    sudo -H nixos-rebuild switch --flake {{nixos_directory}}#{{nixconfig}}
 
-# Update all flake inputs
 [group('nixos')]
 nixos_update: nixos_check
-    nix flake update
+    sudo nix flake update --flake {{nixos_directory}}
 
-# Match the nix channels with the nixos lts version. (Unable to install the latest packages on a per-package basis if needed)
 [group('nixos')]
-nixos_match-lts-channel: nixos_check
-    @echo -e "{{BOLD + RED}}Warning! This will remove the `nixpkgs` channel and replace it with the nixos-XX version!{{NORMAL}}"
+nixos_upgrade: nixos_check
+    sudo -H nix-channel --update
+    sudo -H nix profile upgrade --all
+
+[group('nixos')]
+nixos_lts-channel: nixos_check
     sudo -H nix-channel --remove nixpkgs
     sudo -H nix-channel --add https://nixos.org/channels/nixos-{{nixpkgs}} nixpkgs
     sudo -H nix-channel --update
 
-# Update the nix channels with unstable. (Recommended)
 [group('nixos')]
 nixos_unstable-channel: nixos_check
-    @echo -e "{{BOLD + RED}}Warning! This will remove the `nixpkgs` channel and replace it with the nixos-unstable version!{{NORMAL}}"
     sudo -H nix-channel --remove nixpkgs
     sudo -H nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
     sudo -H nix-channel --update
+
+[group('nixos')]
+nixos_arch-features: nixos_check
+    sudo nix eval --json {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.config.features
+
+[group('nixos')]
+nixos_home-features: nixos_check
+    sudo nix eval --json {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}.features
+
+[group('nixos')]
+nixos_system-features: nixos_check
+    sudo nix eval --json {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}.system.features

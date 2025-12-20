@@ -4,31 +4,43 @@ wsl_checker := if nixtype == "nixos-wsl" { "Y" } else { "N" }
 
 # Check $NIXTYPE is set correctly for nixos
 [group('nixos-wsl')]
-wsl_check:
+nixos-wsl_check:
     @echo "{{BOLD + BLUE}}Is nixos-wsl set in \$NIXTYPE? {{if wsl_checker == "Y" { "OK!" } else { error("nixos-wsl not active") } }}{{NORMAL}}"
 
-# Switch / rebuild nixos-wsl configuration (specify config name or load from $NIXCONFIG)
+# Switch / rebuild nixos-wsl configuration
 [group('nixos-wsl')]
-wsl_build config=nixconfig: wsl_check
-    sudo -H nixos-rebuild switch --flake {{wsl_directory}}#{{config}}
+nixos-wsl_build: nixos-wsl_check
+    sudo -H nixos-rebuild switch --flake {{wsl_directory}}#{{nixconfig}}
 
-# Update all flake inputs
 [group('nixos-wsl')]
-wsl_update: wsl_check
-    nix flake update
+nixos-wsl_update: nixos-wsl_check
+    sudo nix flake update --flake {{wsl_directory}}
 
-# Match the nix channels with the nixos lts version. (Unable to install the latest packages on a per-package basis if needed)
 [group('nixos-wsl')]
-wsl_match-lts-channel: wsl_check
-    @echo -e "{{BOLD + RED}}Warning! This will remove the `nixpkgs` channel and replace it with the nixos-XX version!{{NORMAL}}"
+nixos-wsl_upgrade: nixos-wsl_check
+    sudo -H nix-channel --update
+    sudo -H nix profile upgrade --all
+
+[group('nixos-wsl')]
+nixos-wsl_lts-channel: nixos-wsl_check
     sudo -H nix-channel --remove nixpkgs
     sudo -H nix-channel --add https://nixos.org/channels/nixos-{{nixpkgs}} nixpkgs
     sudo -H nix-channel --update
 
-# Update the nix channels with unstable. (Recommended)
 [group('nixos-wsl')]
-wsl_unstable-channel: wsl_check
-    @echo -e "{{BOLD + RED}}Warning! This will remove the `nixpkgs` channel and replace it with the nixos-unstable version!{{NORMAL}}"
+nixos-wsl_unstable-channel: nixos-wsl_check
     sudo -H nix-channel --remove nixpkgs
     sudo -H nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
     sudo -H nix-channel --update
+
+[group('nixos-wsl')]
+nixos-wsl_arch-features: nixos-wsl_check
+    sudo nix eval --json {{wsl_directory}}#nixosConfigurations.{{nixconfig}}.config.features
+
+[group('nixos-wsl')]
+nixos-wsl_home-features: nixos-wsl_check
+    sudo nix eval --json {{wsl_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}.features
+
+[group('nixos-wsl')]
+nixos-wsl_system-features: nixos-wsl_check
+    sudo nix eval --json {{wsl_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}.system.features

@@ -8,7 +8,7 @@ let
   systemShellDirs = builtins.filter builtins.pathExists [ "${config.extPaths.nixtypeSystemDir}/shell.d" ];
   # List all valid shell fragment directories from enabled features
   featureShellDirs = builtins.filter builtins.pathExists (
-    map (feature: "${config.extPaths.commonFeaturesDir}/${feature}/shell.d") (builtins.attrnames config.features)
+    map (feature: "${config.extPaths.commonFeaturesDir}/${feature}/shell.d") (builtins.attrNames config.features)
   );
   # List all valid shell fragment directories from enabled system level features
   featureSystemShellDirs = builtins.filter builtins.pathExists (

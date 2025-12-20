@@ -27,5 +27,6 @@
 - nixos desktop/server setup - DONE
 
 ## NEED TO DO
+
 - vim setup + nvim setup + vscode vimrc (HIGH) - IN PROGRESS
 - hyprland setup (HIGH) - IN PROGRESS
