@@ -5,14 +5,14 @@ let
 
   # =================== SHELL FRAGMENT LOADER =======================
   # Build candidate dirs as *strings* (not Nix paths), so missing dirs don't explode at eval time. We'll filter by pathExists before using them.
-  systemShellDirs = builtins.filter builtins.pathExists [ config.extPaths.nixtypeSystemDir/shell.d ];
+  systemShellDirs = builtins.filter builtins.pathExists [ "${config.extPaths.nixtypeSystemDir}/shell.d" ];
   # List all valid shell fragment directories from enabled features
   featureShellDirs = builtins.filter builtins.pathExists (
     map (feature: "${config.extPaths.commonFeaturesDir}/${feature}/shell.d") config.features.feature-list
   );
   # List all valid shell fragment directories from enabled system level features
   featureSystemShellDirs = builtins.filter builtins.pathExists (
-    map (feature: "${config.extPaths.nixtypeFeaturesDir}/${feature}/shell.d") config.${nixType}.feature-list
+    map (feature: "${config.extPaths.nixtypeFeaturesDir}/${feature}/shell.d") config.${nixType}.features.feature-list
   );
   # Abstract fragment loader for shell stages (e.g. .zshrc, .zprofile)
   loadShellFragments = stageExt: dir: ''

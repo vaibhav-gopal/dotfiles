@@ -1,9 +1,9 @@
 { config, lib, pkgs, nixType, ... }:
 let
-  cfg = config.${nixType}.vscode;
+  cfg = config.${nixType}.features.vscode;
 in {
   # MODULE OPTIONS DECLARATION
-  options.${nixType}.vscode = {
+  options.${nixType}.features.vscode = {
     enable = lib.mkEnableOption "Enable vscode application";
     package = lib.mkOption {
       type = lib.types.package;

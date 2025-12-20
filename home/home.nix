@@ -30,13 +30,13 @@ in {
     };
 
     # per-nixType + per-system overrides
-    nixtypeDir = {
+    nixtypeDir = lib.mkOption {
       type = lib.types.path;
       default = "${config.home.homeDirectory}/dotfiles/home/${nixType}";
       defaultText = lib.literalExpression "${config.home.homeDirectory}/dotfiles/home/${nixType}";
       description = "The location of the dotfiles home-manager, per-nixType overrides directory, for use with raw symlinking / files out of nix store";
     };
-    nixtypeSystemDir = {
+    nixtypeSystemDir = lib.mkOption {
       type = lib.types.path;
       default = "${config.home.homeDirectory}/dotfiles/home/${nixType}/${hostname}";
       defaultText = lib.literalExpression "${config.home.homeDirectory}/dotfiles/home/${nixType}/${hostname}";
@@ -50,7 +50,7 @@ in {
       defaultText = lib.literalExpression "${config.home.homeDirectory}/dotfiles/home/features";
       description = "The location of the dotfiles home-manager common features directory, for use with raw symlinking / files out of nix store";
     };
-    nixtypeFeaturesDir = {
+    nixtypeFeaturesDir = lib.mkOption {
       type = lib.types.path;
       default = "${config.home.homeDirectory}/dotfiles/home/${nixType}/features";
       defaultText = lib.literalExpression "${config.home.homeDirectory}/dotfiles/home/${nixType}/features";

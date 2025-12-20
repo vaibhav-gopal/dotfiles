@@ -1,9 +1,9 @@
 { config, lib, pkgs, nixType, ... }:
 let
-  cfg = config.${nixType}.minecraft;
+  cfg = config.${nixType}.features.minecraft;
 in {
   # MODULE OPTIONS DECLARATION
-  options.${nixType}.minecraft = {
+  options.${nixType}.features.minecraft = {
     enable = lib.mkEnableOption "Enable prism launcher for minecraft";
     package = lib.mkOption {
       type = lib.types.package;

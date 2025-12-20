@@ -1,9 +1,9 @@
 { config, lib, pkgs, nixType, ... }:
 let
-  cfg = config.${nixType}.discord;
+  cfg = config.${nixType}.features.discord;
 in {
   # MODULE OPTIONS DECLARATION
-  options.${nixType}.discord = {
+  options.${nixType}.features.discord = {
     enable = lib.mkEnableOption "Enable discord client";
     package = lib.mkOption {
       type = lib.types.package;
