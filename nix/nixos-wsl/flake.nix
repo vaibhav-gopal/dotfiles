@@ -28,6 +28,9 @@
       };
     };
   in {
+    # export configurations
+    inherit configurations;
+
     nixosConfigurations = {
       vgwsl2 = nixpkgs.lib.nixosSystem (let 
         # Common nixpkgs configurations (overlays, unfree packages, etc...) (applies to all except `pkgs` / `nixpkgs` itself)

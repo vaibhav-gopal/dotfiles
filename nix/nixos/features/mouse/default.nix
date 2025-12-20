@@ -1,8 +1,8 @@
-{ config, lib, pkgs, nixType, ... }:
+{ config, lib, pkgs, ... }:
 let
-  cfg = config.${nixType}.mouse;
+  cfg = config.features.mouse;
 in {
-  options.${nixType}.mouse = {
+  options.features.mouse = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;

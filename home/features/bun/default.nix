@@ -4,7 +4,11 @@ let
   cfg = config.features.bun;
 in {
   options.features.bun = {
-    enable = lib.mkEnableOption "Enable the bun program.";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable the bun program.";
+    };
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.bun;

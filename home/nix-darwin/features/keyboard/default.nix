@@ -1,13 +1,17 @@
-{ config, lib, nixType, ... }:
+{ config, lib, ... }:
 
 let
-  cfg = config.${nixType}.features.keyboard;
+  cfg = config.system.features.keyboard;
   bundlePath = "${config.extPaths.nixFeaturesTypeDir}/keyboard/VaibhavMacKeyboardLayouts";
   layoutsPath = "${config.home.homeDirectory}/Library/Keyboard\ Layouts/";
   layoutsDirPath = "${config.home.homeDirectory}/Library/Keyboard\ Layouts/";
 in {
-  options.${nixType}.features.keyboard = {
-    enable = lib.mkEnableOption "Enable darwin keyboard";
+  options.system.features.keyboard = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable darwin keyboard";
+    };
 
     bundlePath = lib.mkOption {
       type = lib.types.path;

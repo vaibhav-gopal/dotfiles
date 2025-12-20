@@ -4,7 +4,11 @@ let
   cfg = config.features.glow;
 in {
   options.features.glow = {
-    enable = lib.mkEnableOption "Enable glow markdown CLI viewer";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable glow markdown CLI viewer";
+    };
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.glow;

@@ -4,7 +4,11 @@ let
   cfg = config.features.git;
 in {
   options.features.git = {
-    enable = lib.mkEnableOption "Enable git configuration management";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable git configuration management";
+    };
     name = lib.mkOption {
       type = lib.types.str;
       default = "Vaibhav Gopal";

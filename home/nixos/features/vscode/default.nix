@@ -1,9 +1,9 @@
-{ config, lib, pkgs-unstable, nixType, ... }:
+{ config, lib, pkgs-unstable, ... }:
 let
-  cfg = config.${nixType}.features.vscode;
+  cfg = config.system.features.vscode;
 in {
   # MODULE OPTIONS DECLARATION
-  options.${nixType}.features.vscode = {
+  options.system.features.vscode = {
     enable = lib.mkEnableOption "Enable vscode application";
     package = lib.mkOption {
       type = lib.types.package;

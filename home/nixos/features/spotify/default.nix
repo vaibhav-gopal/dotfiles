@@ -1,10 +1,14 @@
-{ config, lib, pkgs, nixType, ... }:
+{ config, lib, pkgs, ... }:
 let
-  cfg = config.${nixType}.features.spotify;
+  cfg = config.system.features.spotify;
 in {
   # MODULE OPTIONS DECLARATION
-  options.${nixType}.features.spotify = {
-    enable = lib.mkEnableOption "Enable spotify client";
+  options.system.features.spotify = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable spotify client";
+    };
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.spotify;

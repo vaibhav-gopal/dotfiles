@@ -1,9 +1,9 @@
-{ config, lib, nixType, ... }:
+{ config, lib, ... }:
 
 let
-  cfg = config.${nixType}.statusbar;
+  cfg = config.features.statusbar;
 in {
-  options.${nixType}.statusbar = {
+  options.features.statusbar = {
     # NOTE: please see the setup prereqs here first: https://felixkratz.github.io/SketchyBar/setup
     enable = lib.mkOption {
       type = lib.types.bool;

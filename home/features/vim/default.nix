@@ -4,7 +4,11 @@ let
   cfg = config.features.vim;
 in {
   options.features.vim = {
-    enable = lib.mkEnableOption "Enable vim feature";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable vim feature";
+    };
     nvim = {
       enable = lib.mkOption {
         type = lib.types.bool;

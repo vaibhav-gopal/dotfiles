@@ -4,7 +4,11 @@ let
   cfg = config.features.rustup;
 in {
   options.features.rustup = {
-    enable = lib.mkEnableOption "Enable rustup : rust toolchain manager";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable rustup : rust toolchain manager";
+    };
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.rustup;

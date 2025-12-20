@@ -1,4 +1,4 @@
-{ self, ... }:
+{ ... }:
 {
   # manually add the systems hardware config!
   imports = [

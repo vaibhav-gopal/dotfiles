@@ -1,10 +1,15 @@
-{ config, lib, pkgs, nixType, ... }:
+{ config, lib, pkgs, ... }:
+
 let
   cfg = config.features.java;
 in {
   # MODULE OPTIONS DECLARATION
   options.features.java = {
-    enable = lib.mkEnableOption "Enable the java development kit (JDK) and/or java runtime environment (JRE)";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable the java development kit (JDK) and/or java runtime environment (JRE)";
+    };
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.temurin-bin;

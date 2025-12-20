@@ -1,8 +1,8 @@
-{ config, lib, specialArgs, username, nixType, ... }:
+{ config, lib, specialArgs, username, ... }:
 let
-  cfg = config.${nixType}.home-manager;
+  cfg = config.features.home-manager;
 in {
-  options.${nixType}.home-manager = {
+  options.features.home-manager = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;

@@ -1,9 +1,9 @@
-{ config, lib, nixType, ... }:
+{ config, lib, ... }:
 
 let
-  cfg = config.${nixType}.hotkeys;
+  cfg = config.features.hotkeys;
 in {
-  options.${nixType}.hotkeys = {
+  options.features.hotkeys = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = false;

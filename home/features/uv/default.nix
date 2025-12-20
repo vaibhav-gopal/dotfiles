@@ -4,7 +4,11 @@ let
   cfg = config.features.uv;
 in {
   options.features.uv = {
-    enable = lib.mkEnableOption "Enable uv : python env manager";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable uv : python env manager";
+    };
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.uv;

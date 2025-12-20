@@ -4,7 +4,11 @@ let
   cfg = config.features.cpp;
 in {
   options.features.cpp = {
-    enable = lib.mkEnableOption "Enable c++ build and dev tools";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable c++ build and dev tools";
+    };
     packages = {
       gcc = lib.mkOption {
         type = lib.types.package;

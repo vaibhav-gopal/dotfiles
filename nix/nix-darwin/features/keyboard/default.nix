@@ -1,9 +1,9 @@
-{ config, lib, nixType, ... }:
+{ config, lib, ... }:
 
 let
-  cfg = config.${nixType}.keyboard;
+  cfg = config.features.keyboard;
 in {
-  options.${nixType}.keyboard = {
+  options.features.keyboard = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;

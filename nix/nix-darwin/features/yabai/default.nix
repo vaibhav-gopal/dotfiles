@@ -1,9 +1,9 @@
-{ config, lib, nixType, ... }:
+{ config, lib, ... }:
 
 let
-  cfg = config.${nixType}.yabai;
+  cfg = config.features.yabai;
 in {
-  options.${nixType}.yabai = {
+  options.features.yabai = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = false;

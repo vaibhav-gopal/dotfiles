@@ -18,6 +18,7 @@
 # `@` - silent recipe
 # `_` - private recipe
 
+# See the .template-env file for more info on why/how each of these are used
 dotenv-dir := 'env'
 set dotenv-filename := 'env/.env'
 set dotenv-required
@@ -25,6 +26,7 @@ nixtype := env('NIXTYPE')
 nixbuildrecipe := env('NIXBUILDRECIPE')
 nixconfig := env('NIXCONFIG')
 nixpkgs := env('NIXCONFIG_VERSION')
+nixusername := env('NIXCONFIG_USERNAME')
 
 import 'nix/nix-darwin/justfile'
 import 'nix/nixos/justfile'
@@ -35,20 +37,15 @@ default:
     @echo -e "{{BOLD + BLUE}}Listing all recipes for dotfiles{{NORMAL}}"
     @just --list --justfile {{justfile()}} --list-heading '' --unsorted
 
-# Print out .env variables [NIXTYPE, NIXBUILDRECIPE, NIXCONFIG, NIXCONFIG_VERSION]
+# Print out .env variables [NIXTYPE, NIXBUILDRECIPE, NIXCONFIG, NIXCONFIG_VERSION, NIXCONFIG_USERNAME]
 status:
     @echo -e "{{BOLD + BLUE}}Dotfiles config:{{NORMAL}}"
     @while IFS= read -r line; do echo "{{BOLD + CYAN}}$line{{NORMAL}}"; done < {{dotenv-dir / ".env"}}
 
-# build using .env variables [NIXTYPE, NIXBUILDRECIPE, NIXCONFIG, NIXCONFIG_VERSION] (specify config name or load from $NIXCONFIG)
+# build using .env variables [NIXTYPE, NIXBUILDRECIPE, NIXCONFIG, NIXCONFIG_VERSION, NIXCONFIG_USERNAME] (specify config name or load from $NIXCONFIG)
 build config=nixconfig:
     @echo -e "{{BOLD + BLUE}}Building {{nixtype}} for config '{{nixconfig}}' @ {{nixpkgs}} with recipe {{nixbuildrecipe}}{{NORMAL}}"
     @just --justfile {{justfile()}} {{nixbuildrecipe}} {{config}}
-
-# Run a recipe (interactive)
-run:
-    @echo -e "{{BOLD + BLUE}}Interactively running a recipe from {{justfile_directory()}}...{{NORMAL}}"
-    -@just --choose --justfile {{justfile()}}
 
 # Updates the nixpkgs channel and upgrades nix profile packages.
 upgrade:

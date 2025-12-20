@@ -1,7 +1,7 @@
 { ...  }:
 {
   imports = [
-    ./darwin.nix
+    ./core.nix
     ./env
     ./home
     ./hotkeys

@@ -27,6 +27,9 @@
       };
     };
   in {
+    # export configurations
+    inherit configurations;
+
     darwinConfigurations = {
       vgmacbook = nix-darwin.lib.darwinSystem (let 
         # Common nixpkgs configurations (overlays, unfree packages, etc...) (applies to all except `pkgs` / `nixpkgs` itself)

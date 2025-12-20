@@ -1,8 +1,8 @@
-{ config, lib, nixType, ... }:
+{ config, lib, ... }:
 let
-  cfg = config.${nixType}.steam;
+  cfg = config.features.steam;
 in {
-  options.${nixType}.steam = {
+  options.features.steam = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;

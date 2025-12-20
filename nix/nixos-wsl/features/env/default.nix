@@ -1,8 +1,8 @@
-{ config, pkgs, lib, pkgs-unstable, nixType, ... }:
+{ config, pkgs, lib, pkgs-unstable, ... }:
 let 
-  cfg = config.${nixType}.env;
+  cfg = config.features.env;
 in {
-  options.${nixType}.env = {
+  options.features.env = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;

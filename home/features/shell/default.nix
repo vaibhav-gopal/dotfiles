@@ -1,4 +1,4 @@
-{ config, lib, nixType, ... }:
+{ config, lib, ... }:
 
 let 
   cfg = config.features.shell;
@@ -8,11 +8,11 @@ let
   systemShellDirs = builtins.filter builtins.pathExists [ "${config.extPaths.nixtypeSystemDir}/shell.d" ];
   # List all valid shell fragment directories from enabled features
   featureShellDirs = builtins.filter builtins.pathExists (
-    map (feature: "${config.extPaths.commonFeaturesDir}/${feature}/shell.d") config.features.feature-list
+    map (feature: "${config.extPaths.commonFeaturesDir}/${feature}/shell.d") (builtins.attrnames config.features)
   );
   # List all valid shell fragment directories from enabled system level features
   featureSystemShellDirs = builtins.filter builtins.pathExists (
-    map (feature: "${config.extPaths.nixtypeFeaturesDir}/${feature}/shell.d") config.${nixType}.features.feature-list
+    map (feature: "${config.extPaths.nixtypeFeaturesDir}/${feature}/shell.d") (builtins.attrNames config.system.features)
   );
   # Abstract fragment loader for shell stages (e.g. .zshrc, .zprofile)
   loadShellFragments = stageExt: dir: ''
@@ -28,7 +28,11 @@ let
       (systemShellDirs ++ featureShellDirs ++ featureSystemShellDirs));
 in {
   options.features.shell = {
-    enable = lib.mkEnableOption "Enable shell management and configuration";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable shell management and configuration";
+    };
     direnv = {
       enable = lib.mkOption {
         type = lib.types.bool;

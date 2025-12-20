@@ -4,7 +4,11 @@ let
   cfg = config.features.term;
 in {
   options.features.term = {
-    enable = lib.mkEnableOption "Enable some terminal utilities";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable some terminal utilities";
+    };
     zellij = {
       enable = lib.mkOption {
         type = lib.types.bool;

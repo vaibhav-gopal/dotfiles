@@ -4,7 +4,11 @@ let
   cfg = config.features.ssh;
 in {
   options.features.ssh = {
-    enable = lib.mkEnableOption "Enable ssh configuration";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable ssh configuration";
+    };
     package = lib.mkOption {
       type = lib.types.nullOr lib.types.package;
       default = pkgs.openssh;
