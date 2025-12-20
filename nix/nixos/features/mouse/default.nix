@@ -17,6 +17,6 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-				environment.systemPackages = [ pkgs.package ];
+				environment.systemPackages = [ cfg.package ];
   };
 }
