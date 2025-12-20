@@ -25,29 +25,38 @@
         username = "vaibhav";
         system = "x86_64-linux";
         hostname = "vgnixmini";
-        version = "25.11"; # remember this is state version not nixpkgs version!
+        version = "25.11";
         homedirectory = "/home/vaibhav";
         nixType = "nixos";
       };
     };
   in {
-    # export configurations as an output
-    inherit configurations;
-
-    # main nixos configurations
     nixosConfigurations = {
       vgkraken = nixpkgs.lib.nixosSystem (let
-        # nixpkgs is automatically parsed as `pkgs` and passed in, everything else however is still named the same
-        # select the proper nixpkgs-unstable subset with system and pass through as `pkgs-unstable`
+        # Common nixpkgs configurations (overlays, unfree packages, etc...)
+        commonPkgsConfig = {
+          config.allowUnfree = true;
+        };
+        commonPkgsVersion = with configurations.vgkraken; {
+          inherit system;
+        };
+
+        # the base `pkgs` argument is special, it is automatically created / configured and passed in (DO NOT modify, outside of sub modules, many other non-user made modules use this configuration option!)
+        # Need to set any other nixpkgs channel / input other than the main one (used to create system config) explicitly here (options DO NOT get passed into submodules)
+        pkgs-unstable = import nixpkgs-unstable commonPkgsConfig // commonPkgsVersion;
+
+        # create set of extra args to pass in to every sub module
         specialArgs = inputs // configurations.vgkraken // {
-          pkgs-unstable = with configurations.vgkraken; import nixpkgs-unstable {
-            inherit system;
-          };
+          inherit pkgs-unstable;
         };
       in with configurations.vgkraken; {
+        # inherit system > tells which specific `pkgs` / `nixpkgs` version to use | inherit specialArgs > read above
         inherit system specialArgs;
         modules = [
           #################CORE#################
+          # Common nixpkgs configurations
+          { nixpkgs = { config = commonPkgsConfig; }; }
+
           # home-manager includes
           home-manager.nixosModules.home-manager
 
@@ -60,17 +69,23 @@
       });
 
       vgnixmini = nixpkgs.lib.nixosSystem (let
-        # nixpkgs is automatically parsed as `pkgs` and passed in, everything else however is still named the same
-        # select the proper nixpkgs-unstable subset with system and pass through as `pkgs-unstable`
+        commonPkgsConfig = {
+          config.allowUnfree = true;
+        };
+        commonPkgsVersion = with configurations.vgnixmini; {
+          inherit system;
+        };
+        pkgs-unstable = import nixpkgs-unstable commonPkgsConfig // commonPkgsVersion;
         specialArgs = inputs // configurations.vgnixmini // {
-          pkgs-unstable = with configurations.vgnixmini; import nixpkgs-unstable {
-            inherit system;
-          };
+          inherit pkgs-unstable;
         };
       in with configurations.vgnixmini; {
         inherit system specialArgs;
         modules = [
           #################CORE#################
+          # Common nixpkgs configurations
+          { nixpkgs = { config = commonPkgsConfig; }; }
+
           # home-manager includes
           home-manager.nixosModules.home-manager
 
