@@ -52,6 +52,7 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs-unstable.config.allowUnfree = true;
 
   # Set your time zone.
   time.timeZone = "America/New_York";
