@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, lib, username, version, homedirectory, ... }:
+{ pkgs, lib, username, version, homedirectory, ... }:
 
 {
   # ─── Core User Configuration ──────────────────────────────────────────────
