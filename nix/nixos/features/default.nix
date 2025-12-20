@@ -9,6 +9,7 @@
     ./connectivity
     ./display
     ./graphics
+    ./mouse
     ./steam
   ];
 }
