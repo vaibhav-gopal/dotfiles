@@ -15,6 +15,7 @@ in {
         pkgs.wget
         pkgs.vim
         pkgs.lshw
+        pkgs.usbutils
         # install unstable packages ; need the latest version (bug fixes or etc...)
         pkgs-unstable.just
         pkgs-unstable.nixd
