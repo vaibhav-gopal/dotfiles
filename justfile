@@ -80,6 +80,13 @@ unstable-channel:
     @echo -e "{{BOLD + RED}}Warning! This will remove the `nixpkgs` channel and replace it with the nixos-unstable version!{{NORMAL}}"
     @just --justfile {{justfile()}} {{nixtype}}_unstable-channel
 
+# list out all features
+[group('archetype')]
+features:
+    @just --justfile {{justfile()}} arch-features
+    @just --justfile {{justfile()}} home-features
+    @just --justfile {{justfile()}} system-features
+
 # list out all system wide features
 [group('archetype')]
 arch-features:
