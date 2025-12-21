@@ -19,7 +19,7 @@
   outputs = { self , nixpkgs , fenix, flake-utils, ... }: flake-utils.lib.eachDefaultSystem ( system:
     let
       pkgs = import nixpkgs {inherit system;};
-      toolchain = fenix.packages.${system}.fromToolchainFile { dir = ./.; };
+      toolchain = fenix.packages.${system}.fromToolchainFile { dir = ./.; sha256 = nixpkgs.lib.fakeSha256; };
       # toolchain = fenix.packages.${system}.minimal; # Minimal profile of nightly channel
       # toolchain = fenix.packages.${system}.minimal.withComponents ["rust-analyzer"]; # Minimal profile of nightly channel with extra components
       # toolchain = with fenix.packages.${system}; combine [ minimal.cargo minimal.rustc stable.rustfmt stable.clippy ]; # Mix of components
@@ -33,7 +33,7 @@
       };
       devShells.default = pkgs.mkShell {
         packages = with pkgs; [
-          toolchain.toolchain
+          toolchain
         ];
       };
     }
