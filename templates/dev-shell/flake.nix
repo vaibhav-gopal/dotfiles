@@ -2,7 +2,7 @@
 {
   description = "A general dev shell template (for use with `nix develop`) ";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/25.05"; # change nixpkgs version if needed
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable"; # change nixpkgs version if needed
   };
 
   outputs = { self , nixpkgs ,... }: let

@@ -99,9 +99,11 @@
     lg = "eza --all --git-ignore";
     llg = "eza --all --long --git-ignore";
     ltg = "eza --all --long --tree --ignore-glob .git --git-ignore --level";
+    vedit = "code ~/ditfiles";
+    vcd = "z ~/dotfiles";
+    vfind = "yazi ~/dotfiles";
     cdp = "cd ../"; # to parent directory
     cdb = "cd -"; # to previous directory
-    cdd = "cd ~/dotfiles"; # cd to dotfiles directory
   };
 }
 
