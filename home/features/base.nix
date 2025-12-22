@@ -99,8 +99,8 @@
     lg = "eza --all --git-ignore";
     llg = "eza --all --long --git-ignore";
     ltg = "eza --all --long --tree --ignore-glob .git --git-ignore --level";
-    dot = "z ~/dotfiles";
-    dott = "code ~/dotfiles";
+    dot = "code ~/dotfiles";
+    cdot = "z ~/dotfiles";
   };
 }
 
