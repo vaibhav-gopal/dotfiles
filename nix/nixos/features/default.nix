@@ -2,13 +2,13 @@
 {
   imports = [
     ./core.nix
-    ./env
-    ./home
     ./audio
     ./connectivity
     ./desktop
+    ./devices
+    ./env
     ./graphics
-    ./mouse
+    ./home
     ./steam
   ];
 }
