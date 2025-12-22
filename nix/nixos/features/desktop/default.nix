@@ -19,21 +19,23 @@ in {
     enable = lib.mkEnableOption "enable KDE plasma desktop environment" // { default = true; };
   };
 
-  config = lib.mkIf cfgx11.enable {
-    # Enable the X11 windowing system.
-    services.xserver.enable = true;
-    # Configure keymap in X11
-    services.xserver.xkb = {
-      layout = "us";
-      variant = "";
-    };
-  } // lib.mkIf cfgdm.enable (
-    if cfgdm.select == "sddm" then {
+  config = lib.mkMerge [
+    (lib.mkIf cfgx11.enable {
+      # Enable the X11 windowing system.
+      services.xserver.enable = true;
+      # Configure keymap in X11
+      services.xserver.xkb = {
+        layout = "us";
+        variant = "";
+      };
+    })
+    (lib.mkIf (cfgdm.enable && cfgdm.select == "sddm") {
       # Enable the simple desktop display manager (SDDM)
       services.displayManager.sddm.enable = true;
-    } else {}
-  ) // lib.mkIf cfgplasma.enable {
-    # Enable the KDE Plasma Desktop Environment.
-    services.desktopManager.plasma6.enable = true;
-  };
+    })
+    (lib.mkIf cfgplasma.enable {
+      # Enable the KDE Plasma Desktop Environment.
+      services.desktopManager.plasma6.enable = true;
+    })
+  ];
 }
