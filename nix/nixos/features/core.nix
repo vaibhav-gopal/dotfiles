@@ -21,7 +21,11 @@
   };
   networking.hostName = hostname; # Define your hostname.
 
-  # Bootloader.
+  # Enable all firmware on device to be loaded
+  hardware.enableAllFirmware = true;
+
+  # Bootloader / Kernel
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 

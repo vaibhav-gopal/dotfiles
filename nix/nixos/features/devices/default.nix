@@ -81,7 +81,7 @@ in {
 
     {
       # Boot (load usb kernel modules, explicitly)
-      boot.kernelModules = [ "usb" "xhci_hdc" ];
+      boot.kernelModules = [ "xhci_hcd" ];
       # Disable autosuspend usb devices
       boot.kernelParams = ["usbcore.autosuspend=-1"];
     }

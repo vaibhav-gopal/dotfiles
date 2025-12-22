@@ -4,11 +4,7 @@ let
 in {
   # MODULE OPTIONS DECLARATION
   options.system.features.discord = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable discord client";
-    };
+    enable = lib.mkEnableOption "Enable discord client" // { default = true; };
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.discord;

@@ -35,6 +35,11 @@ in {
       # Enable bluetooth
       hardware.bluetooth.enable = true;
       hardware.bluetooth.powerOnBoot = true;
+      hardware.bluetooth.settings = {
+        General = {
+          Experimental = true; # Helps with newer BT protocols and implementations
+        };
+      };
       # Boot (load bluetooth kernel modules, explicitly)
       boot.kernelModules = ["btusb" "bluetooth"];
     })
