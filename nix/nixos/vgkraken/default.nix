@@ -23,7 +23,7 @@
     # bluetooth module (mt7925e - MediaTek Wifi 7 + Bluetooth 5.4)
     # getting boot messages / kernel messages with -110 error (failing enter/exit LP states)
     # disable ASPM (active state power management)
-    boot.kernelParams = [ "mt7925e.disable_aspm=1" ];
+    # boot.kernelParams = [ "mt7925e.disable_aspm=1" ];
   };
 
 

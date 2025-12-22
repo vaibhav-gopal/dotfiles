@@ -7,6 +7,11 @@ nixos_checker := if nixtype == "nixos" { "Y" } else { "N" }
 nixos_check:
     @echo "{{BOLD + BLUE}}Is nixos set in \$NIXTYPE? {{if nixos_checker == "Y" { "OK!" } else { error("nixos not active") } }}{{NORMAL}}"
 
+# Switch / rebuild nixos configuration (with updated kernel or boot params ; applies changes only on next boot)
+[group('nixos')]
+nixos_build_boot: nixos_check
+    sudo -H nixos-rebuild boot --flake {{nixos_directory}}#{{nixconfig}}
+
 # Switch / rebuild nixos configuration
 [group('nixos')]
 nixos_build: nixos_check
