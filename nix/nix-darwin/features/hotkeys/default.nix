@@ -4,11 +4,7 @@ let
   cfg = config.features.hotkeys;
 in {
   options.features.hotkeys = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "enable skhd hotkey daemon";
-    };
+    enable = lib.mkEnableOption "enable skhd hotkey daemon" // { default = true; };
     config = lib.mkOption {
       type = lib.types.str;
       description = "The skhd config (hotkey shortcuts)";

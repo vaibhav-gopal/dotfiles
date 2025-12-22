@@ -3,11 +3,7 @@ let
   cfg = config.features.home;
 in {
   options.features.home = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "enable darwin home-manager configuration";
-    };
+    enable = lib.mkEnableOption "enable darwin home-manager configuration" // { default = true; };
   };
 
   config = lib.mkIf cfg.enable {

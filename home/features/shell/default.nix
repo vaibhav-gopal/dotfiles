@@ -28,23 +28,11 @@ let
       (systemShellDirs ++ featureShellDirs ++ featureSystemShellDirs));
 in {
   options.features.shell = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable shell management and configuration";
-    };
+    enable = lib.mkEnableOption "Enable shell management and configuration" // { default = true; };
     direnv = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = "Enable direnv ; automatic loading of .envrc files for environment variables.";
-      };
+      enable = lib.mkEnableOption "Enable direnv ; automatic loading of .envrc files for environment variables." // { default = true; };
       nix-direnv = {
-        enable = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-          description = "Enable nix-direnv ; automatic loading of env shells";
-        };
+        enable = lib.mkEnableOption "Enable nix-direnv ; automatic loading of env shells" // { default = true; };
       };
     };
   };

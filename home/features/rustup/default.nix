@@ -4,21 +4,13 @@ let
   cfg = config.features.rustup;
 in {
   options.features.rustup = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable rustup : rust toolchain manager";
-    };
+    enable = lib.mkEnableOption "Enable rustup : rust toolchain manager" // { default = true; };
+    enable_auto_install_toolchain = lib.mkEnableOption "Auto install toolchains from rust-toolchain.toml from local directory" // { default = false; };
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.rustup;
       defaultText = lib.literalExpression "pkgs.rustup";
       description = "The rustup package to use";
-    };
-    auto-install-toolchain = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Auto install toolchains from rust-toolchain.toml from local directory";
     };
   };
 
@@ -27,7 +19,7 @@ in {
     home.sessionVariables = {
       CARGO_HOME = "${config.home.homeDirectory}/.cargo";
       RUSTUP_HOME = "${config.home.homeDirectory}/.rustup";
-      RUSTUP_AUTO_INSTALL = "${if cfg.auto-install-toolchain then "1" else "0"}";
+      RUSTUP_AUTO_INSTALL = "${if cfg.enable_auto_install_toolchain then "1" else "0"}";
     };
   };
 }

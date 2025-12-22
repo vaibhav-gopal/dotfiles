@@ -4,11 +4,7 @@ let
   cfg = config.features.keyboard;
 in {
   options.features.keyboard = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "enable remapping keyboard";
-    };
+    enable = lib.mkEnableOption "enable remapping keyboard" // { default = true; };
 
     userKeyMapping = lib.mkOption {
       type = lib.types.listOf (lib.types.attrsOf lib.types.int);

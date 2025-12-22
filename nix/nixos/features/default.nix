@@ -5,9 +5,8 @@
     ./env
     ./home
     ./audio
-    ./boot
     ./connectivity
-    ./display
+    ./desktop
     ./graphics
     ./mouse
     ./steam

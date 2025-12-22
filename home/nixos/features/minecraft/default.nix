@@ -4,11 +4,7 @@ let
 in {
   # MODULE OPTIONS DECLARATION
   options.system.features.minecraft = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable prism launcher for minecraft";
-    };
+    enable = lib.mkEnableOption "Enable prism launcher for minecraft" // { default = true; };
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.prismlauncher;

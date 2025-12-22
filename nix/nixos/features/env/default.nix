@@ -3,11 +3,7 @@ let
   cfg = config.features.env;
 in {
   options.features.env = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "enable nixos base environment configurations";
-    };
+    enable = lib.mkEnableOption "enable nixos base environment configurations" // { default = true; };
     packages = lib.mkOption {
       type = lib.types.listOf lib.types.package;
       default = [
@@ -24,11 +20,7 @@ in {
       description = "List of packages to install as system packages";
     };
     fonts = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = "enable font configuration and download";
-      };
+      enable = lib.mkEnableOption "enable font configuration and download" // { default = true; };
       packages = lib.mkOption {
         type = lib.types.listOf lib.types.package;
         default = with pkgs; [

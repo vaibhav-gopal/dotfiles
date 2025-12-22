@@ -4,11 +4,7 @@ let
   cfg = config.features.git;
 in {
   options.features.git = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable git configuration management";
-    };
+    enable = lib.mkEnableOption "Enable git configuration management" // { default = true; };
     name = lib.mkOption {
       type = lib.types.str;
       default = "Vaibhav Gopal";
@@ -26,11 +22,7 @@ in {
       description = "The git package to use";
     };
     gh = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = "Enable the GH CLI";
-      };
+      enable = lib.mkEnableOption "Enable the GH CLI" // { default = true; };
       package = lib.mkOption {
         type = lib.types.package;
         default = pkgs.gh;

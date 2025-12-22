@@ -4,17 +4,9 @@ let
   cfg = config.features.vim;
 in {
   options.features.vim = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable vim feature";
-    };
+    enable = lib.mkEnableOption "Enable vim feature" // { default = true; };
     nvim = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = "Enable nvim package and feature";
-      };
+      enable = lib.mkEnableOption "Enable nvim package and feature" // { default = true; };
       package = lib.mkOption {
         type = lib.types.package;
         default = pkgs.neovim-unwrapped;
@@ -23,29 +15,30 @@ in {
       };
     };
     vscode = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = "Enable vscode vimrc file setup";
-      };
+      enable = lib.mkEnableOption "Enable vscode vimrc file setup" // { default = true; };
     };
   };
 
   config = lib.mkIf cfg.enable {
     programs.vim = {
       enable = true;
-      defaultEditor = true;
     };
-    xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/vim/nvim.d";
     programs.neovim = {
       enable = cfg.nvim.enable;
       package = cfg.nvim.package;
     };
+
+    xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/vim/nvim.d";
     home.file."${config.home.homeDirectory}/.vimrc".source =
       lib.mkIf cfg.nvim.enable
       (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/vim/vim.d/vimrc");
     home.file."${config.home.homeDirectory}/.vscodevimrc".source = 
       lib.mkIf cfg.vscode.enable
       (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/vim/vscode.d/vimrc");
+
+    home.sessionVariables = {
+      EDTIOR = lib.mkDefault "vim";
+      VISUAL = lib.mkDefault "vim";
+    };
   };
 }

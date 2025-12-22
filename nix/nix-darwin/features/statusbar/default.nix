@@ -5,11 +5,7 @@ let
 in {
   options.features.statusbar = {
     # NOTE: please see the setup prereqs here first: https://felixkratz.github.io/SketchyBar/setup
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "enable status bar customization via sketchybar";
-    };
+    enable = lib.mkEnableOption "enable status bar customization via sketchybar" // { default = false; };
     # config options are here: https://felixkratz.github.io/SketchyBar/config/bar
     config = lib.mkOption {
       type = lib.types.str;

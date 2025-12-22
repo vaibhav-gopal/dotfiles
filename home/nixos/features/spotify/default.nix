@@ -4,11 +4,7 @@ let
 in {
   # MODULE OPTIONS DECLARATION
   options.system.features.spotify = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable spotify client";
-    };
+    enable = lib.mkEnableOption "Enable spotify client" // { default = true; };
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.spotify;

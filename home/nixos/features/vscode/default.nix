@@ -4,11 +4,7 @@ let
 in {
   # MODULE OPTIONS DECLARATION
   options.system.features.vscode = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable vscode application";
-    };
+    enable = lib.mkEnableOption "Enable vscode application" // { default = true; };
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs-unstable.vscode;

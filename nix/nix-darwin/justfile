@@ -39,13 +39,9 @@ nix-darwin_unstable-channel: nix-darwin_check
     sudo -H nix-channel --update
 
 [group('nix-darwin')]
-nix-darwin_arch-features: nix-darwin_check
-    sudo nix eval --json {{darwin_directory}}#darwinConfigurations.{{nixconfig}}.config.features
+nix-darwin_system-eval:
+    @echo {{darwin_directory}}#darwinConfigurations.{{nixconfig}}.config
 
 [group('nix-darwin')]
-nix-darwin_home-features: nix-darwin_check
-    sudo nix eval --json {{darwin_directory}}#darwinConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}.features
-
-[group('nix-darwin')]
-nix-darwin_system-features: nix-darwin_check
-    sudo nix eval --json {{darwin_directory}}#darwinConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}.system.features
+nix-darwin_home-eval:
+    @echo {{darwin_directory}}#darwinConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}

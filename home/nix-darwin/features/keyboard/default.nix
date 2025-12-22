@@ -7,12 +7,7 @@ let
   layoutsDirPath = "${config.home.homeDirectory}/Library/Keyboard\ Layouts/";
 in {
   options.system.features.keyboard = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable darwin keyboard";
-    };
-
+    enable = lib.mkEnableOption "Enable darwin keyboard" // { default = true; };
     bundlePath = lib.mkOption {
       type = lib.types.path;
       default = bundlePath;

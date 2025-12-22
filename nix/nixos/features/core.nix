@@ -21,6 +21,10 @@
   };
   networking.hostName = hostname; # Define your hostname.
 
+  # Bootloader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
   nix = {
     enable = true;
     settings = {

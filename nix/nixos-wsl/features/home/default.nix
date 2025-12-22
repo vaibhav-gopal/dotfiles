@@ -3,11 +3,7 @@ let
   cfg = config.features.home-manager;
 in {
   options.features.home-manager = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "enable nixos-wsl home-manager configuration";
-    };
+    enable = lib.mkEnableOption "enable nixos-wsl home-manager configuration" // { default = true; };
   };
   config = lib.mkIf cfg.enable {
     home-manager.useGlobalPkgs = true;

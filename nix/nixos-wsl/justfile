@@ -34,13 +34,9 @@ nixos-wsl_unstable-channel: nixos-wsl_check
     sudo -H nix-channel --update
 
 [group('nixos-wsl')]
-nixos-wsl_arch-features: nixos-wsl_check
-    sudo nix eval --json {{wsl_directory}}#nixosConfigurations.{{nixconfig}}.config.features
+nixos-wsl_system-eval:
+    @echo {{wsl_directory}}#nixosConfigurations.{{nixconfig}}.config
 
 [group('nixos-wsl')]
-nixos-wsl_home-features: nixos-wsl_check
-    sudo nix eval --json {{wsl_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}.features
-
-[group('nixos-wsl')]
-nixos-wsl_system-features: nixos-wsl_check
-    sudo nix eval --json {{wsl_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}.system.features
+nixos-wsl_home-eval:
+    @echo {{wsl_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}

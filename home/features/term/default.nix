@@ -7,7 +7,7 @@ in {
     enable = lib.mkEnableOption "Enable some terminal utilities" // { default = true; };
     zellij = {
       enable = lib.mkEnableOption "Enable zellij the terminal multiplexer" // { default = true; };
-      enable-config = lib.mkEnableOption "Enable zellij config setup" // { default = true; };
+      enable_config = lib.mkEnableOption "Enable zellij config setup" // { default = true; };
       package = lib.mkOption {
         type = lib.types.package;
         default = pkgs.zellij;
@@ -17,7 +17,7 @@ in {
     };
     yazi = {
       enable = lib.mkEnableOption "Enable yazi the terminal file explorer" // { default = true; };
-      enable-config = lib.mkEnableOption "Enable yazi config setup" // { default = true; };
+      enable_config = lib.mkEnableOption "Enable yazi config setup" // { default = true; };
       package = lib.mkOption {
         type = lib.types.package;
         default = pkgs.yazi;
@@ -27,7 +27,7 @@ in {
     };
     starship = {
       enable = lib.mkEnableOption "Enable starship the terminal prompt" // { default = true; };
-      enable-config = lib.mkEnableOption "Enable starship config setup" // { default = true; };
+      enable_config = lib.mkEnableOption "Enable starship config setup" // { default = true; };
       package = lib.mkOption {
         type = lib.types.package;
         default = pkgs.starship;
@@ -37,7 +37,7 @@ in {
     };
     ghostty = {
       enable = lib.mkEnableOption "Enable ghostty the terminal emulator" // { default = true; };
-      enable-config = lib.mkEnableOption "Enable ghostty config setup" // { default = true; };
+      enable_config = lib.mkEnableOption "Enable ghostty config setup" // { default = true; };
       package = lib.mkOption {
         type = lib.types.package;
         default = pkgs.ghostty;
@@ -53,7 +53,7 @@ in {
       enable = true;
       package = cfg.zellij.package;
     };
-    xdg.configFile."zellij".source = lib.mkIf cfg.zellij.config-enable (
+    xdg.configFile."zellij".source = lib.mkIf cfg.zellij.enable_config (
       config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/term/zellij.d"
     );
 
@@ -63,7 +63,7 @@ in {
       package = cfg.yazi.package;
       shellWrapperName = "yy"; # shell alias : DO NOT CHANGE (breaks automatic cd)
     };
-    xdg.configFile."yazi".source = lib.mkIf cfg.starship.config-enable (
+    xdg.configFile."yazi".source = lib.mkIf cfg.starship.enable_config (
       config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/term/yazi.d"
     );
 
@@ -71,7 +71,7 @@ in {
     programs.starship = lib.mkIf cfg.starship.enable {
       enable = true;
     };
-    xdg.configFile."starship.toml".source = lib.mkIf cfg.starship.config-enable (
+    xdg.configFile."starship.toml".source = lib.mkIf cfg.starship.enable_config (
       config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/term/starship.d/starship.toml"
     );
 
@@ -79,7 +79,7 @@ in {
     programs.ghostty = lib.mkIf cfg.ghostty.enable {
       enable = true;
     };
-    xdg.configFile."ghostty/config".source = lib.mkIf cfg.ghostty.config-enable (
+    xdg.configFile."ghostty/config".source = lib.mkIf cfg.ghostty.enable_config (
       config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/term/ghostty.d/ghostty.config"
     );
     

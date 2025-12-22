@@ -3,11 +3,7 @@ let
   cfg = config.features.env;
 in {
   options.features.env = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "enable nixos-wsl base environment configurations";
-    };
+    enable = lib.mkEnableOption "enable nixos-wsl base environment configurations" // { default = true; };
     packages = lib.mkOption {
       type = lib.types.listOf lib.types.package;
       default = [

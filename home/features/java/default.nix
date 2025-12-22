@@ -4,11 +4,7 @@ let
   cfg = config.features.java;
 in {
   options.features.java = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable the java development kit (JDK) and/or java runtime environment (JRE)";
-    };
+    enable = lib.mkEnableOption "Enable the java development kit (JDK) and/or java runtime environment (JRE)" // { default = true; };
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.temurin-bin;

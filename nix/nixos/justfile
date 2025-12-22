@@ -34,13 +34,9 @@ nixos_unstable-channel: nixos_check
     sudo -H nix-channel --update
 
 [group('nixos')]
-nixos_arch-features: nixos_check
-    sudo nix eval --json {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.config.features
+nixos_system-eval:
+    @echo {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.config
 
 [group('nixos')]
-nixos_home-features: nixos_check
-    sudo nix eval --json {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}.features
-
-[group('nixos')]
-nixos_system-features: nixos_check
-    sudo nix eval --json {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}.system.features
+nixos_home-eval:
+    @echo {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
