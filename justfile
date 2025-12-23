@@ -20,6 +20,8 @@
 
 # See the .template-env file for more info on why/how each of these are used
 dotenv-dir := 'env'
+scripts-dir := 'scripts'
+eval-script := 'nixeval.sh'
 set dotenv-filename := 'env/.env'
 set dotenv-required
 nixtype := env('NIXTYPE')
@@ -96,100 +98,100 @@ unstable-channel:
 evalsysoptions attrpath:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles system configuration eval, attempting to access {{attrpath}} in {{nixconfig}}.config {{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_options`; \
-    sudo nix eval --json $CONFIGPATH.{{attrpath}};
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_options)" "{{attrpath}}"
 
 # evaluate an arbitrary attribute for system / nix arch configs
 [group('eval')]
 evalsysconfigs attrpath:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles system configuration eval, attempting to access {{attrpath}} in {{nixconfig}}.config {{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_system`; \
-    sudo nix eval --json $CONFIGPATH.{{attrpath}};
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_system)" "{{attrpath}}"
 
 # evaluate an arbitrary attribute for home-manager options
 [group('eval')]
 evalhomeoptions attrpath:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager configuration eval, attempting to access {{attrpath}} in {{nixconfig}}.config.home-manager.users.{{nixusername}} {{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home-options`; \
-    sudo nix eval --json $CONFIGPATH.{{attrpath}};
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_home-options)" "{{attrpath}}"
 
 # evaluate an arbitrary attribute for home-manager configs
 [group('eval')]
 evalhomeconfigs attrpath:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager configuration eval, attempting to access {{attrpath}} in {{nixconfig}}.config.home-manager.users.{{nixusername}} {{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home`; \
-    sudo nix eval --json $CONFIGPATH.{{attrpath}};
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_home)" "{{attrpath}}"
 
 # list out core system options and list out system wide feature options
 [group('eval')]
 sysoptions:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles system-wide core options:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_options`; \
-    sudo nix eval --json $CONFIGPATH.core;
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_options)" "core"
     @echo -e "{{BOLD + BLUE}}Dotfiles system-wide features options:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_options`; \
-    sudo nix eval --json $CONFIGPATH.features;
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_options)" "features"
 
 # list out core system configuration and list out system wide feature configs
 [group('eval')]
 sysconfigs:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles system-wide core configs:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_system`; \
-    sudo nix eval --json $CONFIGPATH.core;
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_system)" "core"
     @echo -e "{{BOLD + BLUE}}Dotfiles system-wide features configs:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_system`; \
-    sudo nix eval --json $CONFIGPATH.features;
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_system)" "features"
 
 # list out all home-manager common and per-system features options
 [group('eval')]
 homeoptions:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager common features options:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home-options`; \
-    sudo nix eval --json $CONFIGPATH.features;
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_home-options)" "features"
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager per-system features options:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home-options`; \
-    sudo nix eval --json $CONFIGPATH.system.features;
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_home-options)" "system.features"
 
 # list out all home-manager common and per-system features configs
 [group('eval')]
 homeconfigs:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager common features configs:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home`; \
-    sudo nix eval --json $CONFIGPATH.features;
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_home)" "features"
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager per-system features configs:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home`; \
-    sudo nix eval --json $CONFIGPATH.system.features;
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_home)" "system.features"
 
 # list out all system wide packages (via environment.systemPackages)
 [group('eval')]
 syspkgs:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles system packages:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_system`; \
-    sudo nix eval --json $CONFIGPATH.environment.systemPackages;
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_system)" "environment.systemPackages"
 
 # list out all user local packages (via home.packages)
 [group('eval')]
 homepkgs:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager packages:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home`; \
-    sudo nix eval --json $CONFIGPATH.home.packages;
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_home)" "home.packages"
 
 # list out all user shell aliases and session variables (via home.shellAliases and home.sessionVariables)
 [group('eval')]
 homesession:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager shell aliases:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home`; \
-    sudo nix eval --json $CONFIGPATH.home.shellAliases;
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_home)" "home.shellAliases"
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager session variables:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home`; \
-    sudo nix eval --json $CONFIGPATH.home.sessionVariables;
+    source {{justfile_directory()}}/{{scripts-dir}}/{{eval-script}} && \
+    nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_home)" "home.sessionVariables"
