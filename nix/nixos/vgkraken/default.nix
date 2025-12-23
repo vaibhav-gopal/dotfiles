@@ -6,7 +6,7 @@
   ];
 
   config = {
-    features.graphics = {
+    core.graphics = {
       enable = true;
       video_drivers = ["nvidia" "amdgpu"];
       nvidia = {

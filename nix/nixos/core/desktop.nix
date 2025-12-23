@@ -23,7 +23,7 @@ in {
   config = lib.mkMerge [
     (lib.mkIf (cfglogin.enable && cfglogin.select == "sddm") {
       # Enable the simple desktop display manager (SDDM)
-      services.login.sddm.enable = true;
+      services.displayManager.sddm.enable = true;
     })
     (lib.mkIf (cfgdesktop.enable && cfgdesktop.select == "plasma") {
       # Enable the KDE Plasma Desktop Environment.

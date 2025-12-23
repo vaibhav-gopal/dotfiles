@@ -11,6 +11,6 @@ in {
     home-manager.useUserPackages = true;
     home-manager.extraSpecialArgs = specialArgs;
     home-manager.backupFileExtension = "backup-before-nixos-home-manager";
-    home-manager.users.${username} = import ../../../../home/home.nix;
+    home-manager.users.${username} = import ../../../home/home.nix;
   };
 }

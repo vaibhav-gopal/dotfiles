@@ -109,6 +109,14 @@ home-eval attrpath:
     CONFIGPATH=`just --justfile {{justfile()}} {{nixtype}}_home-eval`; \
     sudo nix eval --json $CONFIGPATH.{{attrpath}};
 
+# list out core system options
+[group('archetype-evals')]
+system-core:
+    @just --justfile {{justfile()}} {{nixtype}}_check
+    @echo -e "{{BOLD + BLUE}}Dotfiles system-wide core settings:{{NORMAL}}"
+    CONFIGPATH=`just --justfile {{justfile()}} {{nixtype}}_system-eval`; \
+    sudo nix eval --json $CONFIGPATH.core;
+
 # list out all system wide features
 [group('archetype-evals')]
 system-features:
@@ -146,7 +154,7 @@ home-packages:
 
 # list out all user shell aliases and session variables (via home.shellAliases and home.sessionVariables)
 [group('archetype-evals')]
-home-shell:
+home-env:
     @just --justfile {{justfile()}} {{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager shell aliases:{{NORMAL}}"
     CONFIGPATH=`just --justfile {{justfile()}} {{nixtype}}_home-eval`; \
