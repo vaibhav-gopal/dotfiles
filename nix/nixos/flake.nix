@@ -46,9 +46,12 @@
         # Need to set any other nixpkgs channel / input other than the main one (used to create system config) explicitly here (options DO NOT get passed into submodules)
         pkgs-unstable = import nixpkgs-unstable commonPkgsConfig;
 
+        # library import ; pass in lib = nixpkgs.lib
+        usrlib = import ./lib.nix { inherit (nixpkgs) lib;};
+
         # create set of extra args to pass in to every sub module
         specialArgs = inputs // configurations.vgkraken // {
-          inherit pkgs-unstable;
+          inherit pkgs-unstable usrlib;
         };
       in with configurations.vgkraken; {
         # inherit system > tells which specific `pkgs` / `nixpkgs` version to use | inherit specialArgs > read above
@@ -61,6 +64,9 @@
           # include feature configs
           ./features
 
+          # include core configs
+          ./core
+
           #################USER#################
           ./vgkraken
         ];
@@ -72,8 +78,9 @@
           config.allowUnfree = true;
         };
         pkgs-unstable = import nixpkgs-unstable commonPkgsConfig;
+        usrlib = import ./lib.nix { inherit (nixpkgs) lib;};
         specialArgs = inputs // configurations.vgnixmini // {
-          inherit pkgs-unstable;
+          inherit pkgs-unstable usrlib;
         };
       in with configurations.vgnixmini; {
         inherit system specialArgs;
@@ -84,6 +91,9 @@
 
           # include feature configs
           ./features
+
+          # include core configs
+          ./core
 
           #################USER#################
           ./vgnixmini

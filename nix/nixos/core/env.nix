@@ -1,8 +1,8 @@
 { config, pkgs, lib, pkgs-unstable, ... }:
 let
-  cfg = config.features.env;
+  cfg = config.core.env;
 in {
-  options.features.env = {
+  options.core.env = {
     enable = lib.mkEnableOption "enable nixos base environment configurations" // { default = true; };
     packages = lib.mkOption {
       type = lib.types.listOf lib.types.package;
@@ -56,7 +56,7 @@ in {
       enableSSHSupport = true;
     };
 
-    # Firefox (TODO: move this to flatpak, or change package to unstable)
+    # Firefox
     programs.firefox.enable = true;
 
     # Git

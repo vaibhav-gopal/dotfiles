@@ -1,8 +1,8 @@
 { config, lib, ... }:
 let
-  cfg = config.features.graphics;
+  cfg = config.core.graphics;
 in {
-  options.features.graphics = {
+  options.core.graphics = {
     enable = lib.mkEnableOption "enable graphics hardware acceleration" // { default = true; };
     video_drivers = lib.mkOption {
       type = lib.types.listOf (lib.types.enum ["nvidia" "amdgpu" "modesetting" "fbdev"]);

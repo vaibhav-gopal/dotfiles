@@ -1,8 +1,8 @@
 { config, lib, ... }:
 let
-  cfg = config.features.audio;
+  cfg = config.core.audio;
 in {
-  options.features.audio = {
+  options.core.audio = {
     enable = lib.mkEnableOption "enable sound with pipewire and pulseaudio" // { default = true; };
     enable_jack = lib.mkEnableOption "enable JACK audio emulation" // { default = true; };
   };

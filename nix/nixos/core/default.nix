@@ -1,6 +1,17 @@
-{ pkgs, lib, hostname, username, version, homedirectory, ... }:
+{ lib, hostname, username, version, homedirectory, ... }:
 
 {
+  imports = [
+    ./audio.nix
+    ./boot.nix
+    ./connectivity.nix
+    ./desktop.nix
+    ./devices.nix
+    ./env.nix
+    ./graphics.nix
+    ./home.nix
+  ];
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
@@ -15,19 +26,11 @@
     description = "Vaibhav Gopal";
     home = homedirectory;
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      kdePackages.kate
-    ];
   };
   networking.hostName = hostname; # Define your hostname.
 
-  # Enable all firmware on device to be loaded
-  hardware.enableAllFirmware = true;
-
-  # Bootloader / Kernel
-  boot.kernelPackages = pkgs.linuxPackages_latest; # latest linux kernel (default is LTS)
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
 
   nix = {
     enable = true;
@@ -57,9 +60,6 @@
       options = lib.mkDefault "--delete-older-than 7d";
     };
   };
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   # Set your time zone.
   time.timeZone = "America/New_York";

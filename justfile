@@ -30,6 +30,7 @@ nixusername := env('NIXCONFIG_USERNAME')
 import 'nix/nix-darwin/justfile'
 import 'nix/nixos/justfile'
 import 'nix/nixos-wsl/justfile'
+import 'lib/justfile'
 
 #####################################
 ########## CORE UTILITIES ###########

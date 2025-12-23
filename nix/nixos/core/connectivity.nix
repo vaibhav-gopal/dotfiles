@@ -1,10 +1,10 @@
 { config, lib, ... }:
 let
-  cfginternet = config.features.internet;
-  cfgbluetooth = config.features.bluetooth;
-  cfgprinting = config.features.printing;
+  cfginternet = config.core.internet;
+  cfgbluetooth = config.core.bluetooth;
+  cfgprinting = config.core.printing;
 in {
-  options.features.internet = {
+  options.core.internet = {
     enable = lib.mkEnableOption "enable internet configuration" // { default = true; };
     method = lib.mkOption {
       type = lib.types.enum [ "networkmanager" "wpa_supplicant"];
@@ -12,10 +12,10 @@ in {
       description = "Method to enable internet connection. (wpa_supplicant for non desktop environments)";
     };
   };
-  options.features.bluetooth = {
+  options.core.bluetooth = {
     enable = lib.mkEnableOption "enable bluetooth configuration" // { default = true; };
   };
-  options.features.printing = {
+  options.core.printing = {
     enable = lib.mkEnableOption "enable printing documents via CUPS" // { default = true; };
   };
 

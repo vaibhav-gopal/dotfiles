@@ -1,8 +1,8 @@
 { config, lib, specialArgs, username, ... }:
 let
-  cfg = config.features.home;
+  cfg = config.core.home;
 in {
-  options.features.home = {
+  options.core.home = {
     enable = lib.mkEnableOption "enable nixos home-manager configuration" // { default = true; };
   };
 

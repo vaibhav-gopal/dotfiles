@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }:
 let
-  cfgmouse = config.features.mouse;
-  cfgqmk = config.features.qmk;
+  cfgmouse = config.core.mouse;
+  cfgqmk = config.core.qmk;
 in {
-  options.features.mouse = {
+  options.core.mouse = {
     enable = lib.mkEnableOption "enable a mouse remapper + dpi management tool (via solaar)" // { default = true; };
     package = lib.mkOption {
       type = lib.types.package;
@@ -34,7 +34,7 @@ in {
       '';
     };
   };
-  options.features.qmk = {
+  options.core.qmk = {
     enable = lib.mkEnableOption "enable QMK firmware flasher / tool" // { default = true; };
     package = lib.mkOption {
       type = lib.types.package;
@@ -78,12 +78,5 @@ in {
       hardware.keyboard.qmk.enable = true; # enable non-root user to access keyboard configs via QMK
       services.udev.packages = lib.mkIf cfgqmk.via.enable [ cfgqmk.via.package ];
     })
-
-    {
-      # Boot (load usb kernel modules, explicitly)
-      boot.kernelModules = [ "xhci_hcd" ];
-      # Disable autosuspend usb devices
-      boot.kernelParams = ["usbcore.autosuspend=-1"];
-    }
   ];
 }

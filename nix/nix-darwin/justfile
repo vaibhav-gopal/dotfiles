@@ -1,25 +1,25 @@
-darwin_directory := justfile_directory() / 'nix/nix-darwin'
+nix-darwin_directory := justfile_directory() / 'nix/nix-darwin'
 
-darwin_checker := if nixtype == "nix-darwin" { "Y" } else { "N" }
+nix-darwin_checker := if nixtype == "nix-darwin" { "Y" } else { "N" }
 
 # Check $NIXTYPE is set correctly for nix-darwin
 [group('nix-darwin')]
 nix-darwin_check:
-    @echo "{{BOLD + BLUE}}Is nix-darwin set in \$NIXTYPE? {{if darwin_checker == "Y" { "OK!" } else { error("nix-darwin not active") } }}{{NORMAL}}"
+    @echo "{{BOLD + BLUE}}Is nix-darwin set in \$NIXTYPE? {{if nix-darwin_checker == "Y" { "OK!" } else { error("nix-darwin not active") } }}{{NORMAL}}"
 
 # First time init nix-darwin
 [group('nix-darwin')]
 nix-darwin_init: nix-darwin_check
-    sudo -H nix --extra-experimental-features "nix-command flakes" run nix-darwin/nix-darwin-{{nixpkgs}}#darwin-rebuild -- switch --flake {{darwin_directory}}#{{nixconfig}}
+    sudo -H nix --extra-experimental-features "nix-command flakes" run nix-darwin/nix-darwin-{{nixpkgs}}#darwin-rebuild -- switch --flake {{nix-darwin_directory}}#{{nixconfig}}
 
 # Switch / rebuild nix-darwin configuration
 [group('nix-darwin')]
 nix-darwin_build: nix-darwin_check
-    sudo -H darwin-rebuild switch --flake {{darwin_directory}}#{{nixconfig}}
+    sudo -H darwin-rebuild switch --flake {{nix-darwin_directory}}#{{nixconfig}}
 
 [group('nix-darwin')]
 nix-darwin_update: nix-darwin_check
-    sudo nix flake update --flake {{darwin_directory}}
+    sudo nix flake update --flake {{nix-darwin_directory}}
 
 [group('nix-darwin')]
 nix-darwin_upgrade: nix-darwin_check
@@ -40,8 +40,8 @@ nix-darwin_unstable-channel: nix-darwin_check
 
 [group('nix-darwin')]
 nix-darwin_system-eval:
-    @echo {{darwin_directory}}#darwinConfigurations.{{nixconfig}}.config
+    @echo {{nix-darwin_directory}}#darwinConfigurations.{{nixconfig}}.config
 
 [group('nix-darwin')]
 nix-darwin_home-eval:
-    @echo {{darwin_directory}}#darwinConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+    @echo {{nix-darwin_directory}}#darwinConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}

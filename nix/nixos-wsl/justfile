@@ -1,20 +1,20 @@
-wsl_directory := justfile_directory() / 'nix/nixos-wsl'
+nixos-wsl_directory := justfile_directory() / 'nix/nixos-wsl'
 
-wsl_checker := if nixtype == "nixos-wsl" { "Y" } else { "N" }
+nixos-wsl_checker := if nixtype == "nixos-wsl" { "Y" } else { "N" }
 
 # Check $NIXTYPE is set correctly for nixos
 [group('nixos-wsl')]
 nixos-wsl_check:
-    @echo "{{BOLD + BLUE}}Is nixos-wsl set in \$NIXTYPE? {{if wsl_checker == "Y" { "OK!" } else { error("nixos-wsl not active") } }}{{NORMAL}}"
+    @echo "{{BOLD + BLUE}}Is nixos-wsl set in \$NIXTYPE? {{if nixos-wsl_checker == "Y" { "OK!" } else { error("nixos-wsl not active") } }}{{NORMAL}}"
 
 # Switch / rebuild nixos-wsl configuration
 [group('nixos-wsl')]
 nixos-wsl_build: nixos-wsl_check
-    sudo -H nixos-rebuild switch --flake {{wsl_directory}}#{{nixconfig}}
+    sudo -H nixos-rebuild switch --flake {{nixos-wsl_directory}}#{{nixconfig}}
 
 [group('nixos-wsl')]
 nixos-wsl_update: nixos-wsl_check
-    sudo nix flake update --flake {{wsl_directory}}
+    sudo nix flake update --flake {{nixos-wsl_directory}}
 
 [group('nixos-wsl')]
 nixos-wsl_upgrade: nixos-wsl_check
@@ -35,8 +35,8 @@ nixos-wsl_unstable-channel: nixos-wsl_check
 
 [group('nixos-wsl')]
 nixos-wsl_system-eval:
-    @echo {{wsl_directory}}#nixosConfigurations.{{nixconfig}}.config
+    @echo {{nixos-wsl_directory}}#nixosConfigurations.{{nixconfig}}.config
 
 [group('nixos-wsl')]
 nixos-wsl_home-eval:
-    @echo {{wsl_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+    @echo {{nixos-wsl_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}

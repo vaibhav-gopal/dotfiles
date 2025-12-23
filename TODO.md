@@ -30,3 +30,5 @@
 
 - vim setup + nvim setup + vscode vimrc (HIGH) - IN PROGRESS
 - hyprland setup (HIGH) - IN PROGRESS
+- QMK setup (HIGH) - IN PROGRESS
+- language templates - IN PROGRESS
