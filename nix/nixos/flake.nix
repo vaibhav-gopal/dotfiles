@@ -11,94 +11,41 @@
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ...  }:
-  let
-    configurations = {
-      vgkraken = {
-        username = "vaibhav";
-        system = "x86_64-linux";
-        hostname = "vgkraken";
-        version = "25.11"; # remember this is state version not nixpkgs version!
-        homedirectory = "/home/vaibhav";
-        nixType = "nixos";
-      };
-      vgnixmini = {
-        username = "vaibhav";
-        system = "x86_64-linux";
-        hostname = "vgnixmini";
-        version = "25.11";
-        homedirectory = "/home/vaibhav";
-        nixType = "nixos";
-      };
-    };
-  in {
-    # export configurations
-    inherit configurations;
-
-    nixosConfigurations = {
-      vgkraken = nixpkgs.lib.nixosSystem (let
+  {
+    mkConfigs = { mkUserLib, configurations }: (let
+      usrlib = mkUserLib { inherit (nixpkgs) lib;};
+      nixosConfigs = nixpkgs.lib.filterAttrs (_: conf: conf.nixType == "nixos") configurations;
+      genHost = name: conf: nixpkgs.lib.nixosSystem (let
         # Common nixpkgs configurations (overlays, unfree packages, etc...) (applies to all except `pkgs` / `nixpkgs` itself)
-        commonPkgsConfig = with configurations.vgkraken; {
-          inherit system;
+        commonPkgsConfig = {
+          inherit (conf) system;
           config.allowUnfree = true;
         };
-
         # the base `pkgs` argument is special, it is automatically created / configured and passed in (DO NOT modify, outside of sub modules, many other non-user made modules use this configuration option!)
         # Need to set any other nixpkgs channel / input other than the main one (used to create system config) explicitly here (options DO NOT get passed into submodules)
         pkgs-unstable = import nixpkgs-unstable commonPkgsConfig;
-
-        # library import ; pass in lib = nixpkgs.lib
-        usrlib = import ./lib.nix { inherit (nixpkgs) lib;};
-
+      in {
+        # inherit system > tells which specific `pkgs` / `nixpkgs` version to use
+        inherit (conf) system; 
         # create set of extra args to pass in to every sub module
-        specialArgs = inputs // configurations.vgkraken // {
+        specialArgs = inputs // conf // {
           inherit pkgs-unstable usrlib;
         };
-      in with configurations.vgkraken; {
-        # inherit system > tells which specific `pkgs` / `nixpkgs` version to use | inherit specialArgs > read above
-        inherit system specialArgs;
         modules = [
           #################CORE#################
           # home-manager includes
           home-manager.nixosModules.home-manager
 
-          # include feature configs
-          ./features
-
           # include core configs
           ./core
-
-          #################USER#################
-          ./vgkraken
-        ];
-      });
-
-      vgnixmini = nixpkgs.lib.nixosSystem (let
-        commonPkgsConfig = with configurations.vgnixmini; {
-          inherit system;
-          config.allowUnfree = true;
-        };
-        pkgs-unstable = import nixpkgs-unstable commonPkgsConfig;
-        usrlib = import ./lib.nix { inherit (nixpkgs) lib;};
-        specialArgs = inputs // configurations.vgnixmini // {
-          inherit pkgs-unstable usrlib;
-        };
-      in with configurations.vgnixmini; {
-        inherit system specialArgs;
-        modules = [
-          #################CORE#################
-          # home-manager includes
-          home-manager.nixosModules.home-manager
-
-          # include feature configs
           ./features
 
-          # include core configs
-          ./core
-
           #################USER#################
-          ./vgnixmini
+          ./${name} # automatically looks for a folder named after configuration name
         ];
       });
-    };
+    in 
+      nixpkgs.lib.mapAttrs genHost nixosConfigs 
+    );
   };
 }

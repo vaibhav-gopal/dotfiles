@@ -16,6 +16,7 @@
           packages = with pkgs; [
             vim
             just
+            jq
             cowsay
             glow
           ];

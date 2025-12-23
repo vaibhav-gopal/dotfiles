@@ -27,10 +27,7 @@ nixconfig := env('NIXCONFIG')
 nixpkgs := env('NIXCONFIG_VERSION')
 nixusername := env('NIXCONFIG_USERNAME')
 
-import 'nix/nix-darwin/justfile'
-import 'nix/nixos/justfile'
-import 'nix/nixos-wsl/justfile'
-import 'lib/justfile'
+import 'nix/justfile'
 
 #####################################
 ########## CORE UTILITIES ###########
@@ -55,110 +52,144 @@ gc *flags:
 size:
     sudo -H du -sh /nix/store
 
-#####################################
-########## ARCHETYPE CORE ###########
-#####################################
+# Switch / rebuild nixos configuration for the first time (mainly for nix-darwin ; installs nix-darwin)
+init:
+    @echo -e "{{BOLD + BLUE}}Building first-time {{nixtype}} for config '{{nixconfig}}' @ {{nixpkgs}}{{NORMAL}}"
+    @just --justfile {{justfile()}} _{{nixtype}}_init
+
+# Switch / rebuild nixos configuration (with updated kernel or boot params ; applies changes only on next boot) (if supported on archetype)
+buildboot:
+    @echo -e "{{BOLD + BLUE}}Building {{nixtype}} for config '{{nixconfig}}' @ {{nixpkgs}} : Applying on next boot{{NORMAL}}"
+    @just --justfile {{justfile()}} _{{nixtype}}_build_boot
 
 # build using .env variables [NIXTYPE, NIXCONFIG, NIXCONFIG_VERSION, NIXCONFIG_USERNAME]
-[group('archetype-core')]
 build:
     @echo -e "{{BOLD + BLUE}}Building {{nixtype}} for config '{{nixconfig}}' @ {{nixpkgs}}{{NORMAL}}"
-    @just --justfile {{justfile()}} {{nixtype}}_build
+    @just --justfile {{justfile()}} _{{nixtype}}_build
 
 # Updates the current flake.nix for NIXTYPE
-[group('archetype-core')]
 update:
     @echo -e "{{BOLD + BLUE}}Updating the flake.nix for {{nixtype}}{{NORMAL}}"
-    @just --justfile {{justfile()}} {{nixtype}}_update
+    @just --justfile {{justfile()}} _{{nixtype}}_update
 
 # Upgrades the nixpkgs channel and nix profile packages.
-[group('archetype-core')]
 upgrade:
     @echo -e "{{BOLD + BLUE}}Upgrading the nix channels and nix profile packages for {{nixtype}}{{NORMAL}}"
-    @just --justfile {{justfile()}} {{nixtype}}_upgrade
+    @just --justfile {{justfile()}} _{{nixtype}}_upgrade
 
 # Match the nix channels with the nixos/nix-darwin lts version. (Unable to install the latest packages on a per-package basis if needed)
-[group('archetype-core')]
 lts-channel:
     @echo -e "{{BOLD + RED}}Warning! This will remove the `nixpkgs` channel and replace it with the nixos-XX version!{{NORMAL}}"
-    @just --justfile {{justfile()}} {{nixtype}}_lts-channel
+    @just --justfile {{justfile()}} _{{nixtype}}_lts-channel
 
 # Update the nix channels with unstable. (Recommended)
-[group('archetype-core')]
 unstable-channel:
     @echo -e "{{BOLD + RED}}Warning! This will remove the `nixpkgs` channel and replace it with the nixos-unstable version!{{NORMAL}}"
-    @just --justfile {{justfile()}} {{nixtype}}_unstable-channel
+    @just --justfile {{justfile()}} _{{nixtype}}_unstable-channel
 
 #####################################
 ####### ARCHETYPE EVALUATIONS #######
 #####################################
 
-# evaluate an arbitrary attribute for system / nix arch configs
-[group('archetype-evals')]
-system-eval attrpath:
-    @just --justfile {{justfile()}} {{nixtype}}_check
+# evaluate an arbitrary attribute for system / nix arch options
+[group('eval')]
+evalsysoptions attrpath:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles system configuration eval, attempting to access {{attrpath}} in {{nixconfig}}.config {{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} {{nixtype}}_system-eval`; \
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_options`; \
+    sudo nix eval --json $CONFIGPATH.{{attrpath}};
+
+# evaluate an arbitrary attribute for system / nix arch configs
+[group('eval')]
+evalsysconfigs attrpath:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
+    @echo -e "{{BOLD + BLUE}}Dotfiles system configuration eval, attempting to access {{attrpath}} in {{nixconfig}}.config {{NORMAL}}"
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_system`; \
+    sudo nix eval --json $CONFIGPATH.{{attrpath}};
+
+# evaluate an arbitrary attribute for home-manager options
+[group('eval')]
+evalhomeoptions attrpath:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
+    @echo -e "{{BOLD + BLUE}}Dotfiles home-manager configuration eval, attempting to access {{attrpath}} in {{nixconfig}}.config.home-manager.users.{{nixusername}} {{NORMAL}}"
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home-options`; \
     sudo nix eval --json $CONFIGPATH.{{attrpath}};
 
 # evaluate an arbitrary attribute for home-manager configs
-[group('archetype-evals')]
-home-eval attrpath:
-    @just --justfile {{justfile()}} {{nixtype}}_check
+[group('eval')]
+evalhomeconfigs attrpath:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager configuration eval, attempting to access {{attrpath}} in {{nixconfig}}.config.home-manager.users.{{nixusername}} {{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} {{nixtype}}_home-eval`; \
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home`; \
     sudo nix eval --json $CONFIGPATH.{{attrpath}};
 
-# list out core system options
-[group('archetype-evals')]
-system-core:
-    @just --justfile {{justfile()}} {{nixtype}}_check
-    @echo -e "{{BOLD + BLUE}}Dotfiles system-wide core settings:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} {{nixtype}}_system-eval`; \
+# list out core system options and list out system wide feature options
+[group('eval')]
+sysoptions:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
+    @echo -e "{{BOLD + BLUE}}Dotfiles system-wide core options:{{NORMAL}}"
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_options`; \
     sudo nix eval --json $CONFIGPATH.core;
-
-# list out all system wide features
-[group('archetype-evals')]
-system-features:
-    @just --justfile {{justfile()}} {{nixtype}}_check
-    @echo -e "{{BOLD + BLUE}}Dotfiles system-wide features:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} {{nixtype}}_system-eval`; \
+    @echo -e "{{BOLD + BLUE}}Dotfiles system-wide features options:{{NORMAL}}"
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_options`; \
     sudo nix eval --json $CONFIGPATH.features;
 
-# list out all home-manager common and per-system features
-[group('archetype-evals')]
-home-features:
-    @just --justfile {{justfile()}} {{nixtype}}_check
-    @echo -e "{{BOLD + BLUE}}Dotfiles home-manager common features:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} {{nixtype}}_home-eval`; \
+# list out core system configuration and list out system wide feature configs
+[group('eval')]
+sysconfigs:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
+    @echo -e "{{BOLD + BLUE}}Dotfiles system-wide core configs:{{NORMAL}}"
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_system`; \
+    sudo nix eval --json $CONFIGPATH.core;
+    @echo -e "{{BOLD + BLUE}}Dotfiles system-wide features configs:{{NORMAL}}"
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_system`; \
     sudo nix eval --json $CONFIGPATH.features;
-    @echo -e "{{BOLD + BLUE}}Dotfiles home-manager per-system features:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} {{nixtype}}_home-eval`; \
+
+# list out all home-manager common and per-system features options
+[group('eval')]
+homeoptions:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
+    @echo -e "{{BOLD + BLUE}}Dotfiles home-manager common features options:{{NORMAL}}"
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home-options`; \
+    sudo nix eval --json $CONFIGPATH.features;
+    @echo -e "{{BOLD + BLUE}}Dotfiles home-manager per-system features options:{{NORMAL}}"
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home-options`; \
+    sudo nix eval --json $CONFIGPATH.system.features;
+
+# list out all home-manager common and per-system features configs
+[group('eval')]
+homeconfigs:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
+    @echo -e "{{BOLD + BLUE}}Dotfiles home-manager common features configs:{{NORMAL}}"
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home`; \
+    sudo nix eval --json $CONFIGPATH.features;
+    @echo -e "{{BOLD + BLUE}}Dotfiles home-manager per-system features configs:{{NORMAL}}"
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home`; \
     sudo nix eval --json $CONFIGPATH.system.features;
 
 # list out all system wide packages (via environment.systemPackages)
-[group('archetype-evals')]
-system-packages:
-    @just --justfile {{justfile()}} {{nixtype}}_check
+[group('eval')]
+syspkgs:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles system packages:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} {{nixtype}}_system-eval`; \
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_system`; \
     sudo nix eval --json $CONFIGPATH.environment.systemPackages;
 
 # list out all user local packages (via home.packages)
-[group('archetype-evals')]
-home-packages:
-    @just --justfile {{justfile()}} {{nixtype}}_check
+[group('eval')]
+homepkgs:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager packages:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} {{nixtype}}_home-eval`; \
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home`; \
     sudo nix eval --json $CONFIGPATH.home.packages;
 
 # list out all user shell aliases and session variables (via home.shellAliases and home.sessionVariables)
-[group('archetype-evals')]
-home-env:
-    @just --justfile {{justfile()}} {{nixtype}}_check
+[group('eval')]
+homesession:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager shell aliases:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} {{nixtype}}_home-eval`; \
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home`; \
     sudo nix eval --json $CONFIGPATH.home.shellAliases;
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager session variables:{{NORMAL}}"
-    CONFIGPATH=`just --justfile {{justfile()}} {{nixtype}}_home-eval`; \
+    CONFIGPATH=`just --justfile {{justfile()}} _{{nixtype}}_home`; \
     sudo nix eval --json $CONFIGPATH.home.sessionVariables;

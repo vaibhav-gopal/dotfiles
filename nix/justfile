@@ -1,0 +1,150 @@
+nix_directory := justfile_directory() / 'nix'
+nixos-wsl_directory := justfile_directory() / 'nix/nixos-wsl'
+nixos_directory := justfile_directory() / 'nix/nixos'
+nix-darwin_directory := justfile_directory() / 'nix/nix-darwin'
+
+######################################
+############### CHECKER ##############
+######################################
+# Check $NIXTYPE is set correctly
+nix-darwin_checker := if nixtype == "nix-darwin" { "Y" } else { "N" }
+nixos_checker := if nixtype == "nixos" { "Y" } else { "N" }
+nixos-wsl_checker := if nixtype == "nixos-wsl" { "Y" } else { "N" }
+
+[group('check')]
+_nix-darwin_check:
+    @echo "{{BOLD + BLUE}}Is nix-darwin set in \$NIXTYPE? {{if nix-darwin_checker == "Y" { "OK!" } else { error("nix-darwin not active") } }}{{NORMAL}}"
+[group('check')]
+_nixos_check:
+    @echo "{{BOLD + BLUE}}Is nixos set in \$NIXTYPE? {{if nixos_checker == "Y" { "OK!" } else { error("nixos not active") } }}{{NORMAL}}"
+[group('check')]
+_nixos-wsl_check:
+    @echo "{{BOLD + BLUE}}Is nixos-wsl set in \$NIXTYPE? {{if nixos-wsl_checker == "Y" { "OK!" } else { error("nixos-wsl not active") } }}{{NORMAL}}"
+
+######################################
+############# EVALUATION #############
+######################################
+
+[group('eval')]
+_nix-darwin_options:
+    @echo {{nix-darwin_directory}}#darwinConfigurations.{{nixconfig}}.options
+[group('eval')]
+_nix-darwin_system:
+    @echo {{nix-darwin_directory}}#darwinConfigurations.{{nixconfig}}.config
+[group('eval')]
+_nix-darwin_home-options:
+    @echo {{nix-darwin_directory}}#darwinConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+[group('eval')]
+_nix-darwin_home:
+    @echo {{nix-darwin_directory}}#darwinConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+[group('eval')]
+_nixos_options:
+    @echo {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.options
+[group('eval')]
+_nixos_system:
+    @echo {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.config
+[group('eval')]
+_nixos_home-options:
+    @echo {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+[group('eval')]
+_nixos_home:
+    @echo {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+[group('eval')]
+_nixos-wsl_options:
+    @echo {{nixos-wsl_directory}}#nixosConfigurations.{{nixconfig}}.options
+[group('eval')]
+_nixos-wsl_system:
+    @echo {{nixos-wsl_directory}}#nixosConfigurations.{{nixconfig}}.config
+[group('eval')]
+_nixos-wsl_home-options:
+    @echo {{nixos-wsl_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+[group('eval')]
+_nixos-wsl_home:
+    @echo {{nixos-wsl_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+
+######################################
+############# NIX-COMMON #############
+######################################
+
+_nix_update:
+    sudo nix flake update --flake {{nix_directory}}
+
+_nix_upgrade:
+    sudo -H nix-channel --update
+    sudo -H nix profile upgrade --all
+
+_nix_removechannel:
+    sudo -H nix-channel --remove nixpkgs
+
+_nix_updatechannel:
+    sudo -H nix-channel --update
+
+######################################
+############# NIX-DARWIN #############
+######################################
+
+[group('nix-darwin')]
+_nix-darwin_init: _nix-darwin_check
+    sudo -H nix --extra-experimental-features "nix-command flakes" run nix-darwin/nix-darwin-{{nixpkgs}}#darwin-rebuild -- switch --flake {{nix_directory}}#{{nixconfig}}
+[group('nix-darwin')]
+_nix-darwin_build_boot: _nix-darwin_check
+    sudo -H darwin-rebuild boot --flake {{nix_directory}}#{{nixconfig}}
+[group('nix-darwin')]
+_nix-darwin_build: _nix-darwin_check
+    sudo -H darwin-rebuild switch --flake {{nix_directory}}#{{nixconfig}}
+[group('nix-darwin')]
+_nix-darwin_update: _nix-darwin_check _nix_update
+[group('nix-darwin')]
+_nix-darwin_upgrade: _nix-darwin_check _nix_upgrade
+[group('nix-darwin')]
+_nix-darwin_lts-channel: _nix-darwin_check _nix_removechannel && _nix_updatechannel
+    sudo -H nix-channel --add https://nixos.org/channels/nixpkgs-{{nixpkgs}}-darwin nixpkgs
+[group('nix-darwin')]
+_nix-darwin_unstable-channel: _nix-darwin_check _nix_removechannel && _nix_updatechannel
+    sudo -H nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+
+######################################
+################ NIXOS ###############
+######################################
+
+[group('nixos')]
+_nixos_init: _nixos_check
+[group('nixos')]
+_nixos_build_boot: _nixos_check
+    sudo -H nixos-rebuild boot --flake {{nix_directory}}#{{nixconfig}}
+[group('nixos')]
+_nixos_build: _nixos_check
+    sudo -H nixos-rebuild switch --flake {{nix_directory}}#{{nixconfig}}
+[group('nixos')]
+_nixos_update: _nixos_check _nix_update
+[group('nixos')]
+_nixos_upgrade: _nixos_check _nix_upgrade
+[group('nixos')]
+_nixos_lts-channel: _nixos_check _nix_removechannel && _nix_updatechannel
+    sudo -H nix-channel --add https://nixos.org/channels/nixos-{{nixpkgs}} nixpkgs
+[group('nixos')]
+_nixos_unstable-channel: _nixos_check _nix_removechannel && _nix_updatechannel
+    sudo -H nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
+
+######################################
+############### NIX-WSL ##############
+######################################
+
+[group('nixos-wsl')]
+_nixos-wsl_init: _nixos-wsl_check
+[group('nixos-wsl')]
+_nixos-wsl_build_boot: _nixos-wsl_check
+    sudo -H nixos-rebuild boot --flake {{nix_directory}}#{{nixconfig}}
+[group('nixos-wsl')]
+_nixos-wsl_build: _nixos-wsl_check
+    sudo -H nixos-rebuild switch --flake {{nix_directory}}#{{nixconfig}}
+[group('nixos-wsl')]
+_nixos-wsl_update: _nixos-wsl_check _nix_update
+[group('nixos-wsl')]
+_nixos-wsl_upgrade: _nixos-wsl_check _nix_upgrade
+[group('nixos-wsl')]
+_nixos-wsl_lts-channel: _nixos-wsl_check _nix_removechannel && _nix_updatechannel
+    sudo -H nix-channel --add https://nixos.org/channels/nixos-{{nixpkgs}} nixpkgs
+[group('nixos-wsl')]
+_nixos-wsl_unstable-channel: _nixos-wsl_check _nix_removechannel && _nix_updatechannel
+    sudo -H nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs

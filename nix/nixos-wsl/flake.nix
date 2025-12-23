@@ -16,40 +16,26 @@
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, nixos-wsl, home-manager, ... }:
-  let
-    configurations = {
-      vgwsl2 = {
-        username = "vaibhav";
-        hostname = "vgwsl2";
-        system = "x86_64-linux";
-        version = "25.11";
-        homedirectory = "/home/vaibhav";
-        nixType = "nixos-wsl";
-      };
-    };
-  in {
-    # export configurations
-    inherit configurations;
-
-    nixosConfigurations = {
-      vgwsl2 = nixpkgs.lib.nixosSystem (let 
+  {
+    mkConfigs = { mkUserLib, configurations }: (let
+      usrlib = mkUserLib { inherit (nixpkgs) lib;};
+      wslConfigs = nixpkgs.lib.filterAttrs (_: conf: conf.nixType == "nixos-wsl") configurations;
+      genHost = name: conf: nixpkgs.lib.nixosSystem (let
         # Common nixpkgs configurations (overlays, unfree packages, etc...) (applies to all except `pkgs` / `nixpkgs` itself)
-        commonPkgsConfig = with configurations.vgwsl2; {
-          inherit system;
+        commonPkgsConfig = {
+          inherit (conf) system;
           config.allowUnfree = true;
         };
-
         # the base `pkgs` argument is special, it is automatically created / configured and passed in (DO NOT modify, outside of sub modules, many other non-user made modules use this configuration option!)
         # Need to set any other nixpkgs channel / input other than the main one (used to create system config) explicitly here (options DO NOT get passed into submodules)
         pkgs-unstable = import nixpkgs-unstable commonPkgsConfig;
-
+      in {
+        # inherit system > tells which specific `pkgs` / `nixpkgs` version to use
+        inherit (conf) system; 
         # create set of extra args to pass in to every sub module
-        specialArgs = inputs // configurations.vgwsl2 // {
-          inherit pkgs-unstable;
+        specialArgs = inputs // conf // {
+          inherit pkgs-unstable usrlib;
         };
-      in with configurations.vgwsl2; {
-        # inherit system > tells which specific `pkgs` / `nixpkgs` version to use | inherit specialArgs > read above
-        inherit system specialArgs;
         modules = [
           #################CORE#################
           # include nixos-wsl modules by default
@@ -60,11 +46,14 @@
 
           # include core configs
           ./features
+          ./core
 
           #################USER#################
-          ./vgwsl2
+          ./${name} # automatically looks for a folder named after configuration name
         ];
       });
-    };
+    in 
+      nixpkgs.lib.mapAttrs genHost wslConfigs 
+    );
   };
 }

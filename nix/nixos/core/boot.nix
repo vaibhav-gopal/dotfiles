@@ -1,21 +1,13 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, usrlib, pkgs, ... }:
 let
   cfgboot = config.core.boot;
 in {
   options.core.boot = {
-    enable = lib.mkEnableOption "enable boot config" // { default = true; };
-    kernel = lib.mkOption {
-      type = lib.types.enum [ "default" "latest"];
-      default = "latest";
-      description = "The linux kernel version";
-    };
-    bootloader = lib.mkOption {
-      type = lib.types.enum [ "grub" "systemd"];
-      default = "systemd";
-      description = "The system bootloader";
-    };
+    enable = usrlib.mkEnableOptionTrue "enable boot config";
+    kernel = usrlib.mkEnumOption "The linux kernel version" "latest" [ "default" "latest"];
+    bootloader = usrlib.mkEnumOption "The system bootloader" "systemd" [ "grub" "systemd"];
     plymouth = {
-      enable = lib.mkEnableOption "enable boot config" // { default = true; };
+      enable = lib.mkEnableOptionTrue "enable boot config";
     };
   };
 
