@@ -1,5 +1,11 @@
 { lib, username, homedirectory, hostname, ... }:
 {
+  imports = [
+    ./env.nix
+    ./home.nix
+    ./keyboard.nix
+  ];
+
   nix = {
     enable = true;
     settings = {

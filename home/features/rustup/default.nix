@@ -1,17 +1,12 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, usrlib, ... }:
 
 let 
   cfg = config.features.rustup;
 in {
   options.features.rustup = {
-    enable = lib.mkEnableOption "Enable rustup : rust toolchain manager" // { default = true; };
-    enable_auto_install_toolchain = lib.mkEnableOption "Auto install toolchains from rust-toolchain.toml from local directory" // { default = false; };
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs.rustup;
-      defaultText = lib.literalExpression "pkgs.rustup";
-      description = "The rustup package to use";
-    };
+    enable = usrlib.mkEnableOptionTrue "Enable rustup : rust toolchain manager";
+    enable_auto_install_toolchain = usrlib.mkEnableOptionFalse "Auto install toolchains from rust-toolchain.toml from local directory";
+    package = usrlib.mkPackageOption "The rustup package to use" pkgs.rustup;
   };
 
   config = lib.mkIf cfg.enable {

@@ -1,55 +1,21 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, usrlib, pkgs, ... }:
 let
   cfgmouse = config.core.mouse;
   cfgqmk = config.core.qmk;
 in {
   options.core.mouse = {
-    enable = lib.mkEnableOption "enable a mouse remapper + dpi management tool (via solaar)" // { default = true; };
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs.solaar;
-      defaultText = lib.literalExpression "pkgs.solaar";
-      description = "The solaar package to use";
-    };
-    window = lib.mkOption {
-      type = lib.types.enum [ "show" "hide" "only" ];
-      default = "hide";
-      description = ''
-        Start with window showing / hidden / only (no tray icon)
-      '';
-    };
-    batteryIcons = lib.mkOption {
-      type = lib.types.enum [ "regular" "symbolic" "solaar" ];
-      default = "regular";
-      description = ''
-        Prefer regular battery / symbolic battery / solaar icons
-      '';
-    };
-    extraArgs = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-      example = "--restart-on-wake-up";
-      description = ''
-        Extra arguments to pass to Solaar
-      '';
-    };
+    enable = usrlib.mkEnableOptionTrue "enable a mouse remapper + dpi management tool (via solaar)";
+    package = usrlib.mkPackageOption "The solaar package to use" pkgs.solaar;
+    window = usrlib.mkEnumOption "Start with window showing / hidden / only (no tray icon)" "hide" [ "show" "hide" "only" ];
+    batteryIcons = usrlib.mkEnumOption "Prefer regular battery / symbolic battery / solaar icons" "regular" [ "regular" "symbolic" "solaar" ];
+    extraArgs = usrlib.mkStringOption "Extra arguments to pass to Solaar" "";
   };
   options.core.qmk = {
-    enable = lib.mkEnableOption "enable QMK firmware flasher / tool" // { default = true; };
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs.qmk;
-      defaultText = lib.literalExpression "pkgs.qmk";
-      description = "The qmk package to use";
-    };
+    enable = usrlib.mkEnableOptionTrue "enable QMK firmware flasher / tool";
+    package = usrlib.mkPackageOption "The qmk package to use" pkgs.qmk;
     via = {
-      enable = lib.mkEnableOption "enable VIA, a firmware loader without need for flashing" // { default = true; };
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.via;
-        defaultText = lib.literalExpression "pkgs.via";
-        description = "The via package to use";
-      };
+      enable = usrlib.mkEnableOptionTrue "enable VIA, a firmware loader without need for flashing";
+      package = usrlib.mkPackageOption "The via package to use" pkgs.via;
     };
   };
 

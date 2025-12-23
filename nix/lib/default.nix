@@ -37,4 +37,14 @@
     default = default;
     description = desc;
   };
+  mkListOfPackagesOption = desc: default: lib.mkOption {
+    type = lib.types.listOf lib.types.package;
+    default = default;
+    description = desc;
+  };
+  mkNullOrPackageOption = desc: default: lib.mkOption {
+    type = lib.types.nullOr lib.types.package;
+    default = default;
+    description = desc;
+  };
 }

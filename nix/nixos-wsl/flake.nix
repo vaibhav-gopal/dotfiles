@@ -17,7 +17,7 @@
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, nixos-wsl, home-manager, ... }:
   {
-    mkConfigs = { mkUserLib, configurations }: (let
+    mkConfigs = { mkUserLib, configurations, ... }: (let
       usrlib = mkUserLib { inherit (nixpkgs) lib;};
       wslConfigs = nixpkgs.lib.filterAttrs (_: conf: conf.nixType == "nixos-wsl") configurations;
       genHost = name: conf: nixpkgs.lib.nixosSystem (let
@@ -45,8 +45,8 @@
           home-manager.nixosModules.home-manager
 
           # include core configs
-          ./features
           ./core
+          ./features
 
           #################USER#################
           ./${name} # automatically looks for a folder named after configuration name

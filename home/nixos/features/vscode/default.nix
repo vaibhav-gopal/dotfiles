@@ -1,16 +1,11 @@
-{ config, lib, pkgs-unstable, ... }:
+{ config, lib, pkgs-unstable, usrlib, ... }:
 let
   cfg = config.system.features.vscode;
 in {
   # MODULE OPTIONS DECLARATION
   options.system.features.vscode = {
-    enable = lib.mkEnableOption "Enable vscode application" // { default = true; };
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs-unstable.vscode;
-      defaultText = lib.literalExpression "pkgs-unstable.vscode";
-      description = "The vscode package to use";
-    };
+    enable = usrlib.mkEnableOptionTrue "Enable vscode application";
+    package = usrlib.mkPackageOption "The vscode package to use" pkgs-unstable.vscode;
   };
 
   # MODULE BODY

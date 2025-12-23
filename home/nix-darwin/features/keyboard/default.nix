@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, usrlib, ... }:
 
 let
   cfg = config.system.features.keyboard;
@@ -7,13 +7,8 @@ let
   layoutsDirPath = "${config.home.homeDirectory}/Library/Keyboard\ Layouts/";
 in {
   options.system.features.keyboard = {
-    enable = lib.mkEnableOption "Enable darwin keyboard" // { default = true; };
-    bundlePath = lib.mkOption {
-      type = lib.types.path;
-      default = bundlePath;
-      defaultText = bundlePath;
-      description = "The location for the macos keyboard bundle or keylayout to install to the system (by copying the file, replacing any file with the same name)";
-    };
+    enable = usrlib.mkEnableOptionTrue "Enable darwin keyboard";
+    bundlePath = usrlib.mkPathOption "The location for the macos keyboard bundle or keylayout to install to the system (by copying the file, replacing any file with the same name)" bundlePath;
   };
 
   config.home.activation.copyKeyboardLayoutBundle = lib.mkIf cfg.enable ( 

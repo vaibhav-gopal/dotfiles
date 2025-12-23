@@ -1,16 +1,11 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, usrlib, ... }:
 let
   cfg = config.system.features.spotify;
 in {
   # MODULE OPTIONS DECLARATION
   options.system.features.spotify = {
-    enable = lib.mkEnableOption "Enable spotify client" // { default = true; };
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs.spotify;
-      defaultText = lib.literalExpression "pkgs.spotify";
-      description = "The spotify client package to use";
-    };
+    enable = usrlib.mkEnableOptionTrue "Enable spotify client";
+    package = usrlib.mkPackageOption "The spotify client package to use" pkgs.spotify;
   };
 
   # MODULE BODY

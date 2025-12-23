@@ -1,16 +1,11 @@
-{ config, lib, ... }:
+{ config, lib, usrlib, ... }:
 
 let
   cfg = config.features.hotkeys;
 in {
   options.features.hotkeys = {
-    enable = lib.mkEnableOption "enable skhd hotkey daemon" // { default = true; };
-    config = lib.mkOption {
-      type = lib.types.str;
-      description = "The skhd config (hotkey shortcuts)";
-      default = ''
-      '';
-    };
+    enable = usrlib.mkEnableOptionTrue "enable skhd hotkey daemon";
+    config = usrlib.mkLinesOption "The skhd config (hotkey shortcuts)" '''';
   };
 
   config.services.skhd = lib.mkIf cfg.enable {

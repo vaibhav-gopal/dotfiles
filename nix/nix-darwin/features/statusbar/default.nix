@@ -1,16 +1,13 @@
-{ config, lib, ... }:
+{ config, lib, usrlib, ... }:
 
 let
   cfg = config.features.statusbar;
 in {
   options.features.statusbar = {
     # NOTE: please see the setup prereqs here first: https://felixkratz.github.io/SketchyBar/setup
-    enable = lib.mkEnableOption "enable status bar customization via sketchybar" // { default = false; };
+    enable = usrlib.mkEnableOptionFalse "enable status bar customization via sketchybar";
     # config options are here: https://felixkratz.github.io/SketchyBar/config/bar
-    config = lib.mkOption {
-      type = lib.types.str;
-      description = "The sketchybar config, default is bash not lua";
-      default = ''
+    config = usrlib.mkLinesOption "The sketchybar config, default is bash not lua" ''
         # Define colors
         export COLOR_BLACK="0xff181926"
         export COLOR_WHITE="0xffcad3f5"
@@ -36,7 +33,6 @@ in {
         # Update the bar
         sketchybar --update
       '';
-    };
   };
 
   config.services.sketchybar = lib.mkIf cfg.enable {

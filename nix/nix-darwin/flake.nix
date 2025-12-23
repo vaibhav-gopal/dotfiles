@@ -16,7 +16,7 @@
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nix-darwin, ...  }:
   {
-    mkConfigs = { mkUserLib, configurations }: (let
+    mkConfigs = { mkUserLib, configurations, ... }: (let
       usrlib = mkUserLib { inherit (nixpkgs) lib;};
       darwinConfigs = nixpkgs.lib.filterAttrs (_: conf: conf.nixType == "nix-darwin") configurations;
       genHost = name: conf: nix-darwin.lib.darwinSystem (let

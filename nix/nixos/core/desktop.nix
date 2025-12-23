@@ -1,23 +1,15 @@
-{ config, lib, ... }:
+{ config, lib, usrlib, ... }:
 let
   cfglogin = config.core.login;
   cfgdesktop = config.core.desktop;
 in {
   options.core.login = {
-    enable = lib.mkEnableOption "enable login session / greeter config (display manager, etc...)" // { default = true; };
-    select = lib.mkOption {
-      type = lib.types.enum [ "sddm" ];
-      default = "sddm";
-      description = "Chosen display manager";
-    };
+    enable = usrlib.mkEnableOptionTrue "enable login session / greeter config (display manager, etc...)";
+    select = usrlib.mkEnumOption "Chosen display manager" "sddm" [ "sddm" ];
   };
   options.core.desktop = {
-    enable = lib.mkEnableOption "enable x11 windowing system and a desktop environment" // { default = true; };
-    select = lib.mkOption {
-      type = lib.types.enum [ "plasma" "hyprland" ];
-      default = "plasma";
-      description = "Chosen desktop environment / compositor";
-    };
+    enable = usrlib.mkEnableOptionTrue "enable x11 windowing system and a desktop environment";
+    select = usrlib.mkEnumOption "Chosen desktop environment / compositor" "plasma" [ "plasma" "hyprland" ];
   };
 
   config = lib.mkMerge [

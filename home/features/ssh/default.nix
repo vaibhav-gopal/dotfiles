@@ -1,26 +1,17 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, usrlib, ... }:
 
 let 
   cfg = config.features.ssh;
 in {
   options.features.ssh = {
-    enable = lib.mkEnableOption "Enable ssh configuration" // { default = true; };
-    package = lib.mkOption {
-      type = lib.types.nullOr lib.types.package;
-      default = pkgs.openssh;
-      defaultText = lib.literalExpression "pkgs.openssh";
-      description = "The ssh package to use ; if null, uses system package (was default)";
-    };
-    extraConfig = lib.mkOption {
-      default = ''
-        ServerAliveInterval 30
-        ServerAliveCountMax 30
-      '';
-      type = lib.types.lines;
-      description = ''
-        Extra configuration.
-      '';
-    };
+    enable = usrlib.mkEnableOptionTrue "Enable ssh configuration";
+    package = usrlib.mkNullOrPackageOption "The ssh package to use ; if null, uses system package (was default)" pkgs.openssh;
+    extraConfig = usrlib.mkLinesOption 
+    "Extra configuration." 
+    ''
+      ServerAliveInterval 30
+      ServerAliveCountMax 30
+    '';
   };
 
   config = lib.mkIf cfg.enable {

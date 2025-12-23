@@ -1,21 +1,16 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, usrlib, ... }:
 
 let 
   cfg = config.features.vim;
 in {
   options.features.vim = {
-    enable = lib.mkEnableOption "Enable vim feature" // { default = true; };
+    enable = usrlib.mkEnableOptionTrue "Enable vim feature";
     nvim = {
-      enable = lib.mkEnableOption "Enable nvim package and feature" // { default = true; };
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.neovim-unwrapped;
-        defaultText = lib.literalExpression "pkgs.neovim-unwrapped";
-        description = "The neovim package to use (Uses unwrapped by default in programs)";
-      };
+      enable = usrlib.mkEnableOptionTrue "Enable nvim package and feature";
+      package = usrlib.mkPackageOption "The neovim package to use (Uses unwrapped by default in programs)" pkgs.neovim-unwrapped;
     };
     vscode = {
-      enable = lib.mkEnableOption "Enable vscode vimrc file setup" // { default = true; };
+      enable = usrlib.mkEnableOptionTrue "Enable vscode vimrc file setup";
     };
   };
 

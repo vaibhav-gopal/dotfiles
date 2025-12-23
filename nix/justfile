@@ -27,40 +27,40 @@ _nixos-wsl_check:
 
 [group('eval')]
 _nix-darwin_options:
-    @echo {{nix-darwin_directory}}#darwinConfigurations.{{nixconfig}}.options
+    @echo {{nix_directory}}#darwinConfigurations.{{nixconfig}}.options
 [group('eval')]
 _nix-darwin_system:
-    @echo {{nix-darwin_directory}}#darwinConfigurations.{{nixconfig}}.config
+    @echo {{nix_directory}}#darwinConfigurations.{{nixconfig}}.config
 [group('eval')]
 _nix-darwin_home-options:
-    @echo {{nix-darwin_directory}}#darwinConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+    @echo {{nix_directory}}#darwinConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
 [group('eval')]
 _nix-darwin_home:
-    @echo {{nix-darwin_directory}}#darwinConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+    @echo {{nix_directory}}#darwinConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
 [group('eval')]
 _nixos_options:
-    @echo {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.options
+    @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.options
 [group('eval')]
 _nixos_system:
-    @echo {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.config
+    @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.config
 [group('eval')]
 _nixos_home-options:
-    @echo {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+    @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
 [group('eval')]
 _nixos_home:
-    @echo {{nixos_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+    @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
 [group('eval')]
 _nixos-wsl_options:
-    @echo {{nixos-wsl_directory}}#nixosConfigurations.{{nixconfig}}.options
+    @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.options
 [group('eval')]
 _nixos-wsl_system:
-    @echo {{nixos-wsl_directory}}#nixosConfigurations.{{nixconfig}}.config
+    @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.config
 [group('eval')]
 _nixos-wsl_home-options:
-    @echo {{nixos-wsl_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+    @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
 [group('eval')]
 _nixos-wsl_home:
-    @echo {{nixos-wsl_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+    @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
 
 ######################################
 ############# NIX-COMMON #############

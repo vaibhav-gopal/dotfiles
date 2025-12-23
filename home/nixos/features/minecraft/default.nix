@@ -1,16 +1,11 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, usrlib, ... }:
 let
   cfg = config.system.features.minecraft;
 in {
   # MODULE OPTIONS DECLARATION
   options.system.features.minecraft = {
-    enable = lib.mkEnableOption "Enable prism launcher for minecraft" // { default = true; };
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs.prismlauncher;
-      defaultText = lib.literalExpression "pkgs.prismlauncher";
-      description = "The prism launcher package for minecraft";
-    };
+    enable = usrlib.mkEnableOptionTrue "Enable prism launcher for minecraft";
+    package = usrlib.mkPackageOption "The prism launcher package for minecraft" pkgs.prismlauncher;
   };
 
   # MODULE BODY

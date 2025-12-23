@@ -1,25 +1,12 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, usrlib, ... }:
 
 let 
   cfg = config.features.uv;
 in {
   options.features.uv = {
-    enable = lib.mkEnableOption "Enable uv : python env manager" // { default = true; };
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs.uv;
-      defaultText = lib.literalExpression "pkgs.uv";
-      description = "The uv package to use";
-    };
-    settings = lib.mkOption {
-      default = {};
-      type = lib.types.attrsOf lib.types.anything;
-      description = ''
-        Extra toml settings for $XDG_CONFIG_HOME/uv/uv.toml
-        All in TOML via nix attribute sets
-        See https://docs.astral.sh/uv/configuration/files/ and https://docs.astral.sh/uv/reference/settings/ for more information.
-      '';
-    };
+    enable = usrlib.mkEnableOptionTrue "Enable uv : python env manager";
+    package = usrlib.mkPackageOption "The uv package to use" pkgs.uv;
+    settings = usrlib.mkAttrsOption "Extra toml settings for $XDG_CONFIG_HOME/uv/uv.toml\nAll in TOML via nix attribute sets\nSee https://docs.astral.sh/uv/configuration/files/ and https://docs.astral.sh/uv/reference/settings/ for more information." {};
   };
 
   config = lib.mkIf cfg.enable {

@@ -1,10 +1,10 @@
-{ config, lib, ... }:
+{ config, lib, usrlib, ... }:
 
 let
-  cfg = config.features.keyboard;
+  cfg = config.core.keyboard;
 in {
-  options.features.keyboard = {
-    enable = lib.mkEnableOption "enable remapping keyboard" // { default = true; };
+  options.core.keyboard = {
+    enable = usrlib.mkEnableOptionTrue "enable remapping keyboard";
 
     userKeyMapping = lib.mkOption {
       type = lib.types.listOf (lib.types.attrsOf lib.types.int);

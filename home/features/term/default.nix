@@ -1,49 +1,29 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, usrlib, ... }:
 
 let 
   cfg = config.features.term;
 in {
   options.features.term = {
-    enable = lib.mkEnableOption "Enable some terminal utilities" // { default = true; };
+    enable = usrlib.mkEnableOptionTrue "Enable some terminal utilities";
     zellij = {
-      enable = lib.mkEnableOption "Enable zellij the terminal multiplexer" // { default = true; };
-      enable_config = lib.mkEnableOption "Enable zellij config setup" // { default = true; };
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.zellij;
-        defaultText = lib.literalExpression "pkgs.zellij";
-        description = "Default zellij package to use";
-      };
+      enable = usrlib.mkEnableOptionTrue "Enable zellij the terminal multiplexer";
+      enable_config = usrlib.mkEnableOptionTrue "Enable zellij config setup";
+      package = usrlib.mkPackageOption "Default zellij package to use" pkgs.zellij;
     };
     yazi = {
-      enable = lib.mkEnableOption "Enable yazi the terminal file explorer" // { default = true; };
-      enable_config = lib.mkEnableOption "Enable yazi config setup" // { default = true; };
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.yazi;
-        defaultText = lib.literalExpression "pkgs.yazi";
-        description = "Default yazi package to use";
-      };
+      enable = usrlib.mkEnableOptionTrue "Enable yazi the terminal file explorer";
+      enable_config = usrlib.mkEnableOptionTrue "Enable yazi config setup";
+      package = usrlib.mkPackageOption "Default yazi package to use" pkgs.yazi;
     };
     starship = {
-      enable = lib.mkEnableOption "Enable starship the terminal prompt" // { default = true; };
-      enable_config = lib.mkEnableOption "Enable starship config setup" // { default = true; };
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.starship;
-        defaultText = lib.literalExpression "pkgs.starship";
-        description = "Default starship package to use";
-      };
+      enable = usrlib.mkEnableOptionTrue "Enable starship the terminal prompt";
+      enable_config = usrlib.mkEnableOptionTrue "Enable starship config setup";
+      package = usrlib.mkPackageOption "Default starship package to use" pkgs.starship;
     };
     ghostty = {
-      enable = lib.mkEnableOption "Enable ghostty the terminal emulator" // { default = true; };
-      enable_config = lib.mkEnableOption "Enable ghostty config setup" // { default = true; };
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.ghostty;
-        defaultText = lib.literalExpression "pkgs.ghostty";
-        description = "Default ghostty package to use";
-      };
+      enable = usrlib.mkEnableOptionTrue "Enable ghostty the terminal emulator";
+      enable_config = usrlib.mkEnableOptionTrue "Enable ghostty config setup";
+      package = usrlib.mkPackageOption "Default ghostty package to use" pkgs.ghostty;
     };
   };
 

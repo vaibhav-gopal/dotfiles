@@ -12,7 +12,7 @@
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ...  }:
   {
-    mkConfigs = { mkUserLib, configurations }: (let
+    mkConfigs = { mkUserLib, configurations, ... }: (let
       usrlib = mkUserLib { inherit (nixpkgs) lib;};
       nixosConfigs = nixpkgs.lib.filterAttrs (_: conf: conf.nixType == "nixos") configurations;
       genHost = name: conf: nixpkgs.lib.nixosSystem (let

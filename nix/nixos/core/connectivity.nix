@@ -1,22 +1,21 @@
-{ config, lib, ... }:
+{ config, lib, usrlib, ... }:
 let
   cfginternet = config.core.internet;
   cfgbluetooth = config.core.bluetooth;
   cfgprinting = config.core.printing;
 in {
   options.core.internet = {
-    enable = lib.mkEnableOption "enable internet configuration" // { default = true; };
-    method = lib.mkOption {
-      type = lib.types.enum [ "networkmanager" "wpa_supplicant"];
-      default = "networkmanager";
-      description = "Method to enable internet connection. (wpa_supplicant for non desktop environments)";
-    };
+    enable = usrlib.mkEnableOptionTrue "enable internet configuration";
+    method = usrlib.mkEnumOption
+      "Method to enable internet connection. (wpa_supplicant for non desktop environments)" 
+      "networkmanager" 
+      [ "networkmanager" "wpa_supplicant" ];
   };
   options.core.bluetooth = {
-    enable = lib.mkEnableOption "enable bluetooth configuration" // { default = true; };
+    enable = usrlib.mkEnableOptionTrue "enable bluetooth configuration";
   };
   options.core.printing = {
-    enable = lib.mkEnableOption "enable printing documents via CUPS" // { default = true; };
+    enable = usrlib.mkEnableOptionTrue "enable printing documents via CUPS";
   };
 
   config = lib.mkMerge [

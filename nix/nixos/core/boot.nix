@@ -7,7 +7,7 @@ in {
     kernel = usrlib.mkEnumOption "The linux kernel version" "latest" [ "default" "latest"];
     bootloader = usrlib.mkEnumOption "The system bootloader" "systemd" [ "grub" "systemd"];
     plymouth = {
-      enable = lib.mkEnableOptionTrue "enable boot config";
+      enable = usrlib.mkEnableOptionTrue "enable boot config";
     };
   };
 

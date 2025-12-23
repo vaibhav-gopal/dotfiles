@@ -1,16 +1,11 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, usrlib, ... }:
 
 let
   cfg = config.features.java;
 in {
   options.features.java = {
-    enable = lib.mkEnableOption "Enable the java development kit (JDK) and/or java runtime environment (JRE)" // { default = true; };
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs.temurin-bin;
-      defaultText = lib.literalExpression "pkgs.temurin-bin";
-      description = "The java runtime package";
-    };
+    enable = usrlib.mkEnableOptionTrue "Enable the java development kit (JDK) and/or java runtime environment (JRE)";
+    package = usrlib.mkPackageOption "The java runtime package" pkgs.temurin-bin;
   };
 
   config = lib.mkIf cfg.enable {

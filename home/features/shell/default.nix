@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, usrlib, ... }:
 
 let 
   cfg = config.features.shell;
@@ -28,11 +28,11 @@ let
       (systemShellDirs ++ featureShellDirs ++ featureSystemShellDirs));
 in {
   options.features.shell = {
-    enable = lib.mkEnableOption "Enable shell management and configuration" // { default = true; };
+    enable = usrlib.mkEnableOptionTrue "Enable shell management and configuration";
     direnv = {
-      enable = lib.mkEnableOption "Enable direnv ; automatic loading of .envrc files for environment variables." // { default = true; };
+      enable = usrlib.mkEnableOptionTrue "Enable direnv ; automatic loading of .envrc files for environment variables.";
       nix-direnv = {
-        enable = lib.mkEnableOption "Enable nix-direnv ; automatic loading of env shells" // { default = true; };
+        enable = usrlib.mkEnableOptionTrue "Enable nix-direnv ; automatic loading of env shells";
       };
     };
   };

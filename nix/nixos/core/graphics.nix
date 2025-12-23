@@ -1,39 +1,18 @@
-{ config, lib, ... }:
+{ config, lib, usrlib, ... }:
 let
   cfg = config.core.graphics;
 in {
   options.core.graphics = {
-    enable = lib.mkEnableOption "enable graphics hardware acceleration" // { default = true; };
-    video_drivers = lib.mkOption {
-      type = lib.types.listOf (lib.types.enum ["nvidia" "amdgpu" "modesetting" "fbdev"]);
-      default = ["modesetting" "fbdev"];
-      description = "xserver graphics drivers to use, in order (don't mix free MESA-based w/ unfree proprietary drivers)";
-    };
+    enable = usrlib.mkEnableOptionTrue "enable graphics hardware acceleration";
+    video_drivers = usrlib.mkListOfEnumOption "xserver graphics drivers to use, in order (don't mix free MESA-based w/ unfree proprietary drivers)" ["modesetting" "fbdev"] ["nvidia" "amdgpu" "modesetting" "fbdev"];
     nvidia = {
-      enable = lib.mkEnableOption "enable nvidia driver user configuration (factory config will be automatically enabled if hardware present regardless of this option)" // { default = true; };
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = config.boot.kernelPackages.nvidiaPackages.stable;
-        defaultText = lib.literalExpression "config.boot.kernelPackages.nvidiaPackages.stable";
-        description = "The nvidia driver version package to use";
-      };
+      enable = usrlib.mkEnableOptionTrue "enable nvidia driver user configuration (factory config will be automatically enabled if hardware present regardless of this option)";
+      package = usrlib.mkPackageOption "The nvidia driver version package to use" config.boot.kernelPackages.nvidiaPackages.stable;
       prime = {
-        enable = lib.mkEnableOption "enable nvidia PRIME iGPU/GPU sync" // { default = true; };
-        nvidiaBusId = lib.mkOption {
-          type = lib.types.str;
-          default = "";
-          description = "The PCI Bus ID for an Nvidia GPU for Nvidia PRIME";
-        };
-        amdgpuBusId = lib.mkOption {
-          type = lib.types.str;
-          default = "";
-          description = "The PCI Bus ID for an AMD iGPU/GPU for Nvidia PRIME";
-        };
-        intelBusId = lib.mkOption {
-          type = lib.types.str;
-          default = "";
-          description = "The PCI Bus ID for an Intel iGPU/GPU for Nvidia PRIME";
-        };
+        enable = usrlib.mkEnableOptionTrue "enable nvidia PRIME iGPU/GPU sync";
+        nvidiaBusId = usrlib.mkStringOption "The PCI Bus ID for an Nvidia GPU for Nvidia PRIME" "";
+        amdgpuBusId = usrlib.mkStringOption "The PCI Bus ID for an AMD iGPU/GPU for Nvidia PRIME" "";
+        intelBusId = usrlib.mkStringOption "The PCI Bus ID for an Intel iGPU/GPU for Nvidia PRIME" "";
       };
     };
   };

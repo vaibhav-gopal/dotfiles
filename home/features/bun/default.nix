@@ -1,27 +1,12 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, usrlib, ... }:
 
 let 
   cfg = config.features.bun;
 in {
   options.features.bun = {
-    enable = lib.mkEnableOption "Enable the bun program." // { default = true; };
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs.bun;
-      defaultText = lib.literalExpression "pkgs.bun";
-      description = "The bun package to use";
-    };
-    settings = lib.mkOption {
-      default = {};
-      example = {
-        telemetry = false;
-      };
-      type = lib.types.attrsOf lib.types.anything;
-      description = ''
-        Extra toml settings for $XDG_CONFIG_HOME/.bunfig.toml
-        All in TOML via nix attribute sets
-      '';
-    };
+    enable = usrlib.mkEnableOptionTrue "Enable the bun program.";
+    package = usrlib.mkPackageOption "The bun package to use" pkgs.bun;
+    settings = usrlib.mkAttrsOption "Extra toml settings for $XDG_CONFIG_HOME/.bunfig.toml\nAll in TOML via nix attribute sets" {};
   };
 
   config = lib.mkIf cfg.enable {

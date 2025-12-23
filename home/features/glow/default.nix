@@ -1,16 +1,11 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, usrlib, ... }:
 
 let 
   cfg = config.features.glow;
 in {
   options.features.glow = {
-    enable = lib.mkEnableOption "Enable glow markdown CLI viewer" // { default = true; };
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs.glow;
-      defaultText = lib.literalExpression "pkgs.glow";
-      description = "The glow package to use";
-    };
+    enable = usrlib.mkEnableOptionTrue "Enable glow markdown CLI viewer";
+    package = usrlib.mkPackageOption "The glow package to use" pkgs.glow;
   };
 
   config = lib.mkIf cfg.enable {

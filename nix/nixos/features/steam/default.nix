@@ -1,9 +1,9 @@
-{ config, lib, ... }:
+{ config, lib, usrlib, ... }:
 let
   cfg = config.features.steam;
 in {
   options.features.steam = {
-    enable = lib.mkEnableOption "enable steam application" // { default = true; };
+    enable = usrlib.mkEnableOptionTrue "enable steam application";
   };
 
   config = lib.mkIf cfg.enable {

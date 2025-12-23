@@ -1,34 +1,16 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, usrlib, ... }:
 
 let 
   cfg = config.features.git;
 in {
   options.features.git = {
-    enable = lib.mkEnableOption "Enable git configuration management" // { default = true; };
-    name = lib.mkOption {
-      type = lib.types.str;
-      default = "Vaibhav Gopal";
-      description = "Name for git config";
-    };
-    email = lib.mkOption {
-      type = lib.types.str;
-      default = "vaibhav@gmail.com";
-      description = "Email for git config";
-    };
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs.git;
-      defaultText = lib.literalExpression "pkgs.git";
-      description = "The git package to use";
-    };
+    enable = usrlib.mkEnableOptionTrue "Enable git configuration management";
+    name = usrlib.mkStringOption "Name for git config" "Vaibhav Gopal";
+    email = usrlib.mkStringOption "Email for git config" "vaibhav@gmail.com";
+    package = usrlib.mkPackageOption "The git package to use" pkgs.git;
     gh = {
-      enable = lib.mkEnableOption "Enable the GH CLI" // { default = true; };
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.gh;
-        defaultText = lib.literalExpression "pkgs.gh";
-        description = "The gh cli package to use";
-      };
+      enable = usrlib.mkEnableOptionTrue "Enable the GH CLI";
+      package = usrlib.mkPackageOption "The gh cli package to use" pkgs.gh;
     };
   };
 
