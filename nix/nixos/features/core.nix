@@ -25,7 +25,7 @@
   hardware.enableAllFirmware = true;
 
   # Bootloader / Kernel
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_latest; # latest linux kernel (default is LTS)
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
