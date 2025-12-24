@@ -33,7 +33,7 @@ _nix-darwin_system:
     @echo {{nix_directory}}#darwinConfigurations.{{nixconfig}}.config
 [group('eval')]
 _nix-darwin_home-options:
-    @echo {{nix_directory}}#darwinConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+    @echo {{nix_directory}}#darwinConfigurations.{{nixconfig}}.options.home-manager.users.type.nestedTypes.elemType
 [group('eval')]
 _nix-darwin_home:
     @echo {{nix_directory}}#darwinConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
@@ -45,7 +45,7 @@ _nixos_system:
     @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.config
 [group('eval')]
 _nixos_home-options:
-    @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+    @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.options.home-manager.users.type.nestedTypes.elemType
 [group('eval')]
 _nixos_home:
     @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
@@ -57,7 +57,7 @@ _nixos-wsl_system:
     @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.config
 [group('eval')]
 _nixos-wsl_home-options:
-    @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}
+    @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.options.home-manager.users.type.nestedTypes.elemType
 [group('eval')]
 _nixos-wsl_home:
     @echo {{nix_directory}}#nixosConfigurations.{{nixconfig}}.config.home-manager.users.{{nixusername}}

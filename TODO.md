@@ -25,6 +25,7 @@
 - why does `mkOutOfStoreSymlink` not work?? (also when running nix-collect-garbage, removes those symlinks) - DONE
 - list all enabled features of home-manager via justfile - DONE
 - nixos desktop/server setup - DONE
+- list all options and types in system config/options - DONE
 
 ## NEED TO DO
 

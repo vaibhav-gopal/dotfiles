@@ -1,4 +1,4 @@
-{ config, lib, usrlib, ... }:
+{ config, lib, usrlib, pkgs, pkgs-unstable, ... }:
 let
   cfglogin = config.core.login;
   cfgdesktop = config.core.desktop;
@@ -22,6 +22,16 @@ in {
       services.desktopManager.plasma6.enable = true;
     })
     (lib.mkIf (cfgdesktop.enable && cfgdesktop.select == "hyprland") {
+      programs.hyprland = {
+        enable = true;
+        withUWSM = true; # recommended ; launch with universal wayland session manager
+        xwayland.enable = true;
+      };
+
+      xdg.portal = {
+        enable = true;
+        extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+      };
     })
     (lib.mkIf cfgdesktop.enable {
       # Enable the X11 windowing system.
