@@ -6,3 +6,6 @@ local vimrc_path = vim.fn.stdpath("config") .. "/init.vim"
 
 -- Source the init.vim
 vim.cmd("source " .. vimrc_path)
+
+-- NEW CONFIG
+require("core")
