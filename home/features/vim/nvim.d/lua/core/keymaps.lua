@@ -1,3 +1,5 @@
+-- Full reference sheet of default keymaps found here: https://vimhelp.org/quickref.txt.html
+
 local opts = { noremap = true, silent = true }
 if not table.unpack then
     table.unpack = unpack
@@ -9,8 +11,8 @@ vim.g.maplocalleader = " "  -- Set local leader key to space
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move lines down in visual selection" , table.unpack(opts)} )  -- Move selected lines down
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move lines up in visual selection" , table.unpack(opts)} )  -- Move selected lines up
 
-vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" , table.unpack(opts)} )  -- Scroll down and center
-vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll up and center" , table.unpack(opts)} )  -- Scroll up and center
+vim.keymap.set("n", "<A-b>", "<C-d>zz", { desc = "Scroll down and center" , table.unpack(opts)} )  -- Scroll down and center
+vim.keymap.set("n", "<A-u>", "<C-u>zz", { desc = "Scroll up and center" , table.unpack(opts)} )  -- Scroll up and center
 
 vim.keymap.set("n", "n", "nzzzv", { desc = "Next search result centered" , table.unpack(opts)} )  -- Center screen on next search result
 vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous search result centered" , table.unpack(opts)} )  -- Center screen on previous search result
@@ -23,8 +25,7 @@ vim.keymap.set("v", "p", [["_dP]], { desc = "Paste without overwriting clipboard
 
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete without overwriting clipboard" , table.unpack(opts)} )  -- Delete without overwriting clipboard
 
-vim.keymap.set("i", "<C-c>", "<Esc>", { desc = "Exit insert mode" , table.unpack(opts)} )  -- Exit insert mode with Ctrl-c
-vim.keymap.set("n", "<C-c>", "<cmd>nohl<CR>", { desc = "Clear search highlighting" , table.unpack(opts)} )  -- Clear search highlighting
+vim.keymap.set("n", "<Esc>", "<cmd>nohl<CR>", { desc = "Clear search highlighting" , table.unpack(opts)} )  -- Clear search highlighting
 
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = "Format buffer" , table.unpack(opts)} )  -- Format buffer using LSP
 vim.keymap.set("n", "Q", "<nop>", opts)  -- Disable Ex mode

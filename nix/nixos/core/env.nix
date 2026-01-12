@@ -1,4 +1,4 @@
-{ config, pkgs, lib, pkgs-unstable, usrlib, ... }:
+{ config, pkgs, lib, pkgs-unstable, usrlib, username, ... }:
 let
   cfg = config.core.env;
 in {
@@ -37,6 +37,7 @@ in {
       systemPackages = cfg.packages;
     };
 
+    # enable zsh (but keep bash as login shell)
     programs.zsh.enable = true;
     environment.shells = [
       pkgs.zsh

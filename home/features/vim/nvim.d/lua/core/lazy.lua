@@ -24,7 +24,7 @@ require("lazy").setup({
         { import = "plugins" },
     },
     defaults = {
-        lazy = true, -- should plugins be lazy-loaded? (only for custom plugins not LazyVim plugins)
+        lazy = false, -- should plugins be lazy-loaded (not loaded by default)? (only for custom plugins not LazyVim plugins)
         version = false, -- always use the latest git commit
     },
     -- Configure any other settings here. See the documentation for more details.

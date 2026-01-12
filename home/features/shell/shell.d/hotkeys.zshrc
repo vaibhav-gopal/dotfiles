@@ -1,76 +1,94 @@
 # ---------------------------------------------------------
-# 1. THE NUCLEAR RESET
+# 1. INITIALIZATION & TIMING
 # ---------------------------------------------------------
-# Wipes all existing bindings. Terminal is "dead" after this 
-# until the rest of the script executes.
-bindkey -rp ""
+# Set Escape-key delay to 10ms (makes mode switching instant)
+export KEYTIMEOUT=1
+
+# Enable Vi Mode
+bindkey -v
 
 # ---------------------------------------------------------
-# 2. THE SAFETY NET (ASCII & Extended Range)
+# 2. THE NUCLEAR RESET
 # ---------------------------------------------------------
-# \x00-\x1F : Control Characters (Null to Unit Separator)
-# \x20-\x7E : Printable Characters (Space to Tilde)
-# \x7F      : DEL (Modern Backspace)
-# \x80-\xFF : Extended ASCII / UTF-8 lead bytes
-bindkey -R "\x00"-"\xFF" self-insert
+# Clear the primary Insert and Command maps
+bindkey -rp "" -M viins
+bindkey -rp "" -M vicmd
 
 # ---------------------------------------------------------
-# 3. CORE TERMINAL CONTROLS
+# 3. THE SAFETY NET (Full ASCII/Extended Range)
 # ---------------------------------------------------------
-bindkey '^M' accept-line            # [Enter] (Carriage Return / Ctrl+M)
-bindkey '^J' accept-line            # [Line Feed] (Ctrl+J)
-bindkey '^I' fzf-completion         # [Tab] (Horizontal Tab / Ctrl+I)
-bindkey '^?' backward-delete-char   # [Backspace] (DEL / ASCII 127)
-bindkey '^H' backward-delete-char   # [Ctrl + Backspace] (BS / ASCII 08)
-bindkey '^L' clear-screen           # [Ctrl + L] (Form Feed)
-bindkey '^V' quoted-insert          # [Ctrl + V] (Synchronous Idle)
-bindkey '^Q' quoted-insert          # [Ctrl + Q] (XON - Resume Output)
-bindkey '^@' autosuggest-accept     # [Ctrl + Space]
+# Map every possible 8-bit byte to self-insert in Insert Mode.
+# This ensures that 'a'-'z', '0'-'9', and symbols always type.
+bindkey -R -M viins "\x00"-"\xFF" self-insert
+
+# Map Command Mode to 'undefined' so unused keys don't ghost-type
+bindkey -R -M vicmd "\x00"-"\xFF" undefined-key
 
 # ---------------------------------------------------------
-# 4. EMACS-STYLE NAVIGATION & EDITING
+# 4. INSERT MODE OVERRIDES (The "While Typing" Keys)
 # ---------------------------------------------------------
-bindkey '^A' beginning-of-line      # [Ctrl + A]
-bindkey '^E' end-of-line            # [Ctrl + E]
-bindkey '^F' forward-char           # [Ctrl + F]
-bindkey '^B' backward-char          # [Ctrl + B]
-bindkey '^K' kill-line              # [Ctrl + K] (Cut to end)
-bindkey '^U' kill-whole-line        # [Ctrl + U] (Cut whole line)
-bindkey '^W' backward-kill-word     # [Ctrl + W] (Delete word)
-bindkey '^Y' yank                   # [Ctrl + Y] (Paste/Yank)
+# Core Controls
+bindkey -M viins '^[' vi-cmd-mode            # [ESC] Switch to Command Mode
+bindkey -M viins '^M' accept-line            # [Enter] (Hex 0D)
+bindkey -M viins '^J' accept-line            # [Newline] (Hex 0A)
+bindkey -M viins '^?' backward-delete-char   # [Backspace] (Hex 7F)
+bindkey -M viins '^H' backward-delete-char   # [Ctrl+H / Backspace]
+bindkey -M viins '^I' fzf-completion         # [Tab] (fzf trigger)
+
+# Plugins (Autosuggest & FZF)
+bindkey -M viins '^@' autosuggest-accept     # [Ctrl+Space] (NUL)
+bindkey -M viins '^R' fzf-history-widget     # [Ctrl+R]
+bindkey -M viins '^T' fzf-file-widget        # [Ctrl+T]
+bindkey -M vicmd '\ec'  fzf-cd-widget        # [Alt+C] Change directory (fzf)
+
+# Navigation (Standard Emacs style also available in Insert mode)
+bindkey -M viins '^A' beginning-of-line      # [Ctrl+A]
+bindkey -M viins '^E' end-of-line            # [Ctrl+E]
+bindkey -M viins '^W' backward-kill-word     # [Ctrl+W]
 
 # ---------------------------------------------------------
-# 5. COMMAND HOTKEYS / FUNCTIONS
+# 5. COMMAND MODE (Vim Navigation)
 # ---------------------------------------------------------
-bindkey '^R' fzf-history-widget     # [Ctrl + R] (Fuzzy History)
-bindkey '^T' fzf-file-widget        # [Ctrl + T] (Fuzzy File Search)
-bindkey '\ec' fzf-cd-widget         # [Alt + C] (Fuzzy CD)
+# These only work after pressing [ESC]
+bindkey -M vicmd 'h' vi-backward-char
+bindkey -M vicmd 'j' down-line-or-history
+bindkey -M vicmd 'k' up-line-or-history
+bindkey -M vicmd 'l' vi-forward-char
+bindkey -M vicmd 'w' vi-forward-word
+bindkey -M vicmd 'e' vi-forward-word-end
+bindkey -M vicmd 'b' vi-backward-word
+bindkey -M vicmd '0' vi-beginning-of-line
+bindkey -M vicmd '_' vi-end-of-line
+bindkey -M vicmd '^[' vi-insert              # [ESC] Enter Insert Mode
+bindkey -M vicmd ' ' vi-insert               # [Space] Enter Insert Mode
+bindkey -M vicmd 'i' vi-insert               # [i] Enter Insert Mode
+bindkey -M vicmd 'a' vi-add-next             # [a] Append
+bindkey -M vicmd 'u' undo                    # [u] Undo
+bindkey -M vicmd 'x' vi-delete-char          # [x] Delete char
+bindkey -M vicmd 'd' vi-delete               # [d] Delete operator
+bindkey -M vicmd 'c' clear-screen            # [c] Clear screen
+bindkey -M vicmd 'v' quoted-insert           # [v] Verbatim input
 
 # ---------------------------------------------------------
-# 6. ARROW KEYS & HARDWARE SEQUENCES
+# 6. ARROW KEYS (Consistent across both modes)
 # ---------------------------------------------------------
-# Standard ANSI Sequences
-bindkey '^[[A' up-line-or-history    # [Up Arrow]
-bindkey '^[[B' down-line-or-history  # [Down Arrow]
-bindkey '^[[C' forward-char          # [Right Arrow]
-bindkey '^[[D' backward-char         # [Left Arrow]
-
-# Application Mode Sequences (Used by some terminals like PuTTY/Screen)
-bindkey '^[OA' up-line-or-history    # [Up Arrow] (App Mode)
-bindkey '^[OB' down-line-or-history  # [Down Arrow] (App Mode)
-bindkey '^[OC' forward-char          # [Right Arrow] (App Mode)
-bindkey '^[OD' backward-char         # [Left Arrow] (App Mode)
-bindkey '^[OH' beginning-of-line     # [Home]
-bindkey '^[OF' end-of-line           # [End]
-
-# Modifier Keys (Alt + Arrows / Ctrl + Arrows)
-bindkey '^[[1;3C' forward-word       # [Alt + Right Arrow]
-bindkey '^[[1;3D' backward-word      # [Alt + Left Arrow]
-bindkey '^[[3~'   delete-char        # [Delete Key] (Fn + Backspace on Mac)
+foreach map (viins vicmd)
+  bindkey -M $map '^[[A' up-line-or-history     # [Up]
+  bindkey -M $map '^[[B' down-line-or-history   # [Down]
+  bindkey -M $map '^[[C' forward-char           # [Right]
+  bindkey -M $map '^[[D' backward-char          # [Left]
+  
+  # Standard App Mode sequences
+  bindkey -M $map '^[OA' up-line-or-history
+  bindkey -M $map '^[OB' down-line-or-history
+  bindkey -M $map '^[OC' forward-char
+  bindkey -M $map '^[OD' backward-char
+  
+  # Delete key
+  bindkey -M $map '^[[3~' delete-char           # [Delete]
+end
 
 # ---------------------------------------------------------
 # 7. TERMINAL PROTOCOLS
 # ---------------------------------------------------------
-# Bracketed Paste Mode: Prevents pasted text from being 
-# interpreted as immediate commands.
-bindkey '^[[200~' bracketed-paste    # [Automatic sequence on Paste]
+bindkey -M viins '^[[200~' bracketed-paste

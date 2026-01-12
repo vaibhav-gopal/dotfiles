@@ -13,7 +13,7 @@ vim.opt.smartindent = true -- Smart autoindenting for C-like programs
 vim.opt.wrap = false -- Disable line wrapping
 
 vim.opt.cursorline = true -- Highlight the current line
-vim.opt.termguicolors = true -- Enable 24-bit RGB colors
+vim.opt.termguicolors = true -- Enable 24-bit RGB colors (o/w use the terminal theme / color palette)
 vim.opt.background = "dark" -- Set background to dark
 vim.opt.scrolloff = 8 -- Minimum number of screen lines to keep above/below the cursor
 vim.opt.sidescrolloff = 8 -- Minimum number of screen columns to keep to the left/right of the cursor

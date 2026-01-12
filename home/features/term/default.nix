@@ -59,18 +59,18 @@ in {
     programs.kitty = lib.mkIf cfg.kitty.enable {
       enable = true;
       package = cfg.kitty.package;
+      extraConfig = ''
+        include ./kitty_custom.conf
+        shell ${pkgs.zsh}/bin/zsh
+      '';
     };
-    # Odly enough, kitty config HAS to be placed in home.file w/ lib.mkForce --- do not use xdg.configFile, conflicting definitions with kitty derivations (shame on you kovid goyal)
-    home.file."${config.home.homeDirectory}/.config/kitty/kitty.conf".source = lib.mkIf cfg.kitty.enable_config ( lib.mkForce (
+    xdg.configFile."kitty/kitty_custom.conf".source = lib.mkIf cfg.kitty.enable_config (
       config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/term/kitty.d/kitty.conf"
-    ));
-    # xdg.configFile."kitty".source = lib.mkIf cfg.kitty.enable_config (
-    #   config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/term/kitty.d"
-    # );
+    );
     
     # Home shell aliases
     home.shellAliases = {
-      zj = lib.mkIf cfg.zellij.enable "zellij";
+      zz = lib.mkIf cfg.zellij.enable "zellij";
     };
   };
 }

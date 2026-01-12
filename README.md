@@ -105,15 +105,7 @@ Terminal Emulator + Terminal Multiplexer (Level 1):
 - `ctrl`+`shift` (terminal emulator shortcuts)
 - `Fn` (F1-F4/F11 terminal emulator settings + F5-F10/F12 terminal multiplexer shortcuts)
 
-Terminal Raw Mode Applications (vim, nvim, zed, yazi, etc...) (Level 2):
-
-- `alt`/`alt`+`shift` (useful keybinds)
-- `ctrl`+`alt`/`ctrl`+`alt`+`shift` (useful keybinds)
-- leader key (w/ any key) (useful keybinds)
-
-OR
-
-Non-Raw Mode Applications (Level 2):
+Terminal Applications (vim, nvim, zed, yazi, etc...) (Level 2):
 
 - `alt`/`alt`+`shift` (useful keybinds)
 - `ctrl`+`alt`/`ctrl`+`alt`+`shift` (useful keybinds)
