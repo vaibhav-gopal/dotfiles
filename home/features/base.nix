@@ -78,8 +78,9 @@
   programs.fzf.changeDirWidgetOptions = ["--preview 'tree -C {} | head -200'"];
 
   # zoxide : a better cd command
-  # available via: `z` and `zi` with fzf
+  # available via: `cd` and `cdi` with fzf
   programs.zoxide.enable = true;
+  programs.zoxide.options = ["--cmd cd"];
 
   # fastfetch : the cool display system / arch terminal thing
   # avalable via `fastfetch`
@@ -100,7 +101,6 @@
     llg = "eza --all --long --git-ignore";
     ltg = "eza --all --long --tree --ignore-glob .git --git-ignore --level";
     dot = "code ~/dotfiles";
-    cdot = "z ~/dotfiles";
   };
 }
 

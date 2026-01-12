@@ -18,7 +18,7 @@ vim.opt.background = "dark" -- Set background to dark
 vim.opt.scrolloff = 8 -- Minimum number of screen lines to keep above/below the cursor
 vim.opt.sidescrolloff = 8 -- Minimum number of screen columns to keep to the left/right of the cursor
 vim.opt.signcolumn = "yes" -- Always show the sign column
-vim.opt.colorcolumn = "none" -- Disable color column
+vim.opt.colorcolumn = "" -- Disable color column
 
 vim.opt.mouse = "a" -- Enable mouse support in all modes
 vim.opt.clipboard = "unnamedplus" -- Use system clipboard
@@ -29,7 +29,7 @@ vim.opt.writebackup = false -- Disable write backup files
 vim.opt.undofile = true -- Enable persistent undo
 
 vim.opt.incsearch = true -- Show search matches as you type
-vim.opt.inccommand = true -- Show the effects of a command incrementally
+vim.opt.inccommand = "split" -- Show the effects of a command incrementally
 vim.opt.ignorecase = true -- Ignore case in search patterns
 vim.opt.smartcase = true -- Override 'ignorecase' if the search pattern contains uppercase letters
 vim.opt.hlsearch = true -- Highlight all search matches

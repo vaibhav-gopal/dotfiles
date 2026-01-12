@@ -1,4 +1,7 @@
 local opts = { noremap = true, silent = true }
+if not table.unpack then
+    table.unpack = unpack
+end
 
 vim.g.mapleader = " "  -- Set leader key to space
 vim.g.maplocalleader = " "  -- Set local leader key to space

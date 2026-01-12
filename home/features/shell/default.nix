@@ -2,33 +2,18 @@
 
 let 
   cfg = config.features.shell;
-
-  # =================== SHELL FRAGMENT LOADER =======================
-  # Build candidate dirs as *strings* (not Nix paths), so missing dirs don't explode at eval time. We'll filter by pathExists before using them.
-  systemShellDirs = builtins.filter builtins.pathExists [ "${config.extPaths.nixtypeSystemDir}/shell.d" ];
-  # List all valid shell fragment directories from enabled features
-  featureShellDirs = builtins.filter builtins.pathExists (
-    map (feature: "${config.extPaths.commonFeaturesDir}/${feature}/shell.d") (builtins.attrNames config.features)
-  );
-  # List all valid shell fragment directories from enabled system level features
-  featureSystemShellDirs = builtins.filter builtins.pathExists (
-    map (feature: "${config.extPaths.nixtypeFeaturesDir}/${feature}/shell.d") (builtins.attrNames config.system.features)
-  );
-  # Abstract fragment loader for shell stages (e.g. .zshrc, .zprofile)
-  loadShellFragments = stageExt: dir: ''
-    if [ -d "${dir}" ]; then
-      while IFS= read -r f; do
-        [ -r "$f" ] && . "$f"
-      done < <(find "${dir}" -maxdepth 1 -type f -name "*.${stageExt}" 2>/dev/null)
-    fi
-  '';
-  # Common + mode-specific + feature fragment loaders combined (only existing dirs)
-  shellStageFragments = stageExt:
-    lib.concatStrings (map (dir: loadShellFragments stageExt dir)
-      (systemShellDirs ++ featureShellDirs ++ featureSystemShellDirs));
 in {
   options.features.shell = {
     enable = usrlib.mkEnableOptionTrue "Enable shell management and configuration";
+    zsh = {
+      zshrc = usrlib.mkLinesOption "Additional zshrc fragments to load" '''';
+      zprofile = usrlib.mkLinesOption "Additional zprofile fragments to load" '''';
+      zshenv = usrlib.mkLinesOption "Additional zshenv fragments to load" '''' ;
+    };
+    bash = {
+      bashrc = usrlib.mkLinesOption "Additional bashrc fragments to load" '''' ;
+      profile = usrlib.mkLinesOption "Additional profile fragments to load" '''';
+    };
     direnv = {
       enable = usrlib.mkEnableOptionTrue "Enable direnv ; automatic loading of .envrc files for environment variables.";
       nix-direnv = {
@@ -37,9 +22,13 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.enable ({
     # shell integration if not already enabled
     home.shell.enableShellIntegration = true;
+
+    features.shell.zsh.zshrc = ''
+      source ${config.extPaths.commonFeaturesDir}/shell/shell.d/hotkeys.zshrc
+    '';
 
     programs.zsh = {
       enable = true;
@@ -48,22 +37,22 @@ in {
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
 
-      initContent = shellStageFragments "zshrc";
-      profileExtra = shellStageFragments "zprofile";
-      envExtra = shellStageFragments "zshenv";
+      initContent = cfg.zsh.zshrc;
+      profileExtra = cfg.zsh.zprofile;
+      envExtra = cfg.zsh.zshenv;
     };
 
     programs.bash = {
       enable = true;
       enableCompletion = true;
 
-      initExtra = shellStageFragments "bashrc";
-      profileExtra = shellStageFragments "profile";
+      initExtra = cfg.bash.bashrc;
+      profileExtra = cfg.bash.profile;
     };
 
     programs.direnv = lib.mkIf cfg.direnv.enable {
       enable = true; # automaticaly load in .envrc files into the current shell
       nix-direnv.enable = cfg.direnv.nix-direnv.enable; # automatically run nix develop and nix shell
     };
-  };
+  });
 }
