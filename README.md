@@ -75,6 +75,51 @@ It supports:
 - `templates` directory contains various nix development templates to use / copy
 - `templates/[template]` directory contains the `flake.nix` template
 
+## Design Philosophy
+
+### Terminal Themes / Colors (Involves vim/nvim and any other pretty print CLI)
+Just use a terminal emulator and choose a theme from there ; much too much work to setup up a theme for each every single terminal application ; forego it please (see term.nix)
+
+### Keyboard Shortcuts / Application Nesting
+
+Follow modifier key layers like below. And keep application nesting to a minimum, as hotkeys/shortcuts were designed with the below in mind...
+
+Top Level (compositor) (Level 0):
+
+- `meta`+`*` (globals, compositor / system - level shortcuts)
+- reserved shortcuts for linux kernel (`ctrl`+`alt`+`Fn` for tty switching, etc...)
+
+#### GUI Mode
+
+Any Application (Level 1+):
+
+- `ctrl`+`*` (anything)
+- `alt`+`*` (anything)
+- `Fn` (anything)
+
+#### Terminal / TUI Mode
+
+Terminal Emulator + Terminal Multiplexer (Level 1):
+
+- `ctrl` (shell + tty signals)
+- `Fn` ( F1-F4/F11 terminal emulator settings + F5-F12 terminal multiplexer)
+- `ctrl`+`shift` (terminal emulator shortcuts)
+
+Terminal Raw Mode Applications (vim, nvim, zed, yazi, etc...) (Level 2):
+
+- `ctrl` (useful keybinds)
+- `alt`/`alt`+`shift` (useful keybinds)
+- `ctrl`+`alt`/`ctrl`+`alt`+`shift` (useful keybinds)
+- leader key (w/ any key) (useful keybinds)
+
+OR
+
+Non-Raw Mode Applications (Level 2):
+
+- `alt`/`alt`+`shift` (useful keybinds)
+- `ctrl`+`alt`/`ctrl`+`alt`+`shift` (useful keybinds)
+- leader key (w/ any key) (useful keybinds)
+
 ## TIPS
 
 ### Justfiles and dotfiles

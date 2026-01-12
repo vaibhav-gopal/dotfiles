@@ -20,10 +20,10 @@ in {
       enable_config = usrlib.mkEnableOptionTrue "Enable starship config setup";
       package = usrlib.mkPackageOption "Default starship package to use" pkgs.starship;
     };
-    ghostty = {
-      enable = usrlib.mkEnableOptionTrue "Enable ghostty the terminal emulator";
-      enable_config = usrlib.mkEnableOptionTrue "Enable ghostty config setup";
-      package = usrlib.mkPackageOption "Default ghostty package to use" pkgs.ghostty;
+    kitty = {
+      enable = usrlib.mkEnableOptionTrue "Enable kitty terminal emulator";
+      enable_config = usrlib.mkEnableOptionTrue "Enable kitty config setup";
+      package = usrlib.mkPackageOption "Default kitty package to use" pkgs.kitty;
     };
   };
 
@@ -55,12 +55,13 @@ in {
       config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/term/starship.d/starship.toml"
     );
 
-    # ghostty : terminal emulator
-    programs.ghostty = lib.mkIf cfg.ghostty.enable {
+    # kitty : terminal emulator
+    programs.kitty = lib.mkIf cfg.kitty.enable {
       enable = true;
+      package = cfg.kitty.package;
     };
-    xdg.configFile."ghostty/config".source = lib.mkIf cfg.ghostty.enable_config (
-      config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/term/ghostty.d/ghostty.config"
+    xdg.configFile."kitty".source = lib.mkIf cfg.kitty.enable_config (
+      config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/term/kitty.d"
     );
     
     # Home shell aliases
