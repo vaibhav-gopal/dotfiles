@@ -58,8 +58,8 @@ in {
     };
 
     home.sessionVariables = {
-      EDITOR = lib.mkIf cfg.enable cfg.editor;
-      VISUAL = lib.mkIf cfg.enable cfg.editor;
+      EDITOR = lib.mkIf cfg.enable (lib.mkForce cfg.editor);
+      VISUAL = lib.mkIf cfg.enable (lib.mkForce cfg.editor);
     };
   };
 }
