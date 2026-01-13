@@ -30,9 +30,9 @@
 ## NEED TO DO
 
 - language templates (HIGH)
-- nvim setup + zed setup + vscoderc(HIGH)
+- nvim setup + zed setup + vscoderc (HIGH)
 - hyprland setup (HIGH)
-- transition home manager to seperate top level module (allows inter nixos-home manager feature dependency checking, and printing out home manager options) (HIGH)
-- QMK setup (high)
+- QMK setup (HIGH)
+- transition home manager to seperate top level module (allows inter nixos-home manager feature dependency checking, and printing out home manager options) (medium)
 - secure boot w/ lanzaboote (low)
 - ZFS w/ LZ4 compression (need a reinstall) (low)

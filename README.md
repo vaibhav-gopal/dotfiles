@@ -101,12 +101,14 @@ Any Application (Level 1+):
 
 Terminal Emulator + Terminal Multiplexer (Level 1):
 
-- `ctrl`  (shell hotkeys + tty signals ; terminal mutliplexer shortcuts)
-- `ctrl`+`shift` (terminal emulator shortcuts)
-- `Fn` (F1-F4/F11 terminal emulator settings + F5-F10/F12 terminal multiplexer shortcuts)
+- `ctrl`  (shell hotkeys + tty signals)
+- `ctrl`+`shift` (terminal multiplexer shortcuts + terminal emulator shortcuts)
+- `Fn` ( F1-F4/F9-F12 terminal multiplexer shortcuts + F11 fullscreen)
 
 Terminal Applications (vim, nvim, zed, yazi, etc...) (Level 2):
 
+- `ctrl`  (hotkeys)
+- `Fn` (F5-F8 shortcuts)
 - `alt`/`alt`+`shift` (useful keybinds)
 - `ctrl`+`alt`/`ctrl`+`alt`+`shift` (useful keybinds)
 - leader key (w/ any key) (useful keybinds)

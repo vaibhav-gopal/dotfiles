@@ -9,6 +9,7 @@ in {
       enable = usrlib.mkEnableOptionTrue "Enable zellij the terminal multiplexer";
       enable_config = usrlib.mkEnableOptionTrue "Enable zellij config setup";
       package = usrlib.mkPackageOption "Default zellij package to use" pkgs.zellij;
+      auto_start = usrlib.mkEnableOptionTrue "Enable zellij auto-start on shell start (shell-integration recommended)";
     };
     yazi = {
       enable = usrlib.mkEnableOptionTrue "Enable yazi the terminal file explorer";
@@ -32,10 +33,18 @@ in {
     programs.zellij = lib.mkIf cfg.zellij.enable {
       enable = true;
       package = cfg.zellij.package;
+      attachExistingSession = false; # attach existing session when auto-start'ing zellij
+      exitShellOnExit = false; # exit shell when exiting an auto-start'ed zellij session
     };
     xdg.configFile."zellij".source = lib.mkIf cfg.zellij.enable_config (
       config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/term/zellij.d"
     );
+    features.shell.zsh.zshrc = lib.mkIf cfg.zellij.auto_start ''
+      eval "$(zellij setup --generate-auto-start zsh)"
+    '';
+    features.shell.bash.bashrc = lib.mkIf cfg.zellij.auto_start ''
+      eval "$(zellij setup --generate-auto-start zsh)"
+    '';
 
     # yazi : terminal file manager and viewer (enables lots of features, batch rename, archiving, trash bin, etc...)
     programs.yazi = lib.mkIf cfg.yazi.enable {
