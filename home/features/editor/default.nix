@@ -58,7 +58,7 @@ in {
     };
 
     home.sessionVariables = {
-      EDTIOR = lib.mkIf cfg.enable cfg.editor;
+      EDITOR = lib.mkIf cfg.enable cfg.editor;
       VISUAL = lib.mkIf cfg.enable cfg.editor;
     };
   };
