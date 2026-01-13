@@ -5,7 +5,7 @@ let
 in {
   options.features.editor = {
     enable = usrlib.mkEnableOptionTrue "Enable vim feature";
-    editor = usrlib.mkStringOption "The default $EDITOR and $VISUAL variable" "vim";
+    default = usrlib.mkEnumOption "Configure the default $EDITOR and $VISUAL" "nvim" ["vim" "nvim"];
     nvim = {
       enable = usrlib.mkEnableOptionTrue "Enable nvim package and feature";
       package = usrlib.mkPackageOption "The neovim package to use (Uses unwrapped by default in programs)" pkgs.neovim-unwrapped;
@@ -23,6 +23,7 @@ in {
     # VIM
     programs.vim = {
       enable = true;
+      defaultEditor = lib.mkIf (cfg.default == "vim") true;
     };
     home.file."${config.home.homeDirectory}/.vimrc".source =
       lib.mkIf cfg.nvim.enable
@@ -32,9 +33,9 @@ in {
     programs.neovim = {
       enable = cfg.nvim.enable;
       package = cfg.nvim.package;
+      defaultEditor = lib.mkIf (cfg.default == "nvim") true;
     };
     xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/vim/nvim.d";
-    features.editor.editor = lib.mkIf cfg.nvim.enable "nvim";
     
     # VSCODE VIMRC
     home.file."${config.home.homeDirectory}/.vscodevimrc".source = 
@@ -55,11 +56,6 @@ in {
         hour_format = "hour24";
         vim_mode = true;
       };
-    };
-
-    home.sessionVariables = {
-      EDITOR = lib.mkIf cfg.enable (lib.mkForce cfg.editor);
-      VISUAL = lib.mkIf cfg.enable (lib.mkForce cfg.editor);
     };
   };
 }
