@@ -100,7 +100,10 @@
     lg = "eza --all --git-ignore";
     llg = "eza --all --long --git-ignore";
     ltg = "eza --all --long --tree --ignore-glob .git --git-ignore --level";
-    dot = "code ~/dotfiles";
+    dot = "$EDITOR ~/dotfiles";
+    cdot = "code ~/dotfiles";
+    zdot = "zed ~/dotfiles";
+    ndot = "nvim ~/dotfiles";
   };
 }
 

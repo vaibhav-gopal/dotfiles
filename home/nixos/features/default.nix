@@ -9,6 +9,5 @@
     ./minecraft
     ./spotify
     ./vscode
-    ./zed
   ];
 }

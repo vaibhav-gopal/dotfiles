@@ -7,6 +7,7 @@
     # Features
     ./bun
     ./cpp
+    ./editor
     ./git
     ./glow
     ./java
@@ -15,6 +16,5 @@
     ./ssh
     ./term
     ./uv
-    ./vim
   ];
 }

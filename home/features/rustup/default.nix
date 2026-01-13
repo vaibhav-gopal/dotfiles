@@ -1,4 +1,4 @@
-{ config, lib, pkgs, usrlib, ... }:
+{ config, lib, pkgs-unstable, usrlib, ... }:
 
 let 
   cfg = config.features.rustup;
@@ -6,7 +6,7 @@ in {
   options.features.rustup = {
     enable = usrlib.mkEnableOptionTrue "Enable rustup : rust toolchain manager";
     enable_auto_install_toolchain = usrlib.mkEnableOptionFalse "Auto install toolchains from rust-toolchain.toml from local directory";
-    package = usrlib.mkPackageOption "The rustup package to use" pkgs.rustup;
+    package = usrlib.mkPackageOption "The rustup package to use" pkgs-unstable.rustup;
   };
 
   config = lib.mkIf cfg.enable {

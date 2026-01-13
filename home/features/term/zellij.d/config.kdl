@@ -1,4 +1,4 @@
-theme "kanagawa_contrast" // custom kanagawa theme with better contrast (defined below)
+theme "kanagawa_contrast" // custom kanagawa theme with better contrast on frames (defined below)
 default_layout "default"
 default_mode "locked"
 pane_frames true
@@ -415,7 +415,7 @@ themes {
         // 149 127 184 -> 133 67 240 (purple)
         // 118 148 106 -> 108 172 82 (green)
         // 127 180 202 -> 74 173 215 (blue)
-        // HIGH CONTRAST (BUT ALSO CUSTOM COLORS CHOICE)
+        // HIGH CONTRAST (AND ALSO CUSTOM COLORS CHOICE)
         frame_selected {
             base 108 172 82 // current pane (normal)
             background 0
@@ -432,23 +432,6 @@ themes {
             emphasis_2 255 120 36
             emphasis_3 255 120 36
         }
-        // HIGH CONTRAST (BUT STILL ORIGINAL BASE COLORS CHOICE)
-        // frame_selected {
-        //     base 108 172 82
-        //     background 0
-        //     emphasis_0 255 120 36
-        //     emphasis_1 74 173 215
-        //     emphasis_2 133 67 240
-        //     emphasis_3 0
-        // }
-        // frame_highlight {
-        //     base 255 120 36
-        //     background 0
-        //     emphasis_0 133 67 240
-        //     emphasis_1 255 120 36
-        //     emphasis_2 255 120 36
-        //     emphasis_3 255 120 36
-        // }
         // ORIGINAL
         // frame_selected {
         //     base 118 148 106

@@ -1,0 +1,196 @@
+" =============================================================================
+" Netrw Settings
+" =============================================================================
+let g:netrw_banner = 0      " Disable netrw banner
+
+" =============================================================================
+" UI & Colors
+" =============================================================================
+set guicursor&              " Use block cursor in all modes (resets cursor config)
+set number                  " Show line numbers
+set relativenumber          " Show relative line numbers
+set cursorline              " Highlight the current line
+set termguicolors           " Enable 24-bit RGB colors
+set background=dark         " Set background to dark
+set signcolumn=yes          " Always show the sign column
+set colorcolumn=            " Disable color column
+
+" =============================================================================
+" Indentation
+" =============================================================================
+set tabstop=4               " Number of spaces that a <Tab> counts for
+set softtabstop=4           " Number of spaces that a <Tab> counts for while editing
+set shiftwidth=4            " Number of spaces to use for each step of (auto)indent
+set expandtab               " Use spaces instead of tabs
+set autoindent              " Copy indent from current line when starting a new line
+set smartindent             " Smart autoindenting for C-like programs
+set nowrap                  " Disable line wrapping
+
+" =============================================================================
+" Scrolling & Mouse
+" =============================================================================
+set scrolloff=8             " Keep 8 lines above/below the cursor
+set sidescrolloff=8         " Keep 8 columns to the left/right of the cursor
+set mouse=a                 " Enable mouse support in all modes
+
+" =============================================================================
+" System Integration
+" =============================================================================
+set clipboard=unnamedplus   " Use system clipboard
+
+" =============================================================================
+" Backup & Undo
+" =============================================================================
+set noswapfile              " Disable swap files
+set nobackup                " Disable backup files
+set nowritebackup           " Disable write backup files
+set undofile                " Enable persistent undo (creates .un~ files)
+
+" =============================================================================
+" Search Settings
+" =============================================================================
+set incsearch               " Show search matches as you type
+set ignorecase              " Ignore case in search patterns
+set smartcase               " Override 'ignorecase' if search contains uppercase
+set hlsearch                " Highlight all search matches
+
+" NOTE: 'inccommand' (live preview of :s substitutions) is Neovim-exclusive.
+" It does not exist in standard Vim, so it is omitted here.
+
+" =============================================================================
+" Window Splitting
+" =============================================================================
+set splitright              " Vertical splits will be to the right
+set splitbelow              " Horizontal splits will be below
+
+" =============================================================================
+" Misc
+" =============================================================================
+set isfname+=@-@            " Allow "@" in file names
+set backspace=indent,eol,start  " Make backspace behave intuitively
+set updatetime=50           " Faster completion/updates
+
+" =============================================================================
+" General Settings
+" =============================================================================
+syntax on
+let mapleader = " "
+let maplocalleader = " "
+
+set hidden            " Allow switching buffers without saving (Neovim default)
+set laststatus=2      " Always show the status line
+set display+=lastline " Show as much as possible of the last line in a window
+set encoding=utf-8    " Set default encoding to UTF-8
+set autoread          " Update files changed outside of Vim automatically
+
+" Improve command line completion (matches Neovim's wildmenu behavior)
+set wildmenu
+set wildmode=longest:full,full
+
+" =============================================================================
+" Movement & Editing Mappings
+" =============================================================================
+
+" Undo breakpoints (Standard Vim treats a whole insert session as one undo)
+" These create smaller 'undo' chunks when you press punctuation
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap ! !<c-g>u
+inoremap ? ?<c-g>u
+
+" Move selected lines down in visual mode
+vnoremap <silent> J :m '>+1<CR>gv=gv
+
+" Move selected lines up in visual mode
+vnoremap <silent> K :m '<-2<CR>gv=gv
+
+" Scroll down and center (<A-b>)
+" Note: Alt mappings can be tricky depending on your terminal
+nnoremap <silent> <A-b> <C-d>zz
+
+" Scroll up and center (<A-u>)
+nnoremap <silent> <A-u> <C-u>zz
+
+" Next search result centered
+nnoremap <silent> n nzzzv
+
+" Previous search result centered
+nnoremap <silent> N Nzzzv
+
+" Indent left and reselect
+vnoremap <silent> < <gv
+
+" Indent right and reselect
+vnoremap <silent> > >gv
+
+" =============================================================================
+" Clipboard & Deletion Mappings
+" =============================================================================
+
+" Yank from cursor to end of line (Matches Neovim/D/C behavior)
+nnoremap Y y$
+
+" Paste without overwriting clipboard (Visual mode)
+xnoremap <silent> <leader>p "_dP
+vnoremap <silent> p "_dP
+
+" Delete without overwriting clipboard (Normal and Visual)
+nnoremap <silent> <leader>d "_d
+vnoremap <silent> <leader>d "_d
+
+" Delete character without overwriting clipboard
+nnoremap <silent> x "_x
+
+" =============================================================================
+" Utility Mappings
+" =============================================================================
+
+" Clear search highlighting with Esc
+nnoremap <silent> <Esc> :nohlsearch<CR>
+
+" Format buffer
+" Note: Since 'vim.lsp.buf.format' is Neovim-only, this maps to 
+" standard Vim indentation (indent whole file)
+nnoremap <silent> <leader>f gg=G
+
+" Disable Ex mode
+nnoremap Q <nop>
+
+" Substitute word under cursor
+nnoremap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
+
+" Make current file executable
+nnoremap <silent> <leader>x :!chmod +x %<CR>
+
+" =============================================================================
+" Tab Management
+" =============================================================================
+
+nnoremap <silent> <leader>to :tabnew<CR>
+nnoremap <silent> <leader>tx :tabclose<CR>
+nnoremap <silent> <leader>tn :tabnext<CR>
+nnoremap <silent> <leader>tp :tabprevious<CR>
+nnoremap <silent> <leader>tf :tabnew %<CR>
+
+" =============================================================================
+" Split Management
+" =============================================================================
+
+nnoremap <silent> <leader>sv :vsplit<CR>
+nnoremap <silent> <leader>sh :split<CR>
+
+" Equalize splits 
+" (Lua used :equalize, equivalent Vim keystroke is Ctrl-w =)
+nnoremap <silent> <leader>se <C-w>=
+
+nnoremap <silent> <leader>sx :close<CR>
+
+" =============================================================================
+" File Path Copying
+" =============================================================================
+
+" Copy full file path to system clipboard
+nnoremap <silent> <leader>fp :let @+ = expand("%:p") <Bar> echo "Copied file path: " . expand("%:p")<CR>
+
+" Copy relative file path (from home/root) to system clipboard
+nnoremap <silent> <leader>fr :let @+ = expand("%:~") <Bar> echo "Copied relative path: " . expand("%:~")<CR>

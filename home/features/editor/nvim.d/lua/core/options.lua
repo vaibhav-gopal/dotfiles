@@ -1,6 +1,6 @@
 vim.cmd("let g:netrw_banner = 0")      -- Disable netrw banner
 
-vim.opt.guicursor = "" -- Use block cursor in all modes
+-- vim.opt.guicursor = "" -- Use block cursor in all modes
 vim.opt.nu = true -- Show line numbers
 vim.opt.relativenumber = true -- Show relative line numbers
 

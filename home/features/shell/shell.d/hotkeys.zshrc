@@ -90,13 +90,14 @@ foreach map (viins vicmd)
   bindkey -M $map '^[[B' down-line-or-history
   bindkey -M $map '^[[C' forward-char
   bindkey -M $map '^[[D' backward-char
+  bindkey -M $map '^[OA' up-line-or-history
+  bindkey -M $map '^[OB' down-line-or-history
+  bindkey -M $map '^[OC' forward-char
+  bindkey -M $map '^[OD' backward-char
 
-  # Word Arrows (Ctrl+Arrows / Alt+Arrows depending on term)
-  bindkey -M $map '^[[1;3C' forward-word
-  bindkey -M $map '^[[1;3D' backward-word
-  
-  # Delete Key
-  bindkey -M $map '^[[3~' delete-char
+  # Word Arrows (Ctrl+Arrows)
+  bindkey -M $map '^[[1;5C' forward-word
+  bindkey -M $map '^[[1;5D' backward-word
 end
 
 # Bracketed Paste
