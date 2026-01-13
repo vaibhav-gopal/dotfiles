@@ -44,7 +44,7 @@ in {
     # ZED EDITOR
     programs.zed-editor = {
       enable = cfg.zed.enable;
-      package = cfg.package;
+      package = cfg.zed.package;
       extensions = ["nix" "toml" "dockerfile"];
       userSettings = {
         theme = {
