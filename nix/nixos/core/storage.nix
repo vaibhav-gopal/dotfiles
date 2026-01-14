@@ -11,7 +11,7 @@ in {
       systemPackages = [
         pkgs.exfatprogs # provides: mkfs.exfat, ...
         pkgs.gparted # provides: gparted (graphical disk utility application)
-        pkgs.gdisk # provides: gdisk (GPT partition tables)
+        pkgs.gptfdisk # provides: gdisk (GPT partition tables)
         # pkgs.fdisk # provides: fdisk (MBR partition tables, provided by nix by default)
       ];
     };
