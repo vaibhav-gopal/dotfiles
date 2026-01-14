@@ -10,6 +10,7 @@
     ./env.nix
     ./graphics.nix
     ./home.nix
+    ./storage.nix
   ];
 
   # This value determines the NixOS release from which the default
