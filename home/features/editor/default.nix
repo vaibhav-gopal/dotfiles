@@ -27,7 +27,7 @@ in {
     };
     home.file."${config.home.homeDirectory}/.vimrc".source =
       lib.mkIf cfg.nvim.enable
-      (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/vim/vim.d/vimrc");
+      (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/editor/vim.d/vimrc");
 
     # NEOVIM
     programs.neovim = {
@@ -35,12 +35,12 @@ in {
       package = cfg.nvim.package;
       defaultEditor = lib.mkIf (cfg.default == "nvim") true;
     };
-    xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/vim/nvim.d";
+    xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/editor/nvim.d";
     
     # VSCODE VIMRC
     home.file."${config.home.homeDirectory}/.vscodevimrc".source = 
       lib.mkIf cfg.vscodevim.enable
-      (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/vim/vim.d/vimrc");
+      (config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/editor/vim.d/vimrc");
 
     # ZED EDITOR
     programs.zed-editor = {

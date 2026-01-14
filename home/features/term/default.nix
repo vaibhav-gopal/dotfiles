@@ -50,7 +50,7 @@ in {
     programs.yazi = lib.mkIf cfg.yazi.enable {
       enable = true;
       package = cfg.yazi.package;
-      shellWrapperName = "yy"; # shell alias : DO NOT CHANGE (breaks automatic cd)
+      shellWrapperName = "y";
     };
     xdg.configFile."yazi".source = lib.mkIf cfg.starship.enable_config (
       config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/term/yazi.d"
@@ -79,7 +79,7 @@ in {
     
     # Home shell aliases
     home.shellAliases = {
-      zz = lib.mkIf cfg.zellij.enable "zellij";
+      z = lib.mkIf cfg.zellij.enable "zellij";
     };
   };
 }

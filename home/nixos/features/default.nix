@@ -3,7 +3,6 @@
 {
   imports = [
     # Features
-    ./airplay
     ./discord
     ./hyprland
     ./minecraft

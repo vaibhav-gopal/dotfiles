@@ -9,11 +9,10 @@ in {
 
   # MODULE BODY
   config = lib.mkIf cfg.enable {
-    programs.kitty.enable = true; # recommended terminal emulator for hyprland (for some reason)
     wayland.windowManager.hyprland = {
       enable = true;
-      systemd.enable = false; # conflicts with UWSM (which is preferred)
-      # set the Hyperland and XDPH packages to null to use the ones from the NixOS module
+      systemd.enable = false; # conflicts with UWSM (which is preferred) (UWSM = universal wayland session manager ; systemd-based tool wraps compositors in systemd units for session handling/setup)
+      # set the Hyperland and XDPH packages to null to use the ones from the NixOS module (XDPH = xdg-desktop-portal-hyprland ; XDP = interface for apps to access desktop stuff like notifications, file pickers, etc...)
       package = null;
       portalPackage = null;
 

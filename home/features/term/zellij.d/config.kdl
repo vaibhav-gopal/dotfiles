@@ -9,18 +9,18 @@ default_shell "zsh"
 
 keybinds clear-defaults=true {
   // SHARED KEYBINDS ==================================
+  shared_except "normal" {
+    bind "F1" { SwitchToMode "Normal"; }
+  }
   shared_except "scroll" {
-    bind "F9" { SwitchToMode "Scroll"; }
+    bind "F2" { SwitchToMode "Scroll"; }
   }
   shared_except "session" {
-    bind "F12" { SwitchToMode "Session"; }
-  }
-  shared_except "normal" {
-    bind "F10" { SwitchToMode "Normal"; }
+    bind "F3" { SwitchToMode "Session"; }
   }
   shared_except "locked" "entersearch" "renametab" "renamepane" {
-    bind "Space" "Esc" { SwitchToMode "Locked"; }
-    bind "Enter" { ToggleFocusFullscreen; }
+    bind "Space" "Esc" "Ctrl c" { SwitchToMode "Locked"; }
+    bind "Enter" { ToggleFocusFullscreen; SwitchToMode "Locked"; }
   }
   // MODE SPECIFIC ==============================================
   locked {
@@ -212,16 +212,16 @@ keybinds clear-defaults=true {
   }
   // NOT REALLY NEEDED BUT KEEPING FOR REFERENCE ============================== (can enable for like a pseudo cheat sheet mode, ensure you bind keys to enter these modes)
   shared_except "Pane" {
-    bind "F1" { SwitchToMode "Pane"; }
+    bind "F4" { SwitchToMode "Pane"; }
   }
   shared_except "Tab" {
-    bind "F2" { SwitchToMode "Tab"; }
+    bind "F9" { SwitchToMode "Tab"; }
   }
   shared_except "Resize" {
-    bind "F3" { SwitchToMode "Resize"; }
+    bind "F10" { SwitchToMode "Resize"; }
   }
   shared_except "Move" {
-    bind "F4" { SwitchToMode "Move"; }
+    bind "F12" { SwitchToMode "Move"; }
   }
   pane {
     bind "h" { MoveFocusOrTab "Left"; }
