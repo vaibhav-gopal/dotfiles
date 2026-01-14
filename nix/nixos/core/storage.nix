@@ -10,7 +10,7 @@ in {
     environment = {
       systemPackages = [
         pkgs.exfatprogs # provides: mkfs.exfat, ...
-        pkgs.parted # provides gparted GUI utility
+        pkgs.gparted # provides: gparted (graphical disk utility application)
         pkgs.gdisk # provides: gdisk (GPT partition tables)
         # pkgs.fdisk # provides: fdisk (MBR partition tables, provided by nix by default)
       ];
