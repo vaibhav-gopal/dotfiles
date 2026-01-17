@@ -64,7 +64,7 @@ in {
       config.lib.file.mkOutOfStoreSymlink "${config.extPaths.commonFeaturesDir}/term/starship.d/starship.toml"
     );
 
-    # kitty : terminal emulator
+    # kitty : terminal emulator (fairly simple, and barebones)
     programs.kitty = lib.mkIf cfg.kitty.enable {
       enable = true;
       package = cfg.kitty.package;

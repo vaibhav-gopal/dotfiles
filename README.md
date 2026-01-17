@@ -107,11 +107,11 @@ Terminal Emulator + Terminal Multiplexer (Level 1):
 
 Terminal Applications (vim, nvim, zed, yazi, etc...) (Level 2):
 
-- `ctrl`  (hotkeys)
-- `Fn` (F5-F8 shortcuts)
-- `alt`/`alt`+`shift` (useful keybinds)
-- `ctrl`+`alt`/`ctrl`+`alt`+`shift` (useful keybinds)
-- leader key (w/ any key) (useful keybinds)
+- `ctrl`  (legacy hotkeys)
+- `Fn` (F5-F8 menus / shortcuts)
+- `alt`/`alt`+`shift` (useful hotkeys ; native)
+- leader key (useful hotkeys ; grouping)
+- `ctrl`+`alt`/`ctrl`+`alt`+`shift` (useful hotkeys ; plugins/extensions)
 
 ## TIPS
 

@@ -11,7 +11,7 @@ vim.g.maplocalleader = " "  -- Set local leader key to space
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move lines down in visual selection" , table.unpack(opts)} )  -- Move selected lines down
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move lines up in visual selection" , table.unpack(opts)} )  -- Move selected lines up
 
-vim.keymap.set("n", "<A-b>", "<C-d>zz", { desc = "Scroll down and center" , table.unpack(opts)} )  -- Scroll down and center
+vim.keymap.set("n", "<A-d>", "<C-d>zz", { desc = "Scroll down and center" , table.unpack(opts)} )  -- Scroll down and center
 vim.keymap.set("n", "<A-u>", "<C-u>zz", { desc = "Scroll up and center" , table.unpack(opts)} )  -- Scroll up and center
 
 vim.keymap.set("n", "n", "nzzzv", { desc = "Next search result centered" , table.unpack(opts)} )  -- Center screen on next search result

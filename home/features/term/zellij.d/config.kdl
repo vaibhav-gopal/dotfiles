@@ -49,7 +49,7 @@ keybinds clear-defaults=true {
     bind "Ctrl Shift u" { PageScrollUp; }
     bind "Ctrl Shift d" { PageScrollDown; }
 
-    bind "Ctrl Shift s" { NewPane "Stacked";}
+    bind "Ctrl Shift s" { NewPane;}
     bind "Ctrl Shift p" { NewPane "Right"; }
     bind "Ctrl Shift n" { NewPane "Down"; }
     bind "Ctrl Shift w" "Ctrl Shift x" { CloseFocus; }
@@ -87,7 +87,7 @@ keybinds clear-defaults=true {
     bind "Space" { TogglePaneInGroup; }
     bind "Shift Space" { ToggleGroupMarking; }
 
-    bind "s" { NewPane "stacked"; }
+    bind "s" { NewPane; }
     bind "p" { NewPane "Right"; }
     bind "n" { NewPane "Down"; }
     bind "w" "x" { CloseFocus; }
@@ -240,20 +240,19 @@ keybinds clear-defaults=true {
 
     bind "Tab" { SwitchFocus; }
 
-    bind "g" { TogglePaneInGroup; }
-    bind "Shift g" { ToggleGroupMarking; }
+    bind "space" { TogglePaneInGroup; }
+    bind "Shift space" { ToggleGroupMarking; }
 
-    bind "n" { NewPane; }
-    bind "Shift n" { NewPane "stacked"; }
-    bind "s" { NewPane "Right"; }
-    bind "d" { NewPane "Down"; }
+    bind "s" { NewPane; }
+    bind "p" { NewPane "Right"; }
+    bind "n" { NewPane "Down"; }
     bind "w" "x" { CloseFocus; }
 
     bind "f" { ToggleFloatingPanes; }
-    bind "Shift f" { TogglePanePinned; }
+    bind "y" { TogglePanePinned; }
     bind "m" { TogglePaneFrames; }
-    bind "p" { BreakPaneRight; SwitchToMode "Locked"; }
-    bind "Shift p" { BreakPaneLeft; SwitchToMode "Locked"; }
+    bind "b" { BreakPaneRight; SwitchToMode "Locked"; }
+    bind "Shift b" { BreakPaneLeft; SwitchToMode "Locked"; }
     bind "e" { TogglePaneEmbedOrFloating; }
     bind "r" { SwitchToMode "RenamePane"; PaneNameInput 0;}
   }
