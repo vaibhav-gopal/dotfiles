@@ -15,6 +15,5 @@
     ./shell
     ./ssh
     ./term
-    ./uv
   ];
 }

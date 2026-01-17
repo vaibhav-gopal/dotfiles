@@ -1,13 +1,21 @@
 {
   description = "A general development environment template";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-xx.xx";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }: flake-utils.lib.eachDefaultSystem (system:
+  outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, ... }: flake-utils.lib.eachDefaultSystem (system:
     let
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import nixpkgs {
+            inherit system;
+            overlays = [];
+        };
+        pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            overlays = [];
+        };
         
         baseShell = pkgs.mkShell {
             packages = [
