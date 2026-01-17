@@ -10,21 +10,12 @@
         pkgs = import nixpkgs { inherit system; };
 
         # FHS environment ; simply builds a derivation
-        # fhs = pkgs.buildFHSEnv {
-        #     name = "fhs-env";
-        #     targetPkgs = pkgs: [ 
-        #         pkgs.stdenv.cc.cc # installing the standard environment gcc (GNU C Compiler) tool to the sandbox
-        #     ];
-        #     runScript = "bash"; # script / command to run on startup
-        # };
-
-        # FHS environment ; wrap an existing package
         fhs = pkgs.buildFHSEnv {
             name = "fhs-env";
             targetPkgs = pkgs: [ 
-                pkgs.cowsay
+                pkgs.stdenv.cc.cc # installing the standard environment gcc (GNU C Compiler) tool to the sandbox
             ];
-            runScript = "cowsay";
+            runScript = "bash"; # script / command to run on startup
             # runScript = ./buildPackage.sh # e.g. build / wrap another application in the FHS environment (yes this is a local dev path ; it works)
         };
         
