@@ -58,5 +58,30 @@
       in 
         nixpkgs.lib.mapAttrs genHost darwinConfigs 
     );
+
+    mkHome = { rootSelf, configurations, ... }: (
+      let
+        darwinConfigs = nixpkgs.lib.filterAttrs (_: conf: conf.nixType == "nix-darwin") configurations;
+        genHome = name: conf: home-manager.lib.homeManagerConfiguration (
+        let
+          commonPkgsConfig = {
+            inherit (conf) system;
+            config.allowUnfree = true;
+          };
+          pkgs = import nixpkgs commonPkgsConfig;
+          pkgs-unstable = import nixpkgs-unstable commonPkgsConfig;
+          extraSpecialArgs = inputs // conf // { inherit pkgs pkgs-unstable; };
+        in {
+          inherit pkgs extraSpecialArgs;
+
+          modules = [
+            #################CORE#################
+            rootSelf.homeModules.home
+            rootSelf.nixosModules.usrlib
+          ];
+        });
+      in
+        nixpkgs.lib.mapAttrs genHome darwinConfigs
+    );
   };
 }

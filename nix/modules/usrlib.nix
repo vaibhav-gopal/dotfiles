@@ -1,4 +1,4 @@
-{ lib }:
+{ lib, ... }:
 {
   _module.args.usrlib = {
     mkEnableOptionTrue = desc: lib.mkEnableOption desc // { default = true; };

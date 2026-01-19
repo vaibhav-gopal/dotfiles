@@ -108,14 +108,6 @@ evalsysconfigs attrpath:
     source {{justfile_directory()/scripts-dir/eval-script}} && \
     nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_system)" "{{attrpath}}"
 
-# evaluate an arbitrary attribute for home-manager options
-[group('eval')]
-evalhomeoptions attrpath:
-    @just --justfile {{justfile()}} _{{nixtype}}_check
-    @echo -e "{{BOLD + BLUE}}Dotfiles home-manager configuration eval, attempting to access {{attrpath}} in {{nixconfig}}.config.home-manager.users.{{nixusername}} {{NORMAL}}"
-    source {{justfile_directory()/scripts-dir/eval-script}} && \
-    nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_home-options)" "{{attrpath}}"
-
 # evaluate an arbitrary attribute for home-manager configs
 [group('eval')]
 evalhomeconfigs attrpath:
@@ -124,19 +116,27 @@ evalhomeconfigs attrpath:
     source {{justfile_directory()/scripts-dir/eval-script}} && \
     nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_home)" "{{attrpath}}"
 
-# list out core system options and list out system wide feature options
+# evaluate an arbitrary attribute for home-manager options
 [group('eval')]
+evalhomeoptions attrpath:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
+    @echo -e "{{BOLD + BLUE}}Dotfiles home-manager configuration eval, attempting to access {{attrpath}} in {{nixconfig}}.config.home-manager.users.{{nixusername}} {{NORMAL}}"
+    source {{justfile_directory()/scripts-dir/eval-script}} && \
+    nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_home-options)" "{{attrpath}}"
+
+# list out system core options and module options
+[group('eval-all')]
 sysoptions:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles system-wide core options:{{NORMAL}}"
     source {{justfile_directory()/scripts-dir/eval-script}} && \
     nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_options)" "core"
-    @echo -e "{{BOLD + BLUE}}Dotfiles system-wide features options:{{NORMAL}}"
+    @echo -e "{{BOLD + BLUE}}Dotfiles system-wide module options:{{NORMAL}}"
     source {{justfile_directory()/scripts-dir/eval-script}} && \
-    nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_options)" "features"
+    nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_options)" "modules"
 
-# list out core system configuration and list out system wide feature configs
-[group('eval')]
+# list out system-wide core configs and module configs
+[group('eval-all')]
 sysconfigs:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles system-wide core configs:{{NORMAL}}"
@@ -146,30 +146,30 @@ sysconfigs:
     source {{justfile_directory()/scripts-dir/eval-script}} && \
     nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_system)" "features"
 
-# list out all home-manager common and per-system features options
-[group('eval')]
+# list out home-manager common module options and nixtype module options
+[group('eval-all')]
 homeoptions:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager common features options:{{NORMAL}}"
     source {{justfile_directory()/scripts-dir/eval-script}} && \
-    nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_home-options)" "features"
+    nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_home-options)" "common"
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager per-system features options:{{NORMAL}}"
     source {{justfile_directory()/scripts-dir/eval-script}} && \
-    nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_home-options)" "system.features"
+    nix_eval_options "$(just --justfile {{justfile()}} _{{nixtype}}_home-options)" "nixtype"
 
-# list out all home-manager common and per-system features configs
-[group('eval')]
+# list out home-manager common module configs and nixtype module configs
+[group('eval-all')]
 homeconfigs:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager common features configs:{{NORMAL}}"
     source {{justfile_directory()/scripts-dir/eval-script}} && \
-    nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_home)" "features"
+    nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_home)" "common"
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager per-system features configs:{{NORMAL}}"
     source {{justfile_directory()/scripts-dir/eval-script}} && \
-    nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_home)" "system.features"
+    nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_home)" "nixtype"
 
 # list out all system wide packages (via environment.systemPackages)
-[group('eval')]
+[group('quick-eval')]
 syspkgs:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles system packages:{{NORMAL}}"
@@ -177,7 +177,7 @@ syspkgs:
     nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_system)" "environment.systemPackages"
 
 # list out all user local packages (via home.packages)
-[group('eval')]
+[group('quick-eval')]
 homepkgs:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager packages:{{NORMAL}}"
@@ -185,7 +185,7 @@ homepkgs:
     nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_home)" "home.packages"
 
 # list out all user shell aliases and session variables (via home.shellAliases and home.sessionVariables)
-[group('eval')]
+[group('quick-eval')]
 homesession:
     @just --justfile {{justfile()}} _{{nixtype}}_check
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager shell aliases:{{NORMAL}}"

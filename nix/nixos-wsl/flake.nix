@@ -62,5 +62,30 @@
       in 
         nixpkgs.lib.mapAttrs genHost nixosConfigs 
     );
+
+    mkHome = { rootSelf, configurations, ... }: (
+      let
+        nixosConfigs = nixpkgs.lib.filterAttrs (_: conf: conf.nixType == "nixos-wsl") configurations;
+        genHome = name: conf: home-manager.lib.homeManagerConfiguration (
+        let
+          commonPkgsConfig = {
+            inherit (conf) system;
+            config.allowUnfree = true;
+          };
+          pkgs = import nixpkgs commonPkgsConfig;
+          pkgs-unstable = import nixpkgs-unstable commonPkgsConfig;
+          extraSpecialArgs = inputs // conf // { inherit pkgs pkgs-unstable; };
+        in {
+          inherit pkgs extraSpecialArgs;
+
+          modules = [
+            #################CORE#################
+            rootSelf.homeModules.home
+            rootSelf.nixosModules.usrlib
+          ];
+        });
+      in
+        nixpkgs.lib.mapAttrs genHome nixosConfigs
+    );
   };
 }
