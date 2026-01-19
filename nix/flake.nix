@@ -52,8 +52,8 @@
         rootSelf = self;
       };
     in {
-      nixosConfigurations = (nixos-src.outputs.mkConfigs baseArgs) // (wsl-src.outputs.mkConfigs baseArgs);
-      darwinConfigurations = (darwin-src.outputs.mkConfigs baseArgs);
+      nixosConfigurations = (nixos-src.outputs.mkNixos baseArgs) // (wsl-src.outputs.mkNixos baseArgs);
+      darwinConfigurations = (darwin-src.outputs.mkNixos baseArgs);
 
       # reusable modules ; use within sub-flakes by accessing rootSelf.nixosModules
       nixosModules = {

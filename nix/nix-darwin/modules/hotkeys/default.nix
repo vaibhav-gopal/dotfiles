@@ -1,9 +1,9 @@
 { config, lib, usrlib, ... }:
 
 let
-  cfg = config.features.hotkeys;
+  cfg = config.modules.hotkeys;
 in {
-  options.features.hotkeys = {
+  options.modules.hotkeys = {
     enable = usrlib.mkEnableOptionTrue "enable skhd hotkey daemon";
     config = usrlib.mkLinesOption "The skhd config (hotkey shortcuts)" '''';
   };

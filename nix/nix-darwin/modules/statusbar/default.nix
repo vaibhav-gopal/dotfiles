@@ -1,9 +1,9 @@
 { config, lib, usrlib, ... }:
 
 let
-  cfg = config.features.statusbar;
+  cfg = config.modules.statusbar;
 in {
-  options.features.statusbar = {
+  options.modules.statusbar = {
     # NOTE: please see the setup prereqs here first: https://felixkratz.github.io/SketchyBar/setup
     enable = usrlib.mkEnableOptionFalse "enable status bar customization via sketchybar";
     # config options are here: https://felixkratz.github.io/SketchyBar/config/bar

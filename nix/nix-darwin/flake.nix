@@ -16,40 +16,47 @@
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nix-darwin, ...  }:
   {
-    mkConfigs = { mkUserLib, configurations, ... }: (let
-      usrlib = mkUserLib { inherit (nixpkgs) lib;};
-      darwinConfigs = nixpkgs.lib.filterAttrs (_: conf: conf.nixType == "nix-darwin") configurations;
-      genHost = name: conf: nix-darwin.lib.darwinSystem (let
-        # Common nixpkgs configurations (overlays, unfree packages, etc...) (applies to all except `pkgs` / `nixpkgs` itself)
-        commonPkgsConfig = {
-          inherit (conf) system;
-          config.allowUnfree = true;
-        };
-        # the base `pkgs` argument is special, it is automatically created / configured and passed in (DO NOT modify, outside of sub modules, many other non-user made modules use this configuration option!)
-        # Need to set any other nixpkgs channel / input other than the main one (used to create system config) explicitly here (options DO NOT get passed into submodules)
-        pkgs-unstable = import nixpkgs-unstable commonPkgsConfig;
-      in {
-        # inherit system > tells which specific `pkgs` / `nixpkgs` version to use
-        inherit (conf) system; 
-        # create set of extra args to pass in to every sub module
-        specialArgs = inputs // conf // {
-          inherit pkgs-unstable usrlib;
-        };
-        modules = [
-          #################CORE#################
-          # home-manager includes
-          home-manager.darwinModules.home-manager
+    mkNixos = { rootSelf, configurations, ... }: (
+      let
+        # Get "nix-darwin" configurations from root flake
+        darwinConfigs = nixpkgs.lib.filterAttrs (_: conf: conf.nixType == "nix-darwin") configurations;
 
-          # include core configs
-          ./core
-          ./features
+        # make the nix-darwin configuration factory function
+        genHost = name: conf: nix-darwin.lib.darwinSystem (
+        let
+          # Common nixpkgs configurations (overlays, unfree packages, etc...) (applies to all except `pkgs` / `nixpkgs` itself ; which you configure in the actual submodules using nixos options)
+          commonPkgsConfig = {
+            inherit (conf) system;
+            config.allowUnfree = true;
+          };
 
-          #################USER#################
-          ./${name} # automatically looks for a folder named after configuration name
-        ];
-      });
-    in 
-      nixpkgs.lib.mapAttrs genHost darwinConfigs 
+          # the base `pkgs` argument is special, it is automatically created / configured and passed in (DO NOT modify, outside of sub modules, many other non-user made modules use this configuration option!)
+          # Need to set any other nixpkgs channel / input other than the main one (used to create system config) explicitly here (options DO NOT get passed into submodules)
+          pkgs-unstable = import nixpkgs-unstable commonPkgsConfig;
+
+          # pass in: flake inputs // current system configuration // extra nixpkgs channels
+          specialArgs = inputs // conf // { inherit pkgs-unstable; };
+        in {
+          inherit (conf) system; # inherit system > tells which specific `pkgs` / `nixpkgs` version to use 
+          inherit specialArgs; # inherit specialArgs > pass in specialArgs into every sub module
+
+          modules = [
+            #################CORE#################
+            # home-manager includes
+            home-manager.darwinModules.home-manager
+
+            # core modules
+            rootSelf.nixosModules.usrlib
+            rootSelf.nixosModules.home
+            rootSelf.nixosModules.nix
+            ./modules
+
+            #################USER#################
+            ./${name} # automatically looks for a folder named after configuration name
+          ];
+        });
+      in 
+        nixpkgs.lib.mapAttrs genHost darwinConfigs 
     );
   };
 }

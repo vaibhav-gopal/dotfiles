@@ -1,9 +1,9 @@
 { config, lib, usrlib, ... }:
 
 let
-  cfg = config.features.yabai;
+  cfg = config.modules.yabai;
 in {
-  options.features.yabai = {
+  options.modules.yabai = {
     enable = usrlib.mkEnableOptionFalse "enable yabai window manager for macos";
     # For SIP explanation and features enabled by disabling it ; Please see https://github.com/koekeishiya/yabai/wiki/Disabling-System-Integrity-Protection
     # NOTE: Also need to change some system configuration settings for yabai to work properly! See https://github.com/koekeishiya/yabai/wiki#installation-requirements
