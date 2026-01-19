@@ -50,15 +50,18 @@
           pkgs.lib.composeManyExtensions [
             pyproject-build-systems.overlays.wheel
             overlay
+            editableOverlay
           ]
-        ).overrideScope editableOverlay;
+        );
+
+      mkApplication = pkgs.callPackages pyproject-nix.build.util {};
         
       baseShell = pkgs.mkShell (
         let
           virtualenv = pythonSet.mkVirtualEnv "uv-dev-env" workspace.deps.all;
         in {
           env = {
-            UV_NO_SYNC = "1";
+            UV_NO_SYNC = "1"; # prevent uv from managing virtual environment, this is managed by uv2nix
             UV_PYTHON = pythonSet.python.interpreter;
             UV_PYTHON_DOWNLOADS = "never"; # don't let uv manage its own python interpreters, use nix instead
           };
@@ -73,7 +76,10 @@
         }
       );
     in {
-      packages.default = pythonSet.mkVirtualEnv "uv-env" workspace.deps.default;
+      packages.default = mkApplication {
+        venv = pythonSet.mkVirtualEnv "application-env" workspace.deps.default;
+        package = pythonSet.;
+      };
       devShells.default = baseShell;
     }
   );

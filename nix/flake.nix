@@ -11,9 +11,6 @@
 
   outputs = { self, nixpkgs, nixos-src, darwin-src, wsl-src, ... }: 
     let
-      # Get user library expression
-      mkUserLib = import ./lib/default.nix;
-
       # attribute set of all configurations
       configurations = {
         vgkraken = {
@@ -50,10 +47,23 @@
         };
       };
 
-      # Helper to pass common args to all sub-configs
-      baseArgs = { inherit mkUserLib configurations; };
+      baseArgs = { 
+        inherit configurations;
+        rootSelf = self;
+      };
     in {
       nixosConfigurations = (nixos-src.outputs.mkConfigs baseArgs) // (wsl-src.outputs.mkConfigs baseArgs);
       darwinConfigurations = (darwin-src.outputs.mkConfigs baseArgs);
+
+      # reusable modules ; use within sub-flakes by accessing rootSelf.nixosModules
+      nixosModules = {
+        usrlib = import ./modules/usrlib.nix;
+        home = import ./modules/home.nix;
+        nix = import ./modules/nix.nix;
+      };
+
+      homeModules = {
+        home = import ../home/default.nix;
+      };
     };
 }
