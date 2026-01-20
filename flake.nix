@@ -8,6 +8,9 @@
   outputs = { self , nixpkgs ,... }: let
     systems = ["x86_64-linux" "aarch64-darwin"];
   in {
+    templates = {
+
+    };
     devShells = nixpkgs.lib.genAttrs systems (system:
       let
         pkgs = import nixpkgs {inherit system;};
@@ -16,13 +19,7 @@
           packages = with pkgs; [
             vim
             just
-            jq
-            cowsay
-            glow
           ];
-          shellHook = ''
-            cowsay "Use cmd 'glow' to view README.md to get started!"
-          '';
         };
       }
     );

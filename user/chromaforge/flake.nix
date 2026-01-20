@@ -3,10 +3,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
 
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    flake-utils.url = "github:numtide/flake-utils";
 
     pyproject-nix = {
       url = "github:pyproject-nix/pyproject.nix";
@@ -59,19 +56,35 @@
           ]
         );
 
-      mkApplication = pkgs.callPackages pyproject-nix.build.util {};
+      defaultVenv = pythonSet.mkVirtualEnv "uv-default-env" workspace.deps.default; 
+      fullVenv = pythonSet.mkVirtualEnv "uv-full-env" workspace.deps.all; 
+
+      defaultDerivation = defaultVenv.overrideAttrs (old: {
+        passthru = pkgs.lib.recursiveUpdate (old.passthru or { }) // {
+          inherit (pythonSet.testing.passthru) tests;
+        };
+        meta = (old.meta or { }) // {
+          mainProgram = "";
+        };
+      });
+      fullDerivation = fullVenv.overrideAttrs (old: {
+        passthru = pkgs.lib.recursiveUpdate (old.passthru or { }) // {
+          inherit (pythonSet.testing.passthru) tests;
+        };
+        meta = (old.meta or { }) // {
+          mainProgram = "";
+        };
+      });
         
       baseShell = pkgs.mkShell (
-        let
-          virtualenv = pythonSet.mkVirtualEnv "uv-dev-env" workspace.deps.all;
-        in {
+        {
           env = {
             UV_NO_SYNC = "1"; # prevent uv from managing virtual environment, this is managed by uv2nix
             UV_PYTHON = pythonSet.python.interpreter;
             UV_PYTHON_DOWNLOADS = "never"; # don't let uv manage its own python interpreters, use nix instead
           };
           packages = [
-            virtualenv
+            fullVenv
             pkgs.uv
           ];
           shellHook = ''
@@ -81,9 +94,9 @@
         }
       );
     in {
-      packages.default = mkApplication {
-        venv = pythonSet.mkVirtualEnv "application-env" workspace.deps.default;
-        # package = pythonSet.;
+      packages = {
+        default = defaultDerivation;
+        full = fullDerivation;
       };
       devShells.default = baseShell;
     }

@@ -9,7 +9,7 @@
     let
         pkgs = import nixpkgs { inherit system; };
         
-        package = pkgs.stdenv.mkDerivation {
+        package = pkgs.stdenv.mkDerivation rec {
             pname = "somepackage"; # package name --> creates a nix package called "${pname}-${version}"
             version = "1.0.1"; # package version
             src = builtins.fetchurl {
