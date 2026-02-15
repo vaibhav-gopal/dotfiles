@@ -17,12 +17,10 @@
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, nixos-wsl, home-manager, ... }:
   {
+    # make the nixos configuration factory function
     mkNixos = { rootSelf, configurations, ... }: (
       let
-        # Get "nixos" configurations from root flake
         nixosConfigs = nixpkgs.lib.filterAttrs (_: conf: conf.nixType == "nixos-wsl") configurations;
-
-        # make the nixos configuration factory function
         genHost = name: conf: nixpkgs.lib.nixosSystem (
         let
           # Common nixpkgs configurations (overlays, unfree packages, etc...) (applies to all except `pkgs` / `nixpkgs` itself ; which you configure in the actual submodules using nixos options)
@@ -63,6 +61,7 @@
         nixpkgs.lib.mapAttrs genHost nixosConfigs 
     );
 
+    # make the home-manager configuration factory function
     mkHome = { rootSelf, configurations, ... }: (
       let
         nixosConfigs = nixpkgs.lib.filterAttrs (_: conf: conf.nixType == "nixos-wsl") configurations;

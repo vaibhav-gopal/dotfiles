@@ -16,12 +16,10 @@
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nix-darwin, ...  }:
   {
+    # make the nix-darwin configuration factory function
     mkNixos = { rootSelf, configurations, ... }: (
       let
-        # Get "nix-darwin" configurations from root flake
         darwinConfigs = nixpkgs.lib.filterAttrs (_: conf: conf.nixType == "nix-darwin") configurations;
-
-        # make the nix-darwin configuration factory function
         genHost = name: conf: nix-darwin.lib.darwinSystem (
         let
           # Common nixpkgs configurations (overlays, unfree packages, etc...) (applies to all except `pkgs` / `nixpkgs` itself ; which you configure in the actual submodules using nixos options)
@@ -59,6 +57,7 @@
         nixpkgs.lib.mapAttrs genHost darwinConfigs 
     );
 
+    # make the home-manager configuration factory function
     mkHome = { rootSelf, configurations, ... }: (
       let
         darwinConfigs = nixpkgs.lib.filterAttrs (_: conf: conf.nixType == "nix-darwin") configurations;

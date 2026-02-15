@@ -1,27 +1,21 @@
 {
-  description = "Starter nix development environment";
-
+  description = "Starter environment for dotfiles";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self , nixpkgs ,... }: let
-    systems = ["x86_64-linux" "aarch64-darwin"];
-  in {
-    templates = {
+  outputs = { self, nixpkgs, flake-utils, ... }: flake-utils.lib.eachDefaultSystem (system:
+    let
+        pkgs = import nixpkgs { inherit system; };
 
-    };
-    devShells = nixpkgs.lib.genAttrs systems (system:
-      let
-        pkgs = import nixpkgs {inherit system;};
-      in {
-        default = pkgs.mkShell {
-          packages = with pkgs; [
-            vim
-            just
-          ];
+        baseShell = pkgs.mkShell {
+            packages = [
+                pkgs.just
+            ];
         };
-      }
-    );
-  };
+    in {
+        devShells.default = baseShell;
+    }
+  );
 }

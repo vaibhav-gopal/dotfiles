@@ -52,8 +52,14 @@
         rootSelf = self;
       };
     in {
+      # make all nixos configurations
       nixosConfigurations = (nixos-src.outputs.mkNixos baseArgs) // (wsl-src.outputs.mkNixos baseArgs);
       darwinConfigurations = (darwin-src.outputs.mkNixos baseArgs);
+
+      # make all home-manager configurations 
+      # -- NOTE: This should NOT be used for home-manager use! I know, why the fuck does it exist then? Purely for nix-eval so I can debug home-manager options! (see justfile)
+      # -- It is MUCH more convenient to use home-manager as a nixos module instead, which is how its configured currently. (See the sub-flakes)
+      # -- Hence, we do both!
       homeConfigurations = (nixos-src.outputs.mkHome baseArgs) // (wsl-src.outputs.mkHome baseArgs) // (darwin-src.outputs.mkHome baseArgs);
 
       # reusable modules ; use within sub-flakes by accessing rootSelf.nixosModules
