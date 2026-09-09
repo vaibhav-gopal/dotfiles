@@ -6,6 +6,7 @@
 
     # Features
     ./bun
+    ./claude-code
     ./editor
     ./git
     ./java

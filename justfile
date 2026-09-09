@@ -194,3 +194,14 @@ homesession:
     @echo -e "{{BOLD + BLUE}}Dotfiles home-manager session variables:{{NORMAL}}"
     source {{justfile_directory()/scripts-dir/eval-script}} && \
     nix_eval "$(just --justfile {{justfile()}} _{{nixtype}}_home)" "home.sessionVariables"
+
+# Validate the currently selected flake config from .env without switching the machine
+[group('eval')]
+validate:
+    @echo -e "{{BOLD + BLUE}}Validating {{nixtype}} config '{{nixconfig}}' from .env{{NORMAL}}"
+    @just --justfile {{justfile()}} _{{nixtype}}_check
+    @if [ "{{nixtype}}" = "nix-darwin" ]; then \
+        nix eval --extra-experimental-features "nix-command flakes" {{justfile_directory()}}/nix#darwinConfigurations.{{nixconfig}}.config.system.build.toplevel.drvPath; \
+    else \
+        nix eval --extra-experimental-features "nix-command flakes" {{justfile_directory()}}/nix#nixosConfigurations.{{nixconfig}}.config.system.build.toplevel.drvPath; \
+    fi

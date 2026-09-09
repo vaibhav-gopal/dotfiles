@@ -3,9 +3,10 @@ let
   cfg = config.core.nix;
 in {
   options.core.nix = {
+    enable = usrlib.mkEnableOptionTrue "enable nix management configuration";
   };
 
-  config = {
+  config = lib.mkIf cfg.enable {
     # common nixpkgs configuration
     nixpkgs.config.allowUnfree = true; # allow unfree packages to be installed
 

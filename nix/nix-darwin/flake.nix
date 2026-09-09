@@ -2,6 +2,7 @@
   description = "Darwin configuration for Vaibhav Gopal";
 
   inputs = {
+    # CORE INPUTS
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nix-darwin = {
@@ -12,9 +13,12 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # EXTRA INPUTS
+    claude-code.url = "github:sadjow/claude-code-nix";
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nix-darwin, ...  }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nix-darwin, claude-code, ...  }:
   {
     # make the nix-darwin configuration factory function
     mkNixos = { rootSelf, configurations, ... }: (
@@ -69,7 +73,7 @@
           };
           pkgs = import nixpkgs commonPkgsConfig;
           pkgs-unstable = import nixpkgs-unstable commonPkgsConfig;
-          extraSpecialArgs = inputs // conf // { inherit pkgs pkgs-unstable; };
+          extraSpecialArgs = inputs // conf // { inherit pkgs-unstable; };
         in {
           inherit pkgs extraSpecialArgs;
 

@@ -2,6 +2,7 @@
   description = "NixOS - WSL2 Configuration for Vaibhav Gopal";
 
   inputs = {
+    # CORE INPUTS
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # Uses custom version of nixos specifically for WSL2
@@ -13,9 +14,12 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # EXTRA INPUTS
+    claude-code.url = "github:sadjow/claude-code-nix";
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, nixos-wsl, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, nixos-wsl, home-manager, claude-code, ... }:
   {
     # make the nixos configuration factory function
     mkNixos = { rootSelf, configurations, ... }: (
