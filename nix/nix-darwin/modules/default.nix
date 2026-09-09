@@ -8,6 +8,7 @@
     ./overlays
 
     # MODULES
+    ./homebrew
     ./hotkeys
     ./statusbar
     ./yabai

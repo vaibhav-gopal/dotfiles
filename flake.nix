@@ -9,7 +9,7 @@
     let
         pkgs = import nixpkgs { inherit system; };
 
-        baseShell = pkgs.mkShell {
+        baseShell = pkgs.mkShellNoCC {
             packages = [
                 pkgs.just
             ];

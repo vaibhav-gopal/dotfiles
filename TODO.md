@@ -26,6 +26,7 @@
 - list all enabled features of home-manager via justfile - DONE
 - nixos desktop/server setup - DONE
 - list all options and types in system config/options - DONE
+- expose home-manager as a top-level `homeConfigurations` output for option introspection, while keeping it a nixos module for deployment - DONE
 
 ## NEED TO DO
 
@@ -33,6 +34,6 @@
 - nvim setup + zed setup + vscoderc (HIGH)
 - hyprland setup (HIGH)
 - QMK setup (HIGH)
-- transition home manager to seperate top level module (allows inter nixos-home manager feature dependency checking, and printing out home manager options) (medium)
+- actually make use of inter nixos <-> home-manager dependency checking (system side: `config.home-manager.users.<name>.*`, home side: `osConfig`) - the wiring already allows it, nothing uses it yet (low)
 - secure boot w/ lanzaboote (low)
 - ZFS w/ LZ4 compression (need a reinstall) (low)

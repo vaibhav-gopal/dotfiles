@@ -21,6 +21,7 @@
 # See the .template-env file for more info on why/how each of these are used
 scripts-dir := 'nix' / 'scripts'
 eval-script := 'nixeval.sh'
+brew-script := 'homebrew.sh'
 set dotenv-filename := '.env'
 set dotenv-required
 nixtype := env('NIXTYPE')
@@ -52,6 +53,33 @@ gc *flags:
 # print out current disk usage for /nix/store
 size:
     sudo -H du -sh /nix/store
+
+#####################################
+############# HOMEBREW ##############
+#####################################
+
+# Install Homebrew (if missing) and adopt already-installed casks (nix-darwin only)
+[group('homebrew')]
+brew-bootstrap:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
+    @echo -e "{{BOLD + BLUE}}Bootstrapping Homebrew for '{{nixconfig}}'{{NORMAL}}"
+    source {{justfile_directory()/scripts-dir/brew-script}} && \
+    brew_bootstrap "$(just --justfile {{justfile()}} _{{nixtype}}_system)"
+
+# Adopt already-installed apps into Homebrew's control, without reinstalling them
+[group('homebrew')]
+brew-adopt:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
+    @echo -e "{{BOLD + BLUE}}Adopting already-installed casks into Homebrew{{NORMAL}}"
+    source {{justfile_directory()/scripts-dir/brew-script}} && \
+    brew_adopt "$(just --justfile {{justfile()}} _{{nixtype}}_system)"
+
+# Print the declared Brewfile contents
+[group('homebrew')]
+brewfile:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
+    source {{justfile_directory()/scripts-dir/brew-script}} && \
+    brew_brewfile "$(just --justfile {{justfile()}} _{{nixtype}}_system)"
 
 # Switch / rebuild nixos configuration for the first time (mainly for nix-darwin ; installs nix-darwin)
 init:

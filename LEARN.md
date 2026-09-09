@@ -457,3 +457,74 @@ hello.overrideAttrs (oldAttrs: {
   - `builtins.trace "Checking value..." x`
 - `lib.traceVal`: Prints the value and returns it
 - `lib.traceSeq`: Deeply prints a complex structure (like a nested set) which normal trace might hide as `<CODE>`
+---
+
+## 8. Installation Paths (Where Software Comes From)
+
+There are six distinct ways software can land on a machine in this setup. They differ in *who owns the file*, *whether it survives a rebuild*, and *whether it is reproducible on another machine*. Picking the wrong one is how a config rots.
+
+### The Six Paths
+
+| Path | Declarative? | Scope | Rebuild-managed | Use for |
+|---|---|---|---|---|
+| `nix profile install` | No | Per-user | No | Throwaway experiments only |
+| `nix develop` / devshell | Yes | Per-project | N/A (ephemeral) | Project toolchains |
+| `nix run` | Yes | None (ephemeral) | N/A | One-off invocations |
+| `environment.systemPackages` | Yes | System-wide, all users | Yes | System tools, needed before login |
+| `home.packages` / `programs.*` | Yes | Per-user | Yes | Everything CLI you actually use |
+| `homebrew.*` (darwin only) | Yes | Per-machine | Yes | macOS GUI apps, MAS apps |
+
+### 1. `nix profile` (imperative)
+
+- Installs into a mutable per-user profile. **Nothing in this repo describes it.**
+- Survives rebuilds, which is exactly the problem: a machine rebuilt from this flake will not have it.
+- Use only to trial a package before committing it to a module. `nix profile list` / `nix profile remove` to clean up.
+
+### 2. Flakes + devshells (`nix develop`)
+
+- Per-project, ephemeral. Packages exist only inside the shell session.
+- Belongs in the project's own `flake.nix`, not here. See `dev-utils/nix-templates/`.
+- With `direnv` + `nix-direnv`, entering the directory enters the shell.
+- The right answer for language toolchains: a Rust version for *this* project, not for the whole user account.
+
+### 3. `nix run nixpkgs#foo`
+
+- Runs a package without installing it anywhere. Leaves nothing behind but a store path.
+- Best path for a tool you need exactly once (`nix run nixpkgs#mas -- list`).
+
+### 4. `environment.systemPackages` (nixos / nix-darwin)
+
+- System-wide, every user, on `PATH` before any user config loads.
+- Reserve for things that must exist independent of home-manager: `git`, `vim`, the editor you'd need to repair a broken home-manager generation.
+- In this repo: `nix/nix-darwin/modules/core/env.nix`.
+
+### 5. `home.packages` and `programs.*` (home-manager)
+
+- Per-user, and the **default choice for CLI tooling**.
+- `programs.foo.enable = true` is strictly better than `home.packages = [ pkgs.foo ]` when a HM module exists — it installs the package *and* manages the config, and exposes typed options.
+- In this repo: `home/modules/`.
+
+### 6. Homebrew (nix-darwin only)
+
+- For macOS **GUI applications** and Mac App Store apps. Nix's darwin GUI story is weak: casks handle code-signing, Gatekeeper, `.app` bundle layout, and Sparkle self-updates in ways nixpkgs largely does not.
+- Managed declaratively by `modules.homebrew` — see the Homebrew section in `README.md`.
+- Three sub-paths, and they are not interchangeable:
+  - `casks` — GUI `.app` bundles from Homebrew's cask index
+  - `brews` — CLI formulae. **Prefer nix.** Only use when nixpkgs lacks the package or its darwin build is broken
+  - `masApps` — Mac App Store apps, by numeric ID. Required for anything App-Store-exclusive (Apple's own apps, Safari extensions), since those cannot be distributed as casks
+
+### Decision Order
+
+Work down this list and stop at the first one that fits:
+
+1. Does a `programs.*` home-manager module exist? → use it
+2. Is it a CLI tool? → `home.packages`
+3. Is it needed system-wide or pre-login? → `environment.systemPackages`
+4. Is it only needed inside one project? → that project's devshell
+5. Is it a macOS GUI app? → `homebrew.casks`
+6. Is it App-Store-exclusive? → `homebrew.masApps`
+7. Are you just trying it out? → `nix run`, or `nix profile` and clean up after
+
+### The Overlap Trap
+
+Never install the same program through two paths. On darwin the failure is loud and confusing: nix puts an app in `/Applications/Nix Apps/`, a cask puts one in `/Applications/`, and you get two copies with different versions, different `PATH` entries, and different config directories. `kitty` and `Zed` come from nix here — they must never appear in `homebrew.casks`.
