@@ -189,6 +189,14 @@ Migrate in small batches so a failure is easy to attribute.
 | `bdoc` | `brew doctor` health check |
 | `bfile` | View the generated Brewfile |
 
+Defined in `home/nix-darwin/modules/homebrew`, not the system module - they are
+home-manager `home.shellAliases` like every other alias in the repo, toggled
+with `nixtype.homebrew.enable`. Inspect the merged set with:
+
+```bash
+just evalhomeconfigs home.shellAliases
+```
+
 ### Background agents
 
 Two launchd agents, both toggleable and rescheduleable via

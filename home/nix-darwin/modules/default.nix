@@ -3,6 +3,7 @@
 {
   imports = [
     # Features
+    ./homebrew
     ./keyboard
   ];
 }

@@ -51,8 +51,6 @@ in {
       "What to do with Homebrew packages that are installed but NOT declared here, on rebuild"
       "zap" [ "none" "uninstall" "zap" ];
 
-    aliases.enable = usrlib.mkEnableOptionTrue "install the brew helper shell aliases";
-
     cleanupAgent = {
       enable = usrlib.mkEnableOptionTrue "periodic `brew cleanup` + `brew autoremove` launchd agent";
       calendar = calendarOption "When to run the cleanup agent (launchd StartCalendarInterval)"
@@ -113,17 +111,6 @@ in {
       HOMEBREW_NO_ENV_HINTS = "1";
       HOMEBREW_AUTOREMOVE = "1"; # drop dependencies nothing depends on any more
       HOMEBREW_BAT = "1"; # `brew cat` through bat, which we already install
-    };
-
-    environment.shellAliases = lib.mkIf cfg.aliases.enable {
-      bcheck = "${brewBin} bundle check --verbose"; # is the system in sync with what's declared?
-      bdrift = "${brewBin} bundle cleanup";         # dry run: what is installed but NOT declared?
-      bls = "${brewBin} list";                      # everything currently installed
-      bout = "${brewBin} outdated --greedy";        # what is stale, incl. auto-updating casks
-      bup = "${brewBin} update && ${brewBin} upgrade"; # deliberate upgrade (rebuilds never upgrade)
-      bclean = "${brewBin} cleanup --prune=all && ${brewBin} autoremove"; # manual cleanup now
-      bdoc = "${brewBin} doctor";                   # health check
-      bfile = "bat \"$HOMEBREW_BUNDLE_FILE\"";      # view the generated Brewfile
     };
 
     launchd.user.agents = lib.mkMerge [
