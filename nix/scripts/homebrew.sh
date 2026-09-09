@@ -64,12 +64,35 @@ brew_brewfile() {
   nix eval --raw "$config_path.homebrew.brewfile"
 }
 
+# Paths brew would place for a cask's `app` stanzas, one per line (empty if the
+# cask has none). `brew info` lists them as "<Name>.app (App)"; a bare name
+# lands in the default appdir.
+#
+# Usage: brew_cask_apps <brew_bin> <token>
+brew_cask_apps() {
+  "$1" info --cask "$2" 2>/dev/null |
+    sed -n '/^==> Artifacts$/,/^==> /p' |
+    sed -n 's/ (App)$//p' |
+    sed 's|^\([^/]\)|/Applications/\1|'
+}
+
 # Take over apps that are already installed by hand, so `brew bundle` does not
 # fail with "It seems there is already an App at ...".
 #
-# Skips anything already brew-managed and tries `--adopt` on the rest. Adoption
-# requires the installed version to match the cask's; failures are reported at
-# the end with the fallback (delete the app, let brew install it fresh).
+# `brew list --cask` is a *receipt* check, not a reality check, so a bare skip
+# on it is not enough:
+#
+#   - receipt present, app gone (deleted or a half-finished install): `brew
+#     bundle` skips it too, so nothing ever repairs it. Reinstall - there is no
+#     app on disk to adopt.
+#   - no `app` stanza at all (installer-script casks such as blockblock, which
+#     install into /Library): nothing to adopt and nothing to verify, so the
+#     receipt has to be taken at its word.
+#   - no receipt: the hand-installed case `--adopt` exists for. Adoption
+#     requires the installed version to match the cask's.
+#
+# Failures are reported at the end with the fallback (delete the app, let brew
+# install it fresh).
 #
 # Usage: brew_adopt <config_path>
 brew_adopt() {
@@ -90,9 +113,30 @@ brew_adopt() {
     return 0
   fi
 
+  local apps app missing
   for token in $tokens; do
     if "$brew" list --cask "$token" >/dev/null 2>&1; then
-      echo "  skip    $token (already managed by Homebrew)"
+      apps="$(brew_cask_apps "$brew" "$token")"
+
+      if [[ -z "$apps" ]]; then
+        echo "  skip    $token (managed; no app artifact to verify)"
+        continue
+      fi
+
+      missing=()
+      while IFS= read -r app; do
+        [[ -e "$app" ]] || missing+=("$app")
+      done <<<"$apps"
+
+      if (( ${#missing[@]} == 0 )); then
+        echo "  skip    $token (already managed by Homebrew)"
+        continue
+      fi
+
+      echo "  repair  $token (receipt present, missing ${missing[0]})"
+      if ! "$brew" reinstall --cask "$token"; then
+        failed+=("$token")
+      fi
       continue
     fi
 
@@ -104,8 +148,9 @@ brew_adopt() {
 
   if (( ${#failed[@]} )); then
     echo
-    echo "Could not adopt: ${failed[*]}"
-    echo "Usually a version mismatch - the installed app is older than the cask."
+    echo "Could not adopt or repair: ${failed[*]}"
+    echo "Adoption is usually a version mismatch - the installed app is older"
+    echo "than the cask. A repair is usually a download that never finished."
     echo "Either update the app and retry, or move it to the Trash and let"
     echo "\`just build\` install it fresh, e.g.:"
     echo

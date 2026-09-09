@@ -27,8 +27,12 @@
       "discord"
       "libreoffice"
 
-      # -- pkg installer, no .app conflict ----------------------------------
-      "blockblock" # Objective-See; installs via pkg, not an app bundle
+      # -- installer script, no .app conflict --------------------------------
+      # brew runs `BlockBlock Installer -install` under sudo; the real install
+      # lands in /Library/Objective-See + a LaunchDaemon, so there is no .app
+      # in /Applications to collide with or to adopt. Nothing for brew to
+      # verify afterwards either - see brew_adopt in nix/scripts/homebrew.sh.
+      "blockblock" # Objective-See
 
       # -- security ---------------------------------------------------------
       "lulu" # Objective-See firewall
