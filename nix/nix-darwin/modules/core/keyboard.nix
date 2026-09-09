@@ -50,10 +50,6 @@ in {
           HIDKeyboardModifierMappingDst = ctrl;
         }
         {
-          HIDKeyboardModifierMappingSrc = ctrl; # control -> right click (menu btn / app btn)
-          HIDKeyboardModifierMappingDst = appbtn;
-        }
-        {
           HIDKeyboardModifierMappingSrc = rshift; # right shift -> right cmd (symmetry)
           HIDKeyboardModifierMappingDst = rcmd;
         }
