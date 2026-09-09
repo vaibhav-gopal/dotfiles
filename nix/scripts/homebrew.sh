@@ -31,8 +31,9 @@ brew_install() {
   fi
 
   echo "Installing Homebrew..."
-  /bin/bash -c \
-    "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || {
+  # The official installer, verbatim. It needs an admin sudo password and,
+  # unless $NONINTERACTIVE is set, a TTY to confirm at the prompt.
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || {
     echo "Error: Homebrew installation failed" >&2
     return 1
   }
@@ -53,7 +54,7 @@ brew_install() {
 # Usage: brew_brewfile <config_path>
 # Example: brew_brewfile "/path/to/nix#darwinConfigurations.host.config"
 brew_brewfile() {
-  local config_path="$1"
+  local config_path="${1:-}"
 
   if [[ -z "$config_path" ]]; then
     echo "Error: brew_brewfile requires a config_path" >&2
@@ -72,7 +73,7 @@ brew_brewfile() {
 #
 # Usage: brew_adopt <config_path>
 brew_adopt() {
-  local config_path="$1"
+  local config_path="${1:-}"
   local brew
   brew="$(brew_bin)" || { echo "Error: Homebrew is not installed" >&2; return 1; }
 
@@ -118,7 +119,7 @@ brew_adopt() {
 # Full bootstrap: install Homebrew, then adopt already-installed casks.
 # Usage: brew_bootstrap <config_path>
 brew_bootstrap() {
-  local config_path="$1"
+  local config_path="${1:-}"
 
   brew_install || return 1
   echo
