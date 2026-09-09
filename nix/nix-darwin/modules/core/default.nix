@@ -2,7 +2,6 @@
 {
   imports = [
     ./env.nix
-    ./home.nix
     ./keyboard.nix
   ];
 
