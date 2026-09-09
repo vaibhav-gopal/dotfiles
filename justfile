@@ -74,6 +74,14 @@ brew-adopt:
     source {{justfile_directory()/scripts-dir/brew-script}} && \
     brew_adopt "$(just --justfile {{justfile()}} _{{nixtype}}_system)"
 
+# Report declared casks that Homebrew is not actually managing (read-only)
+[group('homebrew')]
+brew-check:
+    @just --justfile {{justfile()}} _{{nixtype}}_check
+    @echo -e "{{BOLD + BLUE}}Checking declared casks against what is installed{{NORMAL}}"
+    source {{justfile_directory()/scripts-dir/brew-script}} && \
+    brew_check "$(just --justfile {{justfile()}} _{{nixtype}}_system)"
+
 # Print the declared Brewfile contents
 [group('homebrew')]
 brewfile:

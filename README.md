@@ -88,7 +88,14 @@ Related recipes:
 |---|---|
 | `just brew-bootstrap` | Install Homebrew, then adopt already-installed casks |
 | `just brew-adopt` | Adoption pass on its own, without reinstalling anything |
+| `just brew-check` | Report drift read-only, without changing anything |
 | `just brewfile` | Print the declared Brewfile (works before any build) |
+
+`brew-check` is worth an occasional run because `just build` cannot fix either
+kind of drift it reports. `brew bundle` trusts Homebrew's receipts: a cask whose
+app you deleted still has a receipt, so the rebuild skips it rather than putting
+it back, and an app installed by hand has no receipt to skip on. Anything marked
+`DRIFT` is fixed by `just brew-adopt`.
 
 The logic lives in `nix/scripts/homebrew.sh`. It evaluates the Brewfile from the
 config rather than reading it out of the nix store, so it works before the first

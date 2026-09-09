@@ -76,6 +76,44 @@ brew_cask_apps() {
     sed 's|^\([^/]\)|/Applications/\1|'
 }
 
+# Cask tokens declared in the config, one per line.
+#
+# Usage: brew_cask_tokens <config_path>
+brew_cask_tokens() {
+  local brewfile
+  brewfile="$(brew_brewfile "$1")" || return 1
+  printf '%s\n' "$brewfile" | sed -n 's/^cask "\([^"]*\)".*/\1/p'
+}
+
+# Classify one declared cask against what is actually on disk. Echoes one of:
+#
+#   managed         receipt present and every app artifact exists
+#   unverifiable    receipt present, but the cask has no `app` stanza to check
+#   missing <path>  receipt present and an app artifact is gone
+#   absent          no receipt - never installed, or installed by hand
+#
+# Usage: brew_cask_state <brew_bin> <token>
+brew_cask_state() {
+  local brew="$1" token="$2" apps app
+
+  "$brew" list --cask "$token" >/dev/null 2>&1 || { echo "absent"; return 0; }
+
+  apps="$(brew_cask_apps "$brew" "$token")"
+  if [[ -z "$apps" ]]; then
+    echo "unverifiable"
+    return 0
+  fi
+
+  while IFS= read -r app; do
+    if [[ ! -e "$app" ]]; then
+      echo "missing $app"
+      return 0
+    fi
+  done <<<"$apps"
+
+  echo "managed"
+}
+
 # Take over apps that are already installed by hand, so `brew bundle` does not
 # fail with "It seems there is already an App at ...".
 #
@@ -100,50 +138,38 @@ brew_adopt() {
   local brew
   brew="$(brew_bin)" || { echo "Error: Homebrew is not installed" >&2; return 1; }
 
-  local brewfile
-  brewfile="$(brew_brewfile "$config_path")" || return 1
-
   # Cask tokens never contain whitespace, so word splitting here is safe and
   # keeps the loop in this shell (a pipe would subshell away the failed list).
-  local tokens token failed=()
-  tokens="$(printf '%s\n' "$brewfile" | sed -n 's/^cask "\([^"]*\)".*/\1/p')"
+  local tokens token state failed=()
+  tokens="$(brew_cask_tokens "$config_path")" || return 1
 
   if [[ -z "$tokens" ]]; then
     echo "No casks declared, nothing to adopt."
     return 0
   fi
 
-  local apps app missing
   for token in $tokens; do
-    if "$brew" list --cask "$token" >/dev/null 2>&1; then
-      apps="$(brew_cask_apps "$brew" "$token")"
-
-      if [[ -z "$apps" ]]; then
-        echo "  skip    $token (managed; no app artifact to verify)"
-        continue
-      fi
-
-      missing=()
-      while IFS= read -r app; do
-        [[ -e "$app" ]] || missing+=("$app")
-      done <<<"$apps"
-
-      if (( ${#missing[@]} == 0 )); then
+    state="$(brew_cask_state "$brew" "$token")"
+    case "$state" in
+      managed)
         echo "  skip    $token (already managed by Homebrew)"
-        continue
-      fi
-
-      echo "  repair  $token (receipt present, missing ${missing[0]})"
-      if ! "$brew" reinstall --cask "$token"; then
-        failed+=("$token")
-      fi
-      continue
-    fi
-
-    echo "  adopt   $token"
-    if ! "$brew" install --cask --adopt "$token"; then
-      failed+=("$token")
-    fi
+        ;;
+      unverifiable)
+        echo "  skip    $token (managed; no app artifact to verify)"
+        ;;
+      "missing "*)
+        echo "  repair  $token (receipt present, missing ${state#missing })"
+        if ! "$brew" reinstall --cask "$token"; then
+          failed+=("$token")
+        fi
+        ;;
+      absent)
+        echo "  adopt   $token"
+        if ! "$brew" install --cask --adopt "$token"; then
+          failed+=("$token")
+        fi
+        ;;
+    esac
   done
 
   if (( ${#failed[@]} )); then
@@ -158,6 +184,60 @@ brew_adopt() {
     return 1
   fi
 
+  echo "All declared casks are under Homebrew's control."
+}
+
+# Report how each declared cask stands against what is actually on disk,
+# changing nothing. Read-only counterpart to brew_adopt: no sudo, no installs,
+# no GUI installers - safe to run any time.
+#
+# `just build` cannot fix either kind of drift reported here. `brew bundle`
+# trusts Homebrew's receipts, so a cask whose app was deleted is skipped rather
+# than reinstalled, and a hand-installed app has no receipt to skip on.
+#
+# Returns 1 if anything needs `just brew-adopt`.
+#
+# Usage: brew_check <config_path>
+brew_check() {
+  local config_path="${1:-}"
+  local brew
+  brew="$(brew_bin)" || { echo "Error: Homebrew is not installed" >&2; return 1; }
+
+  local tokens token state drift=0
+  tokens="$(brew_cask_tokens "$config_path")" || return 1
+
+  if [[ -z "$tokens" ]]; then
+    echo "No casks declared, nothing to check."
+    return 0
+  fi
+
+  for token in $tokens; do
+    state="$(brew_cask_state "$brew" "$token")"
+    case "$state" in
+      managed)
+        echo "  ok      $token"
+        ;;
+      unverifiable)
+        echo "  ok?     $token (managed; installer script, nothing to verify)"
+        ;;
+      "missing "*)
+        echo "  DRIFT   $token (receipt present, missing ${state#missing })"
+        drift=1
+        ;;
+      absent)
+        echo "  DRIFT   $token (declared but not installed by Homebrew)"
+        drift=1
+        ;;
+    esac
+  done
+
+  if (( drift )); then
+    echo
+    echo "Run \`just brew-adopt\` to adopt or repair the casks marked DRIFT."
+    return 1
+  fi
+
+  echo
   echo "All declared casks are under Homebrew's control."
 }
 
