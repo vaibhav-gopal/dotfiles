@@ -75,6 +75,16 @@
       # Safari extensions
       "Focus for YouTube" = 1514703160;
       "Tab Space" = 1473726602;
+      # NOTE: obtained 2026-09-09; kept here only so rebuilds keep it installed.
+      # A MAS app that is NOT yet in the Apple Account library breaks activation:
+      # `brew bundle` shells out to `mas install`, which only RE-downloads apps
+      # already in the library, and its fallback `mas get` does not exist in the
+      # mas 2.2.2 that nix-darwin puts on PATH - hence the confusing
+      # "2 unexpected arguments: 'get', <id>" error. Obtain it once with:
+      #   mas purchase 6502835663
+      # (it prints a spurious "MASError error 5" but still downloads).
+      # Unrelated to the proton-pass cask above: that app is
+      # me.proton.pass.electron, this one me.proton.pass.catalyst, no collision.
       "Proton Pass for Safari" = 6502835663;
       "uBlock Origin Lite" = 6745342698;
       "Vimari" = 1480933944;
