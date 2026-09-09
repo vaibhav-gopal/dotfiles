@@ -43,7 +43,6 @@
       "firefox"
       "ghostty" # Linux-only in nixpkgs, so this must be a cask
       "visual-studio-code"
-      "jetbrains-toolbox"
 
       # -- media / utilities -------------------------------------------------
       "spotify"
