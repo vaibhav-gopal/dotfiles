@@ -16,7 +16,7 @@
       "/drive:mac,${config.home.homeDirectory}/Shared" # mac folder as a drive in windows
     ];
     hosts = {
-      vghydra = { user = "vaibhav"; }; # -> rdp-vghydra
+      vghydra = { user = "vaibhav"; app = true; }; # -> rdp-vghydra + "RDP vghydra.app"
     };
   };
 

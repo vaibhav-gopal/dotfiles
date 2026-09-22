@@ -9,6 +9,7 @@ let
       domain = usrlib.mkNullOrStringOption "Windows domain (`/d:`)" null;
       useDefaultArgs = usrlib.mkEnableOptionTrue "Prepend `common.freerdp.defaultArgs` to this host's args";
       extraArgs = usrlib.mkListOfStringsOption "Extra sdl-freerdp args for this host only, appended after defaultArgs" [ ];
+      app = usrlib.mkEnableOptionFalse "Also build a dockable `RDP <name>.app` (macOS only, via nixtype.apps)";
     };
   });
 
