@@ -9,7 +9,14 @@ let
       domain = usrlib.mkNullOrStringOption "Windows domain (`/d:`)" null;
       useDefaultArgs = usrlib.mkEnableOptionTrue "Prepend `common.freerdp.defaultArgs` to this host's args";
       extraArgs = usrlib.mkListOfStringsOption "Extra sdl-freerdp args for this host only, appended after defaultArgs" [ ];
-      app = usrlib.mkEnableOptionFalse "Also build a dockable `RDP <name>.app` (macOS only, via nixtype.apps)";
+      # macOS only; consumed by home/nix-darwin/modules/apps (the freerdp bridge).
+      app = usrlib.mkEnableOptionFalse ''
+        Also build a dockable `RDP <name>.app` (macOS only, via nixtype.apps).
+        Dock launches cannot prompt, so the app reads the password from the
+        login Keychain - store it once with
+          security add-generic-password -s rdp-<name> -a <user> -w
+        With no entry the session opens in the terminal and freerdp prompts.
+      '';
     };
   });
 
