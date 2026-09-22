@@ -74,7 +74,16 @@ in {
         # THE guardrail: anything installed but not declared above is removed on
         # rebuild, which makes this file the single source of truth. "zap" also
         # deletes each removed cask's preferences and application support files.
-        cleanup = cfg.cleanup;
+        #
+        # Homebrew >= 7 disabled `brew bundle --cleanup` in favour of
+        # `--force-cleanup`, and nix-darwin 25.11 still emits the old flag
+        # (fixed on master only). Keep upstream's cleanup at "none" and pass
+        # the new flags ourselves; drop this once the flake tracks a release
+        # that emits `--force-cleanup`.
+        cleanup = "none";
+        extraFlags =
+          lib.optional (cfg.cleanup != "none") "--force-cleanup"
+          ++ lib.optional (cfg.cleanup == "zap") "--zap";
 
         # Both false (the module defaults) so repeated `darwin-rebuild switch`
         # runs are idempotent - upgrading stays a deliberate, separate act.
