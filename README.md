@@ -207,3 +207,39 @@ Two launchd agents, both toggleable and rescheduleable via
 
 Both log to `~/Library/Logs/brew-{cleanup,update}.log`. Rebuilds never upgrade
 anything, by design — upgrading is manual, via `bup`.
+
+## Remote desktop (FreeRDP)
+
+`common.freerdp` (home-manager, all platforms) installs `freerdp` and turns
+each entry in `hosts` into an `rdp-<name>` alias for `sdl-freerdp`:
+
+```nix
+common.freerdp = {
+  enable = true;
+  defaultArgs = [ "/dynamic-resolution" "+clipboard" "/gfx:AVC444" ]; # shared
+  hosts.vghydra = { user = "vaibhav"; app = true; };                  # -> rdp-vghydra
+};
+```
+
+`host` defaults to the attribute name; `domain`, `extraArgs` and
+`useDefaultArgs = false` are available per host. Passwords are never stored in
+nix: the alias lets freerdp prompt.
+
+### Dockable app (nix-darwin only)
+
+`app = true` also produces `RDP <name>.app` in `~/Applications/Home Manager Apps`
+(built by the generic `nixtype.apps` module), so it can live in the Dock. An
+app launched from the Dock has no terminal to prompt in, so the launcher looks
+the password up in the login Keychain first:
+
+```bash
+security add-generic-password -s rdp-<name> -a <user> -w   # prompts, one-time
+```
+
+- entry present → connects headless (`/p:` is on argv, so it is visible in
+  `ps` on this Mac while the session runs)
+- entry missing → opens the session in Ghostty and freerdp prompts as usual
+
+Update or remove the entry with `security delete-generic-password -s rdp-<name>`
+then re-add. The app itself is a plain `Info.plist` + bash launcher; anything
+else can be wrapped the same way via `nixtype.apps.apps."<Name>".command`.
