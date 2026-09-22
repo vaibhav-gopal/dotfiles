@@ -38,6 +38,7 @@
       "lulu" # Objective-See firewall
       "protonvpn" # no Mac App Store build exists, direct download only
       "proton-pass" # standalone desktop app; the Safari extension is in masApps
+      "tailscale-app" # GUI + network extension; CLI alias lives in home-manager (nixtype.tailscale)
 
       # -- browsers / terminals / editors ------------------------------------
       "firefox"
@@ -87,6 +88,7 @@
       "Proton Pass for Safari" = 6502835663;
       "uBlock Origin Lite" = 6745342698;
       "Vimari" = 1480933944;
+
     };
   };
 }

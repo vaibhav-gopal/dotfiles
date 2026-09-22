@@ -5,5 +5,6 @@
     # Features
     ./homebrew
     ./keyboard
+    ./tailscale
   ];
 }

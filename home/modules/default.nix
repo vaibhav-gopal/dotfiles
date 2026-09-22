@@ -8,6 +8,7 @@
     ./bun
     ./claude-code
     ./editor
+    ./freerdp
     ./git
     ./java
     ./rustup
