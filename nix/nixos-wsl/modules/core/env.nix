@@ -14,6 +14,21 @@ in {
       pkgs-unstable.nixd
       pkgs-unstable.nil
     ];
+    fonts = {
+      enable = usrlib.mkEnableOptionTrue "enable font configuration and download";
+      packages = usrlib.mkListOfPackagesOption "list of font packages to install" (with pkgs; [
+        # icon fonts
+        material-design-icons
+        font-awesome
+
+        # nerdfonts
+        nerd-fonts.symbols-only
+        nerd-fonts.fira-code
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.hack
+        nerd-fonts.space-mono
+      ]);
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -28,5 +43,10 @@ in {
 
     # enable running foreign binaries on NixOS (allows vscode server)
     programs.nix-ld.enable = true;
+
+    # Fonts (for GUI apps through WSLg, e.g. kitty)
+    fonts = lib.mkIf cfg.fonts.enable {
+      packages = cfg.fonts.packages;
+    };
   };
 }

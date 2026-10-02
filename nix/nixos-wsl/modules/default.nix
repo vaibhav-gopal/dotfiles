@@ -8,5 +8,6 @@
     ./overlays
 
     # MODULES
+    ./tailscale
   ];
 }
